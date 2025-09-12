@@ -1,0 +1,27 @@
+.common_input {
+  position: relative;
+}
+
+.common_input > input {
+  width: 100%;
+  padding: 7px;
+  padding-right: 30px;
+  border: 2px solid brown;
+  border-radius: 30px;
+  outline: none;
+}
+
+.common_input > input:focus {
+  outline: 1px solid brown;
+}
+
+.common_input > span {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  color: brown;
+}
+
+.common_input > span:hover {
+  cursor: pointer;
+}
