@@ -1,0 +1,10 @@
+.common_select{
+  padding: 7px;
+  border: 2px solid brown;
+  border-radius: 10px;
+  outline: none;
+}
+
+.common_select:focus {
+  outline: 1px solid brown;
+}

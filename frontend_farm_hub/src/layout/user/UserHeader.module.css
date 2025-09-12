@@ -1,0 +1,71 @@
+.container > * {
+  margin-bottom: 10px;
+  padding: 15px;
+}
+
+.members {
+  display: flex;
+  justify-content: space-between;
+}
+
+.members > ul {
+  display: flex;
+  gap: 15px;
+}
+
+.members span {
+  color: gold;
+}
+
+.members > p:hover, .members > ul > li:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.menu > ul {
+  display: flex;
+}
+
+.menu > ul > li {
+  width: 100%;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.menu > ul > li > a > p {
+  padding: 7px;
+  border-bottom: 2px solid white;
+}
+
+.menu > ul > li > a > p:hover {
+  border-bottom: 2px solid brown;
+  color: brown;
+}
+
+.menu a {
+  text-decoration: none;
+  color: black;
+}
+
+.active > p {
+  border-bottom: 2px solid brown !important;
+  color: brown;
+  padding: 7px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.img_div {
+  border: 1px solid black;
+  width: 1000px;
+  height: 100px;
+  cursor: pointer;
+}
+
+.img_div > img {
+  width: 100%;
+}
