@@ -16,12 +16,14 @@ function App() {
   return (
     <>
       <Routes>
+        {/* 일반 사용자 페이지 */}
         <Route path='/' element={ <UserLayout /> }>
           <Route path='' element={ <Home /> } />
           <Route path='new-product-list' element={ <NewProductList />} />
           <Route path='popular-product-list' element={ <PopularProductList />} />
           <Route path='discount-product-list' element={ <DiscountProductList />} />
         </Route>
+        {/* 관리자 페이지 */}
         <Route path='/admin' element={ <AdminLayout /> }>
           <Route path='' element={ <AdminHome /> } />
         </Route>

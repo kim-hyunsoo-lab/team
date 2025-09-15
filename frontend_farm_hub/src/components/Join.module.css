@@ -1,0 +1,28 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.container > div > div{
+  display: flex;  
+  gap: 5px;
+}
+
+.container > div {
+  margin: 5px 0px;
+}
+
+.container > div > h5 {
+  margin-bottom: 6px;
+}
+
+.adressDiv > div {
+  margin-bottom: 7px;
+}
+
+.errorMsg{
+  color: crimson;
+  font-size: 0.7rem;
+  margin-top: 0px;
+}
