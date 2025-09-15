@@ -1,0 +1,20 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.container > div {
+  position: relative;
+}
+
+.container > div > span > i {
+  position: absolute;
+  left: 7px;
+  color: grey;
+  top: 2.2px;
+}
+
+.container > div > input {
+  padding-left: 30px;
+}
