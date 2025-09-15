@@ -1,5 +1,8 @@
 .container {
-  padding: 5px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .content {
@@ -13,6 +16,7 @@
   justify-content: space-between;
   align-items: center;
   width: 650px;
+  margin-right: 10px;
 }
 
 .body > ul {
@@ -28,15 +32,28 @@
 .img_div {
   width: 350px;
   height: 50px;
-  border: 1px solid black;
-}
-
-.menu {
   border: 1px solid white;
-  height: 100vh;
 }
 
 .menu > ul {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  width: 80%;
+  justify-self: end;
+}
+
+.menu > ul > li {
+  padding: 5px;
+  width: 150px;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.menu > ul > li:hover {
+  cursor: pointer;
+  background-color: #cccccc;
+  color: black;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  transition: background-color 0.3s;
 }

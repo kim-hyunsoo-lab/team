@@ -6,22 +6,40 @@
   width: 100%;
   padding: 7px;
   padding-right: 30px;
-  border: 2px solid brown;
   border-radius: 30px;
   outline: none;
-}
-
-.common_input > input:focus {
-  outline: 1px solid brown;
 }
 
 .common_input > span {
   position: absolute;
   right: 10px;
   top: 5px;
-  color: brown;
 }
 
 .common_input > span:hover {
   cursor: pointer;
+}
+
+.brown > input {
+  border: 2px solid brown;
+}
+
+.brown > input:focus {
+  outline: 1px solid brown;
+}
+
+.brown > span {
+  color: brown;
+}
+
+.gray > input {
+  border: 2px solid gray;
+}
+
+.gray > input:focus {
+  outline: 1px solid gray;
+}
+
+.gray > span {
+  color: gray;
 }

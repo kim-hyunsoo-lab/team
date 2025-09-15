@@ -17,6 +17,6 @@
 }
 
 .category li:hover {
-  background-color: #bbbbbb;
+  background-color: rgb(104, 72, 72);
   cursor: pointer;
 }

@@ -1,27 +1,25 @@
 .container {
-  border: 1px solid black;
   width: 1500px;
   margin: auto;
 }
 
 .header {
-  border: 1px solid red;
-  height: 15vh;
-  background-color: #555555;
+  height: 10vh;
+  background-color: rgb(80, 19, 19);
   color: white;
 }
 
 .body {
   display: flex;
-  height: 85vh;
+  height: 90vh;
 }
 
 .side_menu {
   width: 20%;
-  border: 1px solid blue;
+  background-color: rgb(117, 90, 90);
 }
 
 .content {
   width: 80%;
-  border: 1px solid brown;
+  background-color: #cccccc;
 }
