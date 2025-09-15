@@ -4,9 +4,22 @@
   gap: 5px;
 }
 
+.container > div > div{
+  display: flex;  
+  gap: 5px;
+}
 
+.container > div {
+  margin: 5px 0px;
+}
 
+.container > div > h5 {
+  margin-bottom: 6px;
+}
 
+.adressDiv > div {
+  margin-bottom: 7px;
+}
 
 .errorMsg{
   color: crimson;

@@ -16,7 +16,7 @@ const UserHeader = () => {
   const [isOpenLogin, setIsOpenLogin] = useState(false);
   
   // 회원가입 Modal 창 숨김/보이기 여부
-  const [isOpenJoin, setIsOpenJOin] = useState(false);
+  const [isOpenJoin, setIsOpenJoin] = useState(false);
 
   return (   
     <div className={styles.container}>
@@ -42,7 +42,7 @@ const UserHeader = () => {
             <>
       
               <li onClick={()=>setIsOpenLogin(true)}>로그인</li>
-              <li onClick={()=>setIsOpenJOin(true)}>회원가입</li>
+              <li onClick={()=>setIsOpenJoin(true)}>회원가입</li>
             </>
           }
           <li>고객센터</li>
@@ -91,7 +91,7 @@ const UserHeader = () => {
       onClose={()=>setIsOpenLogin(false)} />
     {/* 회원가입 Modal */}
     <Join isOpenJoin={isOpenJoin} 
-      onClose={()=>{setIsOpenJoin(false)}} /> 
+      onClose={()=>setIsOpenJoin(false)} /> 
 
     </div>
   )

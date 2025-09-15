@@ -1,27 +1,13 @@
-.common_input {
-  position: relative;
-}
-
-.common_input > input {
-  width: 100%;
-  padding: 7px;
-  padding-right: 30px;
-  border: 2px solid brown;
-  border-radius: 30px;
-  outline: none;
-}
-
-.common_input > input:focus {
+.input {
   outline: 1px solid brown;
+  padding: 3px 4px;
+  border-radius: 4px;
+  border: none;
+
+  /* outline이 border랑 겹쳐짐 */
+  outline-offset: -1px;
 }
 
-.common_input > span {
-  position: absolute;
-  right: 10px;
-  top: 5px;
-  color: brown;
-}
-
-.common_input > span:hover {
-  cursor: pointer;
+.input:focus{
+  outline: 1.5px solid brown
 }

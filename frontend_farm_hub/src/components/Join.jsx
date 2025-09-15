@@ -5,6 +5,8 @@ import { useDaumPostcodePopup } from 'react-daum-postcode'
 import Button from '../common/Button'
 import Input from '../common/Input'
 import axios from 'axios'
+import Select from '../common/Select'
+import handleErrorMsg from '../validate/joinValidate'
 
 
 const Join = ({isOpenJoin, onClose}) => {
@@ -63,8 +65,7 @@ const Join = ({isOpenJoin, onClose}) => {
   // 회원가입 
   const regNewShopMember = () =>{  
 
-// ※회원가입 api 주소 나중에 만들면 확인   
-  
+// ※회원가입 api 주소 나중에 만들면 확인     
     axios.post('/api/ ??? ', newShopMember)
     .then(res => {
       console.log('회원으로 등록되었습니다');
@@ -113,6 +114,8 @@ const Join = ({isOpenJoin, onClose}) => {
       })
     }})
   }
+
+  console.log(newShopMember)
   
 
 
@@ -122,15 +125,17 @@ const Join = ({isOpenJoin, onClose}) => {
       title='Join'
       size='500px'
       onClose={()=>{
-        setIsDisabledBtn(true);
         onClose();
+        setIsDisabledBtn(true);
+
+        // 에러 메세지 초기화
         setErrorMsg({
           'memId': '',
           'memPw': '',
           'confirmPw': ''
         })
 
-        // 입력한 값 초기화
+        // 값 초기화
         setNewShopMember({
           'memId': '',
           'memPw': '', 
@@ -179,7 +184,7 @@ const Join = ({isOpenJoin, onClose}) => {
                 'memPw': handleErrorMsg(e)
               });
             }}   
-            value={newShopMember.memId}
+            value={newShopMember.memPw}
             name='memPw'
             size='100%' />
         </div>
@@ -291,7 +296,7 @@ const Join = ({isOpenJoin, onClose}) => {
       <div>
         <Button 
           disabled={isDisabledBtn}
-          onClick={regNewShopMember(e)}
+          onClick={e=>regNewShopMember(e)}
           title='회원가입'
           size='100%'     
         />

@@ -11,7 +11,7 @@ const Login = ({isOpenLogin, onClose}) => {
 
   // 로그인 정보
   const [loginData, setLoginData] = useState({
-    'memId': '',
+    'memId':'',
     'memPw':''
   })
 
@@ -59,6 +59,8 @@ const Login = ({isOpenLogin, onClose}) => {
     })
     .catch(e=>console.log(e))
   }  
+
+  console.log(loginData)
   
   return (
     <Modal isOpen={isOpenLogin}
