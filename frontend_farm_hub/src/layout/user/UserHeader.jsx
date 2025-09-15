@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import styles from './UserHeader.module.css'
 import { NavLink, useNavigate } from 'react-router'
-import Login from '../components/Login'
-import Input from '../common/Input'
+import Input from '../../common/Input'
+import Login from '../../components/login'
+import Join from '../../components/Join'
 
 const UserHeader = () => {
   const nav = useNavigate();
@@ -15,9 +16,9 @@ const UserHeader = () => {
   const [isOpenLogin, setIsOpenLogin] = useState(false);
   
   // 회원가입 Modal 창 숨김/보이기 여부
+  const [isOpenJoin, setIsOpenJOin] = useState(false);
 
-
-  return (
+  return (   
     <div className={styles.container}>
       <div className={styles.members}>
         <p>
@@ -39,8 +40,9 @@ const UserHeader = () => {
             </>
             :            
             <>
+      
               <li onClick={()=>setIsOpenLogin(true)}>로그인</li>
-              <li>회원가입</li>
+              <li onClick={()=>setIsOpenJOin(true)}>회원가입</li>
             </>
           }
           <li>고객센터</li>
@@ -48,7 +50,7 @@ const UserHeader = () => {
       </div>
       <div className={styles.search}>
         <div className={styles.img_div} onClick={e => nav('/')}>헤더이미지</div>
-        <Input />
+       <Input />
       </div>
       <div className={styles.menu}>
         <ul>
@@ -86,10 +88,10 @@ const UserHeader = () => {
     
     {/* 로그인 Modal */}
     <Login isOpenLogin={isOpenLogin}
-      onClose={()=>setIsOpenLogin(false)}/>
+      onClose={()=>setIsOpenLogin(false)} />
     {/* 회원가입 Modal */}
-
-
+    <Join isOpenJoin={isOpenJoin} 
+      onClose={()=>{setIsOpenJoin(false)}} /> 
 
     </div>
   )

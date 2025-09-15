@@ -6,8 +6,9 @@ import axios from 'axios'
 import Button from '../common/Button'
 import Input from '../common/Input'
 
-const login = ({isOpenLogin, onClose}) => {
+const Login = ({isOpenLogin, onClose}) => {
   const nav = useNavigate();
+
   // 로그인 정보
   const [loginData, setLoginData] = useState({
     'memId': '',
@@ -110,4 +111,4 @@ const login = ({isOpenLogin, onClose}) => {
   )
 }
 
-export default login
+export default Login
