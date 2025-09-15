@@ -8,6 +8,8 @@ import Home from './pages/user/Home'
 import NewProductList from './pages/user/products/NewProductList'
 import PopularProductList from './pages/user/products/PopularProductList'
 import DiscountProductList from './pages/user/products/DiscountProductList'
+import AdminLayout from './layout/admin/AdminLayout'
+import AdminHome from './pages/admin/AdminHome'
 
 function App() {
 
@@ -21,9 +23,10 @@ function App() {
           <Route path='popular-product-list' element={ <PopularProductList />} />
           <Route path='discount-product-list' element={ <DiscountProductList />} />
         </Route>
-
-
         {/* 관리자 페이지 */}
+        <Route path='/admin' element={ <AdminLayout /> }>
+          <Route path='' element={ <AdminHome /> } />
+        </Route>
       </Routes>
     </>
   )
