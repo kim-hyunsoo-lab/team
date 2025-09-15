@@ -1,0 +1,27 @@
+.container {
+  border: 1px solid black;
+  width: 1500px;
+  margin: auto;
+}
+
+.header {
+  border: 1px solid red;
+  height: 15vh;
+  background-color: #555555;
+  color: white;
+}
+
+.body {
+  display: flex;
+  height: 85vh;
+}
+
+.side_menu {
+  width: 20%;
+  border: 1px solid blue;
+}
+
+.content {
+  width: 80%;
+  border: 1px solid brown;
+}

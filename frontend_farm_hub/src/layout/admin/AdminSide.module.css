@@ -1,0 +1,22 @@
+.category > p {
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 5px 10px;
+}
+
+.category > p:hover {
+  cursor: pointer;
+}
+
+.category li {
+  padding: 15px 10px;
+}
+
+.category li > span {
+  margin-right: 5px;
+}
+
+.category li:hover {
+  background-color: #bbbbbb;
+  cursor: pointer;
+}
