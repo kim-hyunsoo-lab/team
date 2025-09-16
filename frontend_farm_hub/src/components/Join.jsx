@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './Join.module.css'
 import Modal from '../common/Modal'
 import { useDaumPostcodePopup } from 'react-daum-postcode'
@@ -37,8 +37,16 @@ const Join = ({isOpenJoin, onClose}) => {
     'memEmail':'',
 
     'memAddr':'', // 주소
-    'addrDetail':''
+    'addrDetail':'',
+
+    'pwKey': '',
+    'pwAnswer':''
   })
+
+  // 비밀번호 찾기 질문 목록 변수
+  const [pwQ, setPwQ] = useState([]) 
+
+
 
   // 값 입력시 실행하는 함수
   const shopMemberReg = (e) => {
@@ -84,7 +92,10 @@ const Join = ({isOpenJoin, onClose}) => {
         'memEmail':'', // 이메일도 분할해서 받기
 
         'memAddr':'',
-        'addrDetail':''});
+        'addrDetail':'',
+      
+        'pwKey': '',
+        'pwAnswer':''});
       })
     .catch(error=>console.log(error));    
   }
@@ -102,7 +113,7 @@ const Join = ({isOpenJoin, onClose}) => {
       else {alert('사용할 수 없는 아이디입니다');
         setIsDisabledBtn(true);
       }})
-    .catch()
+    .catch(error=>console.log(error));
   }
 
   // 주소록 호출 함수
@@ -115,7 +126,14 @@ const Join = ({isOpenJoin, onClose}) => {
     }})
   }
 
-  console.log(newShopMember)
+  // 비밀번호 찾기 질문목록 호출
+// ※비밀번호 찾기 질문 api 주소 나중에 만들면 확인  
+//   useEffect(()=>{axios.get('/api/ ??? ')
+//   .then((res)=>{
+//     console.log(res.data);
+//     setPwQ(res.data);})
+//   .catch(error=>console.log(error));
+// }, [])
   
 
 
@@ -146,7 +164,9 @@ const Join = ({isOpenJoin, onClose}) => {
           'secondEmail':'',
           'memEmail':'',
           'memAddr':'',
-          'addrDetail':''
+          'addrDetail':'',
+          'pwKey': '',
+          'pwAnswer':''
         })        
       }}
     >
@@ -185,7 +205,9 @@ const Join = ({isOpenJoin, onClose}) => {
               });
             }}   
             value={newShopMember.memPw}
+            placeholder='6~12자의 영문과 숫자로 구성됩니다'
             name='memPw'
+            type='password'
             size='100%' />
         </div>
         <p className={styles.errorMsg}>{errorMsg.memPw}</p>
@@ -291,6 +313,28 @@ const Join = ({isOpenJoin, onClose}) => {
               name='addrDetail'  
               size='100%'/>    
           </div>         
+      </div>
+
+      <div>
+        <h5>비밀번호 찾기 질문</h5>
+          <div>
+            <Select size='100%' name='pwKey' onChange={e=>shopMemberReg(e)}>
+              <option key='-5' value="">선택</option>
+                {pwQ.map((e, i)=>{
+                  return(
+                  <option key={i} value={e.pwkey}>{e.pwQuestion}</option>
+                  )
+                })} 
+            </Select>
+          </div>
+          <div>
+            <Input 
+              onChange={e=>shopMemberReg(e)}
+              value={newShopMember.pwAnswer} 
+              name='pwAnswer' 
+              size='100%'/>    
+          </div> 
+
       </div>
 
       <div>

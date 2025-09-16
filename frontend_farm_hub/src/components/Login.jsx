@@ -5,9 +5,13 @@ import { useNavigate } from 'react-router'
 import axios from 'axios'
 import Button from '../common/Button'
 import Input from '../common/Input'
+import ForgotPw from './ForgotPw'
 
 const Login = ({isOpenLogin, onClose}) => {
   const nav = useNavigate();
+  
+  // 비밀번호 찾기 Modal 창 숨김/보이기 여부
+  const [isOpenForgotPw, setIsOpenForgotPw] = useState(false);
 
   // 로그인 정보
   const [loginData, setLoginData] = useState({
@@ -60,9 +64,16 @@ const Login = ({isOpenLogin, onClose}) => {
     .catch(e=>console.log(e))
   }  
 
-  console.log(loginData)
+  const forgotPw = (e) =>{
+
+
+  }
+
+
+  
   
   return (
+    <>
     <Modal isOpen={isOpenLogin}
       title='Login'
       size='300px'    
@@ -100,16 +111,33 @@ const Login = ({isOpenLogin, onClose}) => {
         />
         <span><i className="bi bi-lock"></i></span>
       </div>
-
+      
+      <div>        
       {/* 확인 버튼 */}
       <Button 
         onClick={e=>loginNow(e)}
         size='100%'    
         title='Sign In'
-      />
+        />
+      </div>
 
+      <div>
+      {/* 비밀번호 찾기 버튼 */}
+      <Button 
+        onClick={e=>{onClose(), setIsOpenForgotPw(true)}}
+        size='100%'    
+        title='Forgot Password'
+        color='grey'
+        />
+      </div>
     </div>
     </Modal>
+
+    {/* 비번찾기 Modal */}
+    <ForgotPw isOpenForgotPw={isOpenForgotPw} 
+      onClose={()=>setIsOpenForgotPw(false)}/>
+    
+    </>
   )
 }
 

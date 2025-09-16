@@ -1,12 +1,11 @@
 .container{
   display: flex;
   flex-direction: column;
-  gap: 5px;
 }
 
 .container > div > div{
   display: flex;  
-  gap: 5px;
+  gap: 3px;
 }
 
 .container > div {
@@ -14,11 +13,11 @@
 }
 
 .container > div > h5 {
-  margin-bottom: 6px;
+  margin-bottom: 2px;
 }
 
 .adressDiv > div {
-  margin-bottom: 7px;
+  margin-bottom: 4px;
 }
 
 .errorMsg{

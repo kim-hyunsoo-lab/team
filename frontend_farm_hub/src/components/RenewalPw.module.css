@@ -1,0 +1,11 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.errorMsg{
+  color: crimson;
+  font-size: 0.7rem;
+  margin-top: 0px;
+}

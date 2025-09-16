@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from 'react-router'
 import Input from '../../common/Input'
 import Login from '../../components/login'
 import Join from '../../components/Join'
+import ForgotPw from '../../components/ForgotPw'
 
 const UserHeader = () => {
   const nav = useNavigate();
@@ -17,6 +18,9 @@ const UserHeader = () => {
   
   // 회원가입 Modal 창 숨김/보이기 여부
   const [isOpenJoin, setIsOpenJoin] = useState(false);
+  
+  // 비밀번호 찾기 Modal 창 숨김/보이기 여부
+  const [isOpenForgotPw, setIsOpenForgotPw] = useState(false);
 
   return (   
     <div className={styles.container}>
@@ -39,10 +43,10 @@ const UserHeader = () => {
               </li>
             </>
             :            
-            <>
-      
+            <>      
               <li onClick={()=>setIsOpenLogin(true)}>로그인</li>
               <li onClick={()=>setIsOpenJoin(true)}>회원가입</li>
+              <li onClick={()=>setIsOpenForgotPw(true)}>비밀번호 찾기</li>
             </>
           }
           <li>고객센터</li>
@@ -89,9 +93,14 @@ const UserHeader = () => {
     {/* 로그인 Modal */}
     <Login isOpenLogin={isOpenLogin}
       onClose={()=>setIsOpenLogin(false)} />
+      
     {/* 회원가입 Modal */}
     <Join isOpenJoin={isOpenJoin} 
       onClose={()=>setIsOpenJoin(false)} /> 
+
+    {/* 비번찾기 Modal */}
+    <ForgotPw isOpenForgotPw={isOpenForgotPw} 
+      onClose={()=>setIsOpenForgotPw(false)}/>
 
     </div>
   )
