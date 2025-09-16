@@ -12,10 +12,6 @@ const Home = () => {
 
   return (
     <div className={styles.container}>
-      <Select>
-        <option value="dfsdaf">asdfads</option>
-      </Select>
-      <Button />
       <div className={styles.new_product}>
         <PageTitle title='신상품' />
         <div className={`${styles.grid_div}`}>
@@ -23,7 +19,7 @@ const Home = () => {
             itemList.map((e, i) => {
               console.log(e);
               return (
-                <div key={i} onClick={e => nav(`/new-product-detail/${e}`)}>{e}</div>
+                <div key={i} onClick={e => nav(`/product-detail/${e}`)}>{e}</div>
               )
             })
           }
