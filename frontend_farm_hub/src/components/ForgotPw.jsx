@@ -4,14 +4,15 @@ import styles from './ForgotPw.module.css'
 import Button from '../common/Button'
 import Input from '../common/Input'
 import Select from '../common/Select'
+import RenewalPw from './RenewalPw'
+import axios from 'axios'
 
 const ForgotPw = ({isOpenForgotPw, onClose}) => {  
   // 비밀번호 찾기 질문 목록 변수
   const [pwQ, setPwQ] = useState([]) 
 
-
   const [userProfile, setUserProfile] = useState({
-    'memId': '', // 아이디
+    'memId': 'test1234', // 아이디
     'memName': '', // 이름
     'firstEmail':'', // 이메일
     'secondEmail':'',
@@ -50,7 +51,6 @@ const ForgotPw = ({isOpenForgotPw, onClose}) => {
 //   .catch(error=>console.log(error));
 // }, [])
 
-
   const setNewPw = () =>{
 // ※ 비번 확인 api 주소 나중에 만들면 확인   
     axios.get(`/api/ ??? /${userProfile.memId}`)
@@ -64,6 +64,7 @@ const ForgotPw = ({isOpenForgotPw, onClose}) => {
       {
         alert('비밀번호 변경 페이지로 이동합니다');
         onClose(); 
+        setIsOpenRenewalPw(true);
       }
       else {alert('내용이 일치하지 않습니다');        
       }})
@@ -72,11 +73,14 @@ const ForgotPw = ({isOpenForgotPw, onClose}) => {
 
 
   
+// 비번 새로 설정 Modal 창 숨김/보이기 여부
+  const [isOpenRenewalPw, setIsOpenRenewalPw] = useState(false);
 
 
 
 
   return (
+    <>
     <Modal isOpen={isOpenForgotPw}
       title='Forgot Password'
       size='300px'    
@@ -143,13 +147,20 @@ const ForgotPw = ({isOpenForgotPw, onClose}) => {
       </div>
       <div>
         <Button           
-          onClick={e=>setNewPw(e)}
+          //onClick={e=>setNewPw(e)}
+          onClick={e=>{onClose(); setIsOpenRenewalPw(true);}}
           title='비밀번호 찾기'
           size='100%'     
         />
       </div>
     </div>    
     </Modal>
+
+    
+    {/* 비번 새로 설정 Modal */}
+    <RenewalPw memId={userProfile.memId} isOpenRenewalPw={isOpenRenewalPw} 
+      onClose={()=>setIsOpenRenewalPw(false)}/>
+    </>
   )
 }
 

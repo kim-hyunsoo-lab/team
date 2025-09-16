@@ -205,7 +205,9 @@ const Join = ({isOpenJoin, onClose}) => {
               });
             }}   
             value={newShopMember.memPw}
+            placeholder='6~12자의 영문과 숫자로 구성됩니다'
             name='memPw'
+            type='password'
             size='100%' />
         </div>
         <p className={styles.errorMsg}>{errorMsg.memPw}</p>

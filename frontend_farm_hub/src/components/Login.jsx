@@ -111,22 +111,25 @@ const Login = ({isOpenLogin, onClose}) => {
         />
         <span><i className="bi bi-lock"></i></span>
       </div>
-
+      
+      <div>        
       {/* 확인 버튼 */}
       <Button 
         onClick={e=>loginNow(e)}
         size='100%'    
         title='Sign In'
-      />
+        />
+      </div>
 
+      <div>
       {/* 비밀번호 찾기 버튼 */}
       <Button 
         onClick={e=>{onClose(), setIsOpenForgotPw(true)}}
         size='100%'    
         title='Forgot Password'
         color='grey'
-      />
-
+        />
+      </div>
     </div>
     </Modal>
 

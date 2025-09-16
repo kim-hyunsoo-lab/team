@@ -4,6 +4,8 @@
   gap: 5px;
 }
 
-.container > div {
-  margin: 5px 0px;
+.errorMsg{
+  color: crimson;
+  font-size: 0.7rem;
+  margin-top: 0px;
 }
