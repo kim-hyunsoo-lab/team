@@ -1,0 +1,12 @@
+.container {
+  border: 1px solid black;
+}
+
+.item_info {
+  display: flex;
+  border: 1px solid red;
+}
+
+.main_img_div {
+  border: 1px solid blue;
+}

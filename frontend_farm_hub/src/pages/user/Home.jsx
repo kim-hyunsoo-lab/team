@@ -21,8 +21,9 @@ const Home = () => {
         <div className={`${styles.grid_div}`}>
           {
             itemList.map((e, i) => {
+              console.log(e);
               return (
-                <div key={i}>{e}</div>
+                <div key={i} onClick={e => nav(`/new-product-detail/${e}`)}>{e}</div>
               )
             })
           }
