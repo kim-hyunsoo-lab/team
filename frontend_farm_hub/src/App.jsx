@@ -10,6 +10,10 @@ import PopularProductList from './pages/user/products/PopularProductList'
 import DiscountProductList from './pages/user/products/DiscountProductList'
 import AdminLayout from './layout/admin/AdminLayout'
 import AdminHome from './pages/admin/AdminHome'
+import ProductDetail from './pages/user/products/ProductDetail'
+import ProductIntro from './components/ProductDetail/ProductIntro'
+import QnA from './components/ProductDetail/QnA'
+import Review from './components/ProductDetail/Review'
 
 function App() {
 
@@ -20,6 +24,11 @@ function App() {
         <Route path='/' element={ <UserLayout /> }>
           <Route path='' element={ <Home /> } />
           <Route path='new-product-list' element={ <NewProductList />} />
+          <Route path='product-detail/:itemNum' element={ <ProductDetail /> }>
+            <Route path='' element={ <ProductIntro /> } />
+            <Route path='review' element={ <Review /> } />
+            <Route path='qna' element={ <QnA /> } />
+          </Route>
           <Route path='popular-product-list' element={ <PopularProductList />} />
           <Route path='discount-product-list' element={ <DiscountProductList />} />
         </Route>

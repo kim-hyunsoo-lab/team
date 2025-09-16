@@ -1,0 +1,30 @@
+.container {
+  border: 1px solid black;
+}
+
+.item_info {
+  display: flex;
+  border: 1px solid red;
+  height: 500px;
+}
+
+.main_img_div {
+  border: 1px solid blue;
+  width: 40%;
+}
+
+.item_intro {
+  border: 1px solid green;
+  width: 60%;
+}
+
+.detail_menu_div > ul {
+  border: 1px solid olive;
+  display: flex;
+}
+
+.detail_menu_div li {
+  border: 1px solid darkblue;
+  width: 100%;
+  text-align: center;
+}
