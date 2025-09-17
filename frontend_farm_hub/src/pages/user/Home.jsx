@@ -19,7 +19,7 @@ const Home = () => {
             itemList.map((e, i) => {
               console.log(e);
               return (
-                <div key={i} onClick={e => nav(`/product-detail/${e}`)}>{e}</div>
+                <div key={i} onClick={e => nav(`/product-detail/${e}/intro`)}>{e}</div>
               )
             })
           }

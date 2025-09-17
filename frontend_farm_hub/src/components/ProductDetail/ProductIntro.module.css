@@ -1,0 +1,27 @@
+.container > p {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 25px 0px;
+}
+
+.img_div {
+  width: 80%;
+  border: 1px solid red;
+  margin: auto;
+  height: 1000px;
+}
+
+.detail_table {
+  font-size: 1.5rem;
+  width: 100%;
+}
+
+.detail_table tr, .detail_table td {
+  border: 1px solid #aaaaaa;
+  padding: 15px;
+}
+
+.detail_table td:first-child {
+  background-color: #eeeeee;
+}
