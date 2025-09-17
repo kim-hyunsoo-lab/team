@@ -53,10 +53,22 @@
 	, REVIEW_NUM INT REFERENCES REVIEW (REVIEW_NUM) ON DELETE CASCADE #이미지의 원본 도서 번호
  );
  
+ 
+ #라즈베리파이 관리자 기능(온,습도 센서를 이용한 fan 액츄에이터 구현)
+ CREATE TABLE FAN_FUNCTION (
+ 	THV_ID INT PRIMARY KEY AUTO_INCREMENT
+ 	, TEMPERATURE FLOAT  	
+ 	, HUMIDITY FLOAT 
+ );
+ 
  #비밀번호 찾기용 질문 테이블
  CREATE TABLE FORGOTPW (
  PW_KEY INT PRIMARY KEY AUTO_INCREMENT #질문 번호
  , PW_QUESTION VARCHAR(50) NOT NULL #질문 내용 
  );
+
  #################################################
  ### 이 워크시트에 CREATE 문을 다 작성해주세요 ###
+ 
+ 
+ 
