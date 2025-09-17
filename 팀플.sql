@@ -51,7 +51,46 @@
  );
  
  
+ #라즈베리파이 관리자 기능(온,습도 센서를 이용한 fan 액츄에이터 구현)
+ CREATE TABLE FAN_FUNCTION (
+ 	THV_ID INT PRIMARY KEY AUTO_INCREMENT
+ 	, TEMPERATURE FLOAT  	
+ 	, HUMIDITY FLOAT 
+ );
+ 
+ SELECT *
+ FROM fan_function;
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
  
  #################################################
  ### 이 워크시트에 CREATE 문을 다 작성해주세요 ###
+ 
+ 
+ 
