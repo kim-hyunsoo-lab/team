@@ -3,6 +3,7 @@ import Modal from '../../common/Modal'
 import styles from './regReview.module.css'
 import Input from '../../common/Input'
 import Textarea from '../../common/Textarea'
+import Button from '../../common/Button'
 
 const RegReview = ({isOpenRegReview}) => {
   return (
@@ -20,7 +21,7 @@ const RegReview = ({isOpenRegReview}) => {
             <tr>
               <td>별점</td>
               <td>
-                <Input />
+                <Input size='100%' />
               </td>
             </tr>
             <tr>
@@ -31,6 +32,10 @@ const RegReview = ({isOpenRegReview}) => {
             </tr>
           </tbody>
         </table>
+        <div className={styles.btn_div}>
+          <Button title='등록' />
+          <Button title='취소' />
+        </div>
       </div>
     </Modal>
   )

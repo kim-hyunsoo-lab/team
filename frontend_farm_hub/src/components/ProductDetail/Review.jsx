@@ -5,7 +5,7 @@ import styles from './Review.module.css'
 
 const Review = () => {
   //후기 모달창 여는지 여부
-  const [isOpenRegReview, setIsOpenRegReview] = useState(true);
+  const [isOpenRegReview, setIsOpenRegReview] = useState(false);
 
   //리뷰 내용을 보이게 하는 여부를 저장할 state 변수
   const [isShowContent, setIsShowContent] = useState(false);

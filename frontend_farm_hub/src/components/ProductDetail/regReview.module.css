@@ -1,3 +1,31 @@
 .container > h4 {
   text-align: center;
 }
+
+.reg_review_table {
+  border-top: 2px solid #aaaaaa;
+  width: 100%;
+  margin: 20px 0px;
+}
+
+.reg_review_table td {
+  padding: 10px;
+  vertical-align: top;
+  border: 1px solid #cccccc;
+}
+
+.btn_div {
+  text-align: center;
+}
+
+.btn_div > button {
+  margin: 5px;
+}
+
+.btn_div > button:last-child {
+  background-color: #555555;
+}
+
+.btn_div > button:last-child:hover {
+  background-color: #333333;
+}
