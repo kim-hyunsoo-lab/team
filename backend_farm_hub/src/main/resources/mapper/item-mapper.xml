@@ -3,8 +3,51 @@
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <!-- namespace에는 xml파일과 연결할 Mapper interface 파일명을 패키지를 포함하여 적어주세요 -->
-<mapper namespace="mapper">
-	
+<mapper namespace="com.craft.backend_farm_hub.item.mapper.ItemMapper">
+    <resultMap id="items" type="com.craft.backend_farm_hub.item.dto.ItemDTO">
+        <id column="ITEM_NUM" property="itemNum" />
+        <result column="ITEM_NAME" property="itemName" />
+        <result column="PRICE" property="price" />
+        <result column="ITEM_INTRO" property="itemIntro" />
+        <result column="PART" property="part" />
+        <result column="REVIEW_AVG" property="reviewAvg" />
+        <result column="ORIGIN" property="origin" />
+        <result column="REG_DATE" property="regDate" />
+<!--상품 하나에 이미지는 여러개-->
+        <collection property="imgList" resultMap="itemImg" />
+    </resultMap>
+
+    <resultMap id="itemImg" type="com.craft.backend_farm_hub.item.dto.ItemImgDTO">
+        <id column="IMG_NUM" property="imgNum" />
+        <result column="ORIGIN_IMG_NAME" property="originImgName" />
+        <result column="ATTACHED_IMG_NAME" property="attachedImgName" />
+        <result column="ITEM_NUM" property="itemNum" />
+        <result column="IS_MAIN" property="isMain" />
+    </resultMap>
+
+<!--    상품 등록-->
+    <insert id="insertItem">
+        INSERT INTO ITEM(
+        ITEM_NUM, PRICE, ITEM_INTRO, PART, ORIGIN
+        )
+        VALUES(#{itemNum}, #{price}, #{itemIntro}, #{part}, #{origin})
+    </insert>
+
+<!--    상품 이미지 등록-->
+    <insert id="insertImgs">
+        INSERT INTO ITEM_IMG(ORIGIN_IMG_NAME, ATTACHED_IMG_NAME, ITEM_NUM, IS_MAIN)
+        VALUES
+        <foreach collection="itemImgList" item="itemImg" separator=",">
+            (#{itemImg.originImgName}, #{itemImg.attachedImgName}, #{itemImg.bookNum}, #{itemImg.isMain})
+        </foreach>
+    </insert>
+
+<!--    item 테이블에 데이터 삽입 시 저장되는 ITEM_NUM을 조회하는 쿼리-->
+    <select id="getNextItemNum" resultType="int">
+        SELECT IFNULL(MAX(ITEM_NUM), 0) +1 FROM ITEM
+    </select>
+
+
 </mapper>
 
 
