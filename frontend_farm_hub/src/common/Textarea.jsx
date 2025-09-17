@@ -15,5 +15,4 @@ const Textarea = ({width='200px', height=5, ...props}) => {
     />
   )
 }
-
 export default Textarea
