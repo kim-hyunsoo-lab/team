@@ -1,4 +1,4 @@
- #멤버 정보 테이블
+#멤버 정보 테이블
  CREATE TABLE SHOP_MEMBER (
  	MEM_ID VARCHAR(20) PRIMARY KEY #ID
  	, MEM_PW VARCHAR(20) NOT NULL #비번
@@ -7,11 +7,14 @@
  	, MEM_EMAIL VARCHAR(30) NOT NULL #이메일
  	, MEM_ADDR VARCHAR (20) NOT NULL #주소
  	, ADDR_DETAIL VARCHAR(20) #상세주소
- );
+  , PW_KEY INT #비밀번호 찾기 질문 번호
+  , PW_ANSWER VARCHAR(20) #비밀번호 찾기 질문 답변 
+ ); 
+
  
  #상품정보
  CREATE TABLE ITEM (
- 	ITEM_NUM INT PRIMARY KEY #상품 번호
+ 	ITEM_NUM INT PRIMARY KEY AUTO_INCREMENT #상품 번호
  	, ITEM_NAME VARCHAR(20) NOT NULL UNIQUE #상품명
  	, PRICE INT NOT NULL #가격
  	, ITEM_INTRO VARCHAR(500) #상품 소개
@@ -58,37 +61,12 @@
  	, HUMIDITY FLOAT 
  );
  
- SELECT *
- FROM fan_function;
- 
+ #비밀번호 찾기용 질문 테이블
+ CREATE TABLE FORGOTPW (
+ PW_KEY INT PRIMARY KEY AUTO_INCREMENT #질문 번호
+ , PW_QUESTION VARCHAR(50) NOT NULL #질문 내용 
+ );
 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
  #################################################
  ### 이 워크시트에 CREATE 문을 다 작성해주세요 ###
  
