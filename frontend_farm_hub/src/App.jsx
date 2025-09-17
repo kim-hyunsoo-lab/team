@@ -14,6 +14,7 @@ import ProductDetail from './pages/user/products/ProductDetail'
 import ProductIntro from './components/ProductDetail/ProductIntro'
 import QnA from './components/ProductDetail/QnA'
 import Review from './components/ProductDetail/Review'
+import RegProduct from './pages/admin/products/RegProduct'
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
           <Route path='popular-product-list' element={ <PopularProductList />} />
           <Route path='discount-product-list' element={ <DiscountProductList />} />
         </Route>
+
         {/* 관리자 페이지 */}
         <Route path='/admin' element={ <AdminLayout /> }>
           <Route path='' element={ <AdminHome /> } />
