@@ -13,7 +13,11 @@ const ProductDetail = () => {
         <div className={styles.main_img_div}>메인 이미지</div>
         <div className={styles.item_intro}>
           <h1>상품명</h1>
-          <table border={1}>
+          <table className={styles.main_info_table}>
+            <colgroup>
+              <col width={'20%'} />
+              <col width={'80%'} />
+            </colgroup>
             <tbody>
               <tr>
                 <td>판매가</td>
@@ -43,13 +47,22 @@ const ProductDetail = () => {
         <div className={styles.detail_menu_div}>
           <ul>
             <li>
-              <NavLink to={''}>상품정보</NavLink>
+              <NavLink
+                to={'intro'}
+                className={({isActive}) => isActive ? styles.active : undefined}
+              ><p>상품정보</p></NavLink>
             </li>
             <li>
-              <NavLink to={'review'}>이용후기</NavLink>
+              <NavLink
+                to={'review'}
+                className={({isActive}) => isActive ? styles.active : undefined}
+              ><p>이용후기</p></NavLink>
             </li>
             <li>
-              <NavLink to={'qna'}>상품Q&amp;A</NavLink>
+              <NavLink
+                to={'qna'}
+                className={({isActive}) => isActive ? styles.active : undefined}
+              ><p>상품Q&amp;A</p></NavLink>
             </li>
           </ul>
         </div>

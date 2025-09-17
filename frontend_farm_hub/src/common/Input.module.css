@@ -2,12 +2,11 @@
   outline: 1px solid brown;
   padding: 3px 4px;
   border-radius: 4px;
-  border: none;
+  border: 1px solid brown;
 
-  /* outline이 border랑 겹쳐짐 */
-  outline-offset: -1px;
+  outline: none;
 }
 
 .input:focus{
-  outline: 1.5px solid brown
+  outline: 1px solid brown
 }
