@@ -1,0 +1,18 @@
+.review_table {
+  width: 100%;
+  font-size: 1.1rem;
+  text-align: center;
+  border-top: 2px solid #888888;
+}
+
+.review_table tr {
+  border-bottom: 1px solid #bbbbbb;
+}
+
+.review_table td {
+  padding: 15px;
+}
+
+.review_table > thead > tr {
+  background-color: #eeeeee;
+}
