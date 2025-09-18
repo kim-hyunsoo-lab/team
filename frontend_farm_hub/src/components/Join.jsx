@@ -72,7 +72,7 @@ const Join = ({isOpenJoin, onClose}) => {
   const regNewShopMember = () =>{  
 
 // ※회원가입 api 주소 나중에 만들면 확인     
-    axios.post('/api/ ??? ', newShopMember)
+    axios.post('/api/members', newShopMember)
     .then(res => {
       console.log('회원으로 등록되었습니다');
 
@@ -93,8 +93,9 @@ const Join = ({isOpenJoin, onClose}) => {
         'addrDetail':'',
       
         'pwKey': '',
-        'pwAnswer':''});
-      })
+        'pwAnswer':''
+      });
+    })
     .catch(error=>console.log(error));    
   }
 
@@ -102,7 +103,7 @@ const Join = ({isOpenJoin, onClose}) => {
   // 아이디 중복여부 확인
   const checkId = () => {
 // ※아이디 중복화인 api 주소 나중에 만들면 확인   
-    axios.get(`/api/ ??? /${newShopMember.memId}`)
+    axios.get(`/api/members/${newShopMember.memId}`)
     .then(res => 
       {if (res.data){
         alert('사용가능한 아이디입니다'); 
@@ -133,7 +134,7 @@ const Join = ({isOpenJoin, onClose}) => {
 //   .catch(error=>console.log(error));
 // }, [])
   
-
+  //console.log(newShopMember);
 
   return (
     <Modal
@@ -277,6 +278,8 @@ const Join = ({isOpenJoin, onClose}) => {
             value={newShopMember.firstEmail}
             name='firstEmail'
             size='100%'/>
+            
+            <span>@</span>
 
             <Select onChange={e=>shopMemberReg(e)}
             value={newShopMember.secondEmail}
@@ -284,9 +287,9 @@ const Join = ({isOpenJoin, onClose}) => {
             size='100%'>
   {/* 이메일 추가 가능 */}
               <option value=''>선택</option>
-              <option value='@gmail.com'>@gmail.com</option>
-              <option value='@naver.com'>@naver.com</option>
-              <option value='@hanmail.net'>@hanmail.net</option>
+              <option value='@gmail.com'>gmail.com</option>
+              <option value='@naver.com'>naver.com</option>
+              <option value='@hanmail.net'>hanmail.net</option>
             </Select>              
           </div>
       </div>
@@ -330,7 +333,8 @@ const Join = ({isOpenJoin, onClose}) => {
               onChange={e=>shopMemberReg(e)}
               value={newShopMember.pwAnswer} 
               name='pwAnswer' 
-              size='100%'/>    
+              size='100%'
+            />    
           </div> 
 
       </div>

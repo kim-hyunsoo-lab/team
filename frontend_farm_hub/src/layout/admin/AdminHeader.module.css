@@ -51,7 +51,7 @@
 
 .menu > ul > li:hover {
   cursor: pointer;
-  background-color: #cccccc;
+  background-color: #f8f8f8;
   color: black;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;

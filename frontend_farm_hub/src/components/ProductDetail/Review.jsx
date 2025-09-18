@@ -50,6 +50,7 @@ const Review = () => {
       {/* 리뷰작성 모달창 */}
       <RegReview
         isOpenRegReview={isOpenRegReview}
+        onClose={() => setIsOpenRegReview(false)}
       />
     </div>
   )
