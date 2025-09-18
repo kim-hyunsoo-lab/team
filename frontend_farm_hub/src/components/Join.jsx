@@ -46,8 +46,6 @@ const Join = ({isOpenJoin, onClose}) => {
   // 비밀번호 찾기 질문 목록 변수
   const [pwQ, setPwQ] = useState([]) 
 
-
-
   // 값 입력시 실행하는 함수
   const shopMemberReg = (e) => {
 
