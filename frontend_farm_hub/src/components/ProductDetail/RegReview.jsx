@@ -6,6 +6,9 @@ import Textarea from '../../common/Textarea'
 import Button from '../../common/Button'
 
 const RegReview = ({isOpenRegReview}) => {
+  
+
+
   return (
     <Modal isOpen={isOpenRegReview}>
       <div className={styles.container}>

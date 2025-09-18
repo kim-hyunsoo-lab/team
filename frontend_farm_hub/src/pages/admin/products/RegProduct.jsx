@@ -16,6 +16,8 @@ const RegProduct = () => {
     'origin':''    
   })
 
+  console.log(newProduct)
+
   const [errorMsg, setErrorMsg] = useState({
     'itemName':'',
     'price':''
@@ -70,7 +72,7 @@ const regNewItemOn = (e)=>{
   formData.append('price', newProduct.price);
   formData.append('itemIntro', newProduct.itemIntro);
   formData.append('part', newProduct.part);
-  formData.append('origin', newProduct.origin);
+  formData.append('origin', newProduct.origin);  
 
 // ※이미지 등록 api 나중에 확인   
   axios.post('/api/items', formData, fileConfig)
@@ -123,7 +125,7 @@ const regNewItemOn = (e)=>{
         <div>
           <p>상품 설명</p>
             <Textarea 
-            size='100%'
+            width='100%'
             name='itemIntro' 
             onChange={e=>regNewProduct(e)}
             value={newProduct.itemIntro}          
@@ -137,6 +139,7 @@ const regNewItemOn = (e)=>{
               name='part'
               onChange={e=>regNewProduct(e)}
               value={newProduct.part}>
+              <option value="">부위 선택</option>
               <option value="등심">등심</option>
               <option value="갈비">갈비</option>
               <option value="안심">안심</option>

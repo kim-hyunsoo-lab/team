@@ -28,9 +28,9 @@
 <!--    상품 등록-->
     <insert id="insertItem">
         INSERT INTO ITEM(
-        ITEM_NUM, PRICE, ITEM_INTRO, PART, ORIGIN
+        ITEM_NUM, ITEM_NAME, PRICE, ITEM_INTRO, PART, ORIGIN
         )
-        VALUES(#{itemNum}, #{price}, #{itemIntro}, #{part}, #{origin})
+        VALUES(#{itemNum}, #{itemName}, #{price}, #{itemIntro}, #{part}, #{origin})
     </insert>
 
 <!--    상품 이미지 등록-->
@@ -47,36 +47,4 @@
         SELECT IFNULL(MAX(ITEM_NUM), 0) +1 FROM ITEM
     </select>
 
-
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -15,6 +15,7 @@ import ProductIntro from './components/ProductDetail/ProductIntro'
 import QnA from './components/ProductDetail/QnA'
 import Review from './components/ProductDetail/Review'
 import RegProduct from './pages/admin/products/RegProduct'
+import RegReview from './components/ProductDetail/RegReview'
 
 function App() {
 
@@ -36,7 +37,7 @@ function App() {
 
         {/* 관리자 페이지 */}
         <Route path='/admin' element={ <AdminLayout /> }>
-          <Route path='' element={ <AdminHome /> } />      
+          <Route path='' element={ <AdminHome /> } />              
         </Route>
       </Routes>
     </>
