@@ -1,13 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Modal from '../../common/Modal'
 import styles from './regReview.module.css'
 import Input from '../../common/Input'
 import Textarea from '../../common/Textarea'
 import Button from '../../common/Button'
 
-const RegReview = ({isOpenRegReview}) => {
+const RegReview = ({isOpenRegReview, onClose}) => {
+  //입력한 리뷰 내용을 저장할 state변수
+  const [reviewData, setReviewData] = useState({
+    title : '',
+    rating : '',
+    content : ''
+  });
+
   return (
-    <Modal isOpen={isOpenRegReview}>
+    <Modal
+      isOpen={isOpenRegReview}
+      onClose={onClose}
+    >
       <div className={styles.container}>
         <h4>이용 후기 작성</h4>
         <table className={styles.reg_review_table}>
@@ -34,7 +44,10 @@ const RegReview = ({isOpenRegReview}) => {
         </table>
         <div className={styles.btn_div}>
           <Button title='등록' />
-          <Button title='취소' />
+          <Button
+            title='취소'
+            onClick={onClose}
+          />
         </div>
       </div>
     </Modal>
