@@ -38,7 +38,7 @@
         INSERT INTO ITEM_IMG(ORIGIN_IMG_NAME, ATTACHED_IMG_NAME, ITEM_NUM, IS_MAIN)
         VALUES
         <foreach collection="itemImgList" item="itemImg" separator=",">
-            (#{itemImg.originImgName}, #{itemImg.attachedImgName}, #{itemImg.bookNum}, #{itemImg.isMain})
+            (#{itemImg.originImgName}, #{itemImg.attachedImgName}, #{itemImg.itemNum}, #{itemImg.isMain})
         </foreach>
     </insert>
 

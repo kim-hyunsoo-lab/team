@@ -36,7 +36,7 @@ const RegProduct = () => {
     })
   }  
 
-  // 마운트 되거나, newBook이 변경되어 리렌더링되면 버튼 활성화 여부 변경
+  // 마운트 되거나, newProduct이 변경되어 리렌더링되면 버튼 활성화 여부 변경
   useEffect(()=>{
     // 버튼 활성화 여부를 판단하여 disable 변경 
     if (newProduct.itemName !== '' && newProduct.price !== ''){
@@ -50,7 +50,7 @@ const RegProduct = () => {
 
   
 // 상품 등록 함수
-const regNewBookOn = (e)=>{
+const regNewItemOn = (e)=>{
   // 전달되는 데이터에 파일 데이터도 포함되어 있습니다, 라는 정의  
   const fileConfig = {'Content-Type': 'multipart/form-data'};
 
@@ -73,7 +73,7 @@ const regNewBookOn = (e)=>{
   formData.append('origin', newProduct.origin);
 
 // ※이미지 등록 api 나중에 확인   
-  axios.post('/api/ ??? ', formData, fileConfig)
+  axios.post('/api/items', formData, fileConfig)
   .then(res=>{
     alert('등록완')
     setNewProduct({
@@ -86,7 +86,6 @@ const regNewBookOn = (e)=>{
   .catch(e=>console.log(e))
   }
 
-  
   
   return (    
     <div className={styles.container}>
@@ -191,7 +190,7 @@ const regNewBookOn = (e)=>{
         <div style={{'textAlign':'right'}}>
           <Button title='상품등록' 
             disabled={isDisabledBtn}
-            onClick={e=>regNewBookOn(e)}/>
+            onClick={e=>regNewItemOn(e)}/>
         </div>   
 
       </div>   

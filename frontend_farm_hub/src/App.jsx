@@ -36,7 +36,7 @@ function App() {
 
         {/* 관리자 페이지 */}
         <Route path='/admin' element={ <AdminLayout /> }>
-          <Route path='' element={ <AdminHome /> } />
+          <Route path='' element={ <AdminHome /> } />      
         </Route>
       </Routes>
     </>

@@ -1,6 +1,6 @@
 import React from 'react'
 import Modal from '../../common/Modal'
-import styles from './regReview.module.css'
+import styles from './RegReview.module.css'
 import Input from '../../common/Input'
 import Textarea from '../../common/Textarea'
 import Button from '../../common/Button'
