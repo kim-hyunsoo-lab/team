@@ -17,7 +17,9 @@ const Join = ({isOpenJoin, onClose}) => {
   const [errorMsg, setErrorMsg] = useState({
     'memId': '',
     'memPw': '',
-    'confirmPw': ''
+    'confirmPw': '',
+    'pwKey':'',
+    'pwAnswer':''
   });
 
   // 회원가입 버튼 활성화 여부
@@ -69,12 +71,10 @@ const Join = ({isOpenJoin, onClose}) => {
 
 
   // 회원가입 
-  const regNewShopMember = () =>{  
-
-// ※회원가입 api 주소 나중에 만들면 확인     
+  const regNewShopMember = () =>{     
     axios.post('/api/members', newShopMember)
     .then(res => {
-      console.log('회원으로 등록되었습니다');
+      alert('회원으로 등록되었습니다');
 
       // 페이지 닫기  
       onClose();
@@ -98,13 +98,9 @@ const Join = ({isOpenJoin, onClose}) => {
     })
     .catch(error=>console.log(error));    
   }
-
-  console.log(newShopMember);
-
   
   // 아이디 중복여부 확인
-  const checkId = () => {
-// ※아이디 중복화인 api 주소 나중에 만들면 확인   
+  const checkId = () => {   
     axios.get(`/api/members/${newShopMember.memId}`)
     .then(res => 
       {if (res.data){
@@ -128,7 +124,6 @@ const Join = ({isOpenJoin, onClose}) => {
   }
 
   // 비밀번호 찾기 질문목록 호출
-  //※비밀번호 찾기 질문 api 주소 나중에 만들면 확인  
   useEffect(()=>{axios.get('/api/members/pw-question ')
     .then((res)=>{
       console.log(res.data);
@@ -136,7 +131,7 @@ const Join = ({isOpenJoin, onClose}) => {
     .catch(error=>console.log(error));
   }, []);
   
-  //console.log(newShopMember);
+  console.log(newShopMember);
 
   return (
     <Modal
@@ -151,7 +146,9 @@ const Join = ({isOpenJoin, onClose}) => {
         setErrorMsg({
           'memId': '',
           'memPw': '',
-          'confirmPw': ''
+          'confirmPw': '',
+          'pwKey':'',
+          'pwAnswer':''
         })
 
         // 값 초기화
@@ -321,7 +318,15 @@ const Join = ({isOpenJoin, onClose}) => {
       <div>
         <h5>비밀번호 찾기 질문</h5>
           <div>
-            <Select size='100%' name='pwKey' onChange={e=>shopMemberReg(e)}>
+            <Select size='100%' name='pwKey' 
+            onChange={e=>{
+              shopMemberReg(e);
+              setIsDisabledBtn(true);              
+              setErrorMsg({
+                ...errorMsg,
+                'pwKey': handleErrorMsg(e)
+              });
+            }} >
               <option key='-5' value="">선택</option>
                 {pwQ.map((e, i)=>{
                   return(
@@ -330,14 +335,26 @@ const Join = ({isOpenJoin, onClose}) => {
                 })} 
             </Select>
           </div>
+          <p className={styles.errorMsg}>{errorMsg.pwKey}</p>
+
           <div>
             <Input 
-              onChange={e=>shopMemberReg(e)}
+              onChange={e=>{
+              shopMemberReg(e);
+              setIsDisabledBtn(true);              
+              setErrorMsg({
+                ...errorMsg,
+                'pwAnswer': handleErrorMsg(e)
+              });
+            }}
               value={newShopMember.pwAnswer} 
               name='pwAnswer' 
               size='100%'
-            />    
+            />            
           </div> 
+          <div>
+            <p className={styles.errorMsg}>{errorMsg.pwAnswer}</p>
+          </div>
 
       </div>
 

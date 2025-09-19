@@ -23,7 +23,8 @@
     <id column="PW_KEY" property="pwKey" />
     <result column="PW_QUESTION" property="pwQuestion" />
   </resultMap>
-  <!--회원등록 쿼리문-->
+
+<!--회원등록 쿼리문-->
   <insert id="regMember">
     INSERT INTO SHOP_MEMBER (
       MEM_ID
@@ -47,7 +48,8 @@
       , #{pwAnswer}
     )
   </insert>
-  <!--로그인 기능 쿼리-->
+
+<!--로그인 기능 쿼리-->
   <select id="login" resultMap="member">
     SELECT
       MEM_ID
@@ -57,19 +59,36 @@
     WHERE MEM_ID = #{memId}
     AND MEM_PW = #{memPw}
   </select>
-  <!--ID 중복검사-->
+
+<!--ID 중복검사-->
   <select id="checkIdDup" resultType="String">
     SELECT MEM_ID
     FROM SHOP_MEMBER
     WHERE MEM_ID = #{memId}
   </select>
-  <!--비밀번호 찾기 질문 목록 조회-->
+
+<!--비밀번호 찾기 질문 목록 조회-->
   <select id="getQuestion" resultMap="question">
     SELECT
       PW_KEY
       , PW_QUESTION
     FROM FORGOTPW
   </select>
+
+<!--  비밀번호 찾기 쿼리-->
+  <select id="forgotPw" resultMap="member">
+    SELECT MEM_ID, MEM_NAME, MEM_EMAIL, PW_KEY, PW_ANSWER
+    FROM SHOP_MEMBER
+    WHERE MEM_ID = #{memId}
+  </select>
+
+<!--  비밀번호 변경-->
+  <update id="renewalPw">
+    UPDATE SHOP_MEMBER
+    SET MEM_PW = #{memPw}
+    WHERE MEM_ID = #{memId}
+  </update>
+
 </mapper>
 
 

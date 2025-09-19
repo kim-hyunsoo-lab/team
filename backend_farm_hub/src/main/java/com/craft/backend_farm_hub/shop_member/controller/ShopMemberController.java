@@ -38,4 +38,16 @@ public class ShopMemberController {
   public List<ForgotPwDTO> getQuestion() {
     return shopMemberService.getQuestion();
   }
+
+  //비밀번호 찾기
+  @GetMapping("/forgotPw/{memId}")
+  public ShopMemberDTO forgotPw(@PathVariable("memId") String memId){
+    return shopMemberService.forgotPw(memId);
+  }
+
+  //비밀번호 변경
+  @PutMapping("/renewalPw")
+  public void renewalPw(@RequestBody ShopMemberDTO shopMemberDTO) {
+    shopMemberService.renewalPw(shopMemberDTO);
+  }
 }

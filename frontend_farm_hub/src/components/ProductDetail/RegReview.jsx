@@ -14,6 +14,7 @@ const RegReview = ({isOpenRegReview, onClose}) => {
     'content' : ''
   });
 
+  
   // 리뷰 이미지들을 저장할 state 변수
   const [reviewImgs, setReviewImgs] = useState(null);
 
