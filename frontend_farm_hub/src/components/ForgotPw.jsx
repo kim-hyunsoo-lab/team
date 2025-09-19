@@ -12,7 +12,7 @@ const ForgotPw = ({isOpenForgotPw, onClose}) => {
   const [pwQ, setPwQ] = useState([]) 
 
   const [userProfile, setUserProfile] = useState({
-    'memId': 'test1234', // 아이디
+    'memId': '', // 아이디
     'memName': '', // 이름
     'firstEmail':'', // 이메일
     'secondEmail':'',

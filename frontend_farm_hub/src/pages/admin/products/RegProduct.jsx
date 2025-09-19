@@ -73,11 +73,10 @@ const regNewItemOn = (e)=>{
   formData.append('itemIntro', newProduct.itemIntro);
   formData.append('part', newProduct.part);
   formData.append('origin', newProduct.origin);  
-
-// ※이미지 등록 api 나중에 확인   
+ 
   axios.post('/api/items', formData, fileConfig)
   .then(res=>{
-    alert('등록완')
+    alert('상품을 등록했습니다')
     setNewProduct({
     'itemName':'',
     'price':'',

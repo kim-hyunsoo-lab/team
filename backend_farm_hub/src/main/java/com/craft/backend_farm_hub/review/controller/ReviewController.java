@@ -1,10 +1,18 @@
 package com.craft.backend_farm_hub.review.controller;
 
+import com.craft.backend_farm_hub.item.dto.ItemDTO;
 import com.craft.backend_farm_hub.review.dto.ReviewDTO;
+import com.craft.backend_farm_hub.review.dto.ReviewImgDTO;
 import com.craft.backend_farm_hub.review.service.ReviewService;
+import com.craft.backend_farm_hub.util.ReviewImgUploadUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("reviews")
@@ -12,7 +20,12 @@ public class ReviewController {
   private final ReviewService reviewService;
 
   @PostMapping("")
-  public void regReview (@RequestBody ReviewDTO reviewDTO) {
-    reviewService.regReview(reviewDTO);
+  public void regReview (
+          @RequestParam(name = "reviewImgs", required = false) MultipartFile[] reviewImgs,
+          ReviewDTO reviewDTO) {
+
+    List<ReviewImgDTO> reviewImgList = ReviewImgUploadUtil.multipleReviewFileUpload(reviewImgs);
+
+    reviewService.regReview(reviewDTO, reviewImgList);
   }
 }

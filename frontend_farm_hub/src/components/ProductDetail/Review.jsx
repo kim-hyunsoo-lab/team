@@ -24,7 +24,7 @@ const Review = () => {
             <tr>
               <td>No</td>
               <td>제목</td>
-              <td>평점</td>
+              <td><span><i className='bi bi-star-fill'></i></span>평점</td>
               <td>작성자</td>
               <td>작성일</td>
             </tr>
@@ -33,7 +33,7 @@ const Review = () => {
             <tr onClick={e => setIsShowContent(!isShowContent)}>
               <td>글번호</td>
               <td>제목</td>
-              <td>별1~5개</td>
+              <td><span><i className='bi bi-star-fill'></i></span>(1~5)</td>
               <td>작성자ID</td>
               <td>날짜</td>
             </tr>

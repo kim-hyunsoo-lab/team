@@ -43,7 +43,7 @@
 
     <!--    리뷰 이미지 등록-->
     <insert id="insertReviewImgs">
-        INSERT INTO ITEM_IMG(REVIEW_ORIGIN_IMG_NAME, REVIEW_ATTACHED_IMG_NAME, REVIEW_NUM)
+        INSERT INTO REVIEW_IMG(REVIEW_ORIGIN_IMG_NAME, REVIEW_ATTACHED_IMG_NAME, REVIEW_NUM)
         VALUES
         <foreach collection="reviewImgList" item="reviewImg" separator=",">
             (#{reviewImg.reviewOriginImgName}, #{reviewImg.reviewAttachedImgName}, #{reviewImg.reviewNum})

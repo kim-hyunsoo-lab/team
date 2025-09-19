@@ -1,7 +1,5 @@
 package com.craft.backend_farm_hub.review.mapper;
 
-import com.craft.backend_farm_hub.item.dto.ItemDTO;
-import com.craft.backend_farm_hub.item.dto.ItemImgDTO;
 import com.craft.backend_farm_hub.review.dto.ReviewDTO;
 import com.craft.backend_farm_hub.review.dto.ReviewImgDTO;
 import org.apache.ibatis.annotations.Mapper;
