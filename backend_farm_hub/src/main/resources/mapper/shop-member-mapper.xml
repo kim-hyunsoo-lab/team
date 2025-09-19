@@ -4,6 +4,7 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <!-- namespace에는 xml파일과 연결할 Mapper interface 파일명을 패키지를 포함하여 적어주세요 -->
 <mapper namespace="com.craft.backend_farm_hub.shop_member.mapper.ShopMemberMapper">
+  <!--멤버 resultMap-->
 	<resultMap id="member" type="com.craft.backend_farm_hub.shop_member.dto.ShopMemberDTO">
     <id column="MEM_ID" property="memId" />
     <result column="MEM_PW" property="memPw" />
@@ -16,6 +17,11 @@
     <result column="PW_ANSWER" property="pwAnswer" />
     <result column="MEM_ROLE" property="memRole" />
     <result column="JOIN_DATE" property="joinDate" />
+  </resultMap>
+  <!--비밀번호 찾기 질문 resultMap-->
+  <resultMap id="question" type="com.craft.backend_farm_hub.shop_member.dto.ForgotPwDTO">
+    <id column="PW_KEY" property="pwKey" />
+    <result column="PW_QUESTION" property="pwQuestion" />
   </resultMap>
   <!--회원등록 쿼리문-->
   <insert id="regMember">
@@ -50,6 +56,19 @@
     FROM SHOP_MEMBER
     WHERE MEM_ID = #{memId}
     AND MEM_PW = #{memPw}
+  </select>
+  <!--ID 중복검사-->
+  <select id="checkIdDup" resultType="String">
+    SELECT MEM_ID
+    FROM SHOP_MEMBER
+    WHERE MEM_ID = #{memId}
+  </select>
+  <!--비밀번호 찾기 질문 목록 조회-->
+  <select id="getQuestion" resultMap="question">
+    SELECT
+      PW_KEY
+      , PW_QUESTION
+    FROM FORGOTPW
   </select>
 </mapper>
 
