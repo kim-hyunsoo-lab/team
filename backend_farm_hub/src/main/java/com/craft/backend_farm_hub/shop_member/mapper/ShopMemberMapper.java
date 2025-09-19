@@ -19,4 +19,11 @@ public interface ShopMemberMapper {
 
   //비밀번호 찾기 질문 목록 조회
   public List<ForgotPwDTO> getQuestion();
+
+  // 비밀번호 찾기
+  public ShopMemberDTO forgotPw(String memId);
+
+  //비밀번호 변경
+  public void renewalPw(ShopMemberDTO shopMemberDTO);
+
 }

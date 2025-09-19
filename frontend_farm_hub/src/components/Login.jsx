@@ -65,12 +65,7 @@ const Login = ({isOpenLogin, onClose}) => {
   }  
 
   const forgotPw = (e) =>{
-
-
-  }
-
-
-  
+  } 
   
   return (
     <>

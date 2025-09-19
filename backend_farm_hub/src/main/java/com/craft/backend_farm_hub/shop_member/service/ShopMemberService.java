@@ -33,4 +33,16 @@ public class ShopMemberService {
   public List<ForgotPwDTO> getQuestion() {
     return shopMemberMapper.getQuestion();
   }
+
+  //비밀번호 찾기
+  public ShopMemberDTO forgotPw(String memId){
+    return shopMemberMapper.forgotPw(memId);
+  }
+
+  //비밀번호 변경
+  public void renewalPw(ShopMemberDTO shopMemberDTO){
+    shopMemberMapper.renewalPw(shopMemberDTO);
+  }
+
+
 }

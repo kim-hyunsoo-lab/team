@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from '../common/Modal'
 import styles from './ForgotPw.module.css'
 import Button from '../common/Button'
@@ -21,6 +21,10 @@ const ForgotPw = ({isOpenForgotPw, onClose}) => {
     'pwAnswer':''
   })
 
+  const [realMemId, setRealMemId] = useState('')
+
+  console.log(userProfile);
+
     // 값 입력시 실행하는 함수
   const settingUserProfile = (e) => {
     // 이메일 시
@@ -41,59 +45,74 @@ const ForgotPw = ({isOpenForgotPw, onClose}) => {
     }))
   };
 
-
-  // 비밀번호 찾기 질문목록 호출
-// ※비밀번호 찾기 질문 api 주소 나중에 만들면 확인  
-//   useEffect(()=>{axios.get('/api/ ??? ')
-//   .then((res)=>{
-//     console.log(res.data);
-//     setPwQ(res.data);})
-//   .catch(error=>console.log(error));
-// }, [])
+// 비밀번호 찾기 질문목록 호출
+  useEffect(()=>{axios.get('/api/members/pw-question ')
+    .then((res)=>{
+      console.log(res.data);
+      setPwQ(res.data);})
+    .catch(error=>console.log(error));
+  }, []);
 
   const setNewPw = () =>{
 // ※ 비번 확인 api 주소 나중에 만들면 확인   
-    axios.get(`/api/ ??? /${userProfile.memId}`)
-    .then(res => 
-      {if (res.data.memId === userProfile.memId
-        && res.data.memName === userProfile.memName
-        && res.data.memEmail === userProfile.memEmail
-        && res.data.pwKey === userProfile.pwKey
-        && res.data.pwAnswer === userProfile.pwAnswer
+    axios.get(`/api/members/forgotPw/${userProfile.memId}`)
+    .then(res =>       
+      {console.log(res.data)
+        if ((res.data.memId === userProfile.memId)
+        && (res.data.memName === userProfile.memName)
+        && (res.data.memEmail === userProfile.memEmail)
+        && (res.data.pwKey == userProfile.pwKey)
+        && (res.data.pwAnswer === userProfile.pwAnswer)
       )    
       {
         alert('비밀번호 변경 페이지로 이동합니다');
         onClose(); 
         setIsOpenRenewalPw(true);
+        setUserProfile({        
+          'memName': '', 
+          'firstEmail':'', 
+          'secondEmail':'',
+          'memEmail':'',
+          'pwKey': '',
+          'pwAnswer':''
+        })        
       }
       else {alert('내용이 일치하지 않습니다');        
       }})
     .catch(error=>console.log(error));
   }
-
-
   
 // 비번 새로 설정 Modal 창 숨김/보이기 여부
   const [isOpenRenewalPw, setIsOpenRenewalPw] = useState(false);
-
-
-
 
   return (
     <>
     <Modal isOpen={isOpenForgotPw}
       title='Forgot Password'
       size='300px'    
-      onClose={onClose}
+      onClose={()=>{
+        onClose();
+        setUserProfile({
+          'memId': '', 
+          'memName': '', 
+          'firstEmail':'', 
+          'secondEmail':'',
+          'memEmail':'',
+          'pwKey': ''
+        })
+      }}
     >
 
     <div className={styles.container}>
       <div>
         <h5>아이디</h5>
-        <Input onChange={e=>settingUserProfile(e)}
+        <Input onChange={e=>{settingUserProfile(e), setRealMemId(e.target.value)}}
         value={userProfile.memId}
         name='memId'
         size='100%'
+        onKeyDown={e=>{
+            if(e.key==='Enter') setNewPw()
+          }}
         ></Input>
       </div>
       <div>
@@ -102,6 +121,9 @@ const ForgotPw = ({isOpenForgotPw, onClose}) => {
         value={userProfile.memName}
         name='memName'
         size='100%'
+        onKeyDown={e=>{
+            if(e.key==='Enter') setNewPw()
+          }}
         ></Input>
       </div>
       
@@ -110,6 +132,9 @@ const ForgotPw = ({isOpenForgotPw, onClose}) => {
           <div>
             <Input onChange={e=>settingUserProfile(e)}
             value={userProfile.firstEmail}
+            onKeyDown={e=>{
+            if(e.key==='Enter') setNewPw()
+          }}
             name='firstEmail'
             size='100%'/>
 
@@ -132,7 +157,7 @@ const ForgotPw = ({isOpenForgotPw, onClose}) => {
           <option key='-5' value="">선택</option>
             {pwQ.map((e, i)=>{
               return(
-              <option key={i} value={e.pwkey}>{e.pwQuestion}</option>
+              <option key={i} value={e.pwKey}>{e.pwQuestion}</option>
               )
             })} 
         </Select>
@@ -143,22 +168,23 @@ const ForgotPw = ({isOpenForgotPw, onClose}) => {
         value={userProfile.pwAnswer}
         name='pwAnswer'
         size='100%'
+        onKeyDown={e=>{
+            if(e.key==='Enter') setNewPw()
+          }}
         ></Input>
       </div>
       <div>
         <Button           
-          //onClick={e=>setNewPw(e)}
-          onClick={e=>{onClose(); setIsOpenRenewalPw(true);}}
+          onClick={e=>setNewPw()}
           title='비밀번호 찾기'
           size='100%'     
         />
       </div>
     </div>    
     </Modal>
-
     
     {/* 비번 새로 설정 Modal */}
-    <RenewalPw memId={userProfile.memId} isOpenRenewalPw={isOpenRenewalPw} 
+    <RenewalPw memId={realMemId} isOpenRenewalPw={isOpenRenewalPw} 
       onClose={()=>setIsOpenRenewalPw(false)}/>
     </>
   )
