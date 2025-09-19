@@ -1,9 +1,12 @@
 package com.craft.backend_farm_hub.shop_member.controller;
 
+import com.craft.backend_farm_hub.shop_member.dto.ForgotPwDTO;
 import com.craft.backend_farm_hub.shop_member.dto.ShopMemberDTO;
 import com.craft.backend_farm_hub.shop_member.service.ShopMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,5 +24,18 @@ public class ShopMemberController {
   @GetMapping("/login")
   public ShopMemberDTO login(ShopMemberDTO shopMemberDTO) {
     return shopMemberService.login(shopMemberDTO);
+  }
+
+  //id 사용 가능 여부 판단 api
+  @GetMapping("/{memId}")
+  public boolean checkId(@PathVariable("memId") String memId) {
+    //사용가능 : return true;
+    return shopMemberService.isUsableId(memId);
+  }
+
+  //비밀번호 찾기 질문 목록 조회 api
+  @GetMapping("/pw-question")
+  public List<ForgotPwDTO> getQuestion() {
+    return shopMemberService.getQuestion();
   }
 }

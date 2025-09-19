@@ -44,7 +44,7 @@ const Join = ({isOpenJoin, onClose}) => {
   })
 
   // 비밀번호 찾기 질문 목록 변수
-  const [pwQ, setPwQ] = useState([]) 
+  const [pwQ, setPwQ] = useState([]);
 
   // 값 입력시 실행하는 함수
   const shopMemberReg = (e) => {
@@ -99,6 +99,8 @@ const Join = ({isOpenJoin, onClose}) => {
     .catch(error=>console.log(error));    
   }
 
+  console.log(newShopMember);
+
   
   // 아이디 중복여부 확인
   const checkId = () => {
@@ -126,13 +128,13 @@ const Join = ({isOpenJoin, onClose}) => {
   }
 
   // 비밀번호 찾기 질문목록 호출
-// ※비밀번호 찾기 질문 api 주소 나중에 만들면 확인  
-//   useEffect(()=>{axios.get('/api/ ??? ')
-//   .then((res)=>{
-//     console.log(res.data);
-//     setPwQ(res.data);})
-//   .catch(error=>console.log(error));
-// }, [])
+  //※비밀번호 찾기 질문 api 주소 나중에 만들면 확인  
+  useEffect(()=>{axios.get('/api/members/pw-question ')
+    .then((res)=>{
+      console.log(res.data);
+      setPwQ(res.data);})
+    .catch(error=>console.log(error));
+  }, []);
   
   //console.log(newShopMember);
 
@@ -323,7 +325,7 @@ const Join = ({isOpenJoin, onClose}) => {
               <option key='-5' value="">선택</option>
                 {pwQ.map((e, i)=>{
                   return(
-                  <option key={i} value={e.pwkey}>{e.pwQuestion}</option>
+                  <option key={i} value={e.pwKey}>{e.pwQuestion}</option>
                   )
                 })} 
             </Select>

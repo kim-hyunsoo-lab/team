@@ -1,9 +1,12 @@
 package com.craft.backend_farm_hub.shop_member.service;
 
+import com.craft.backend_farm_hub.shop_member.dto.ForgotPwDTO;
 import com.craft.backend_farm_hub.shop_member.dto.ShopMemberDTO;
 import com.craft.backend_farm_hub.shop_member.mapper.ShopMemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,5 +21,16 @@ public class ShopMemberService {
   //로그인 기능
   public ShopMemberDTO login(ShopMemberDTO shopMemberDTO) {
     return shopMemberMapper.login(shopMemberDTO);
+  }
+
+  //아이디 중복검사, 사용 가능하면 null 데이터가 조회됨
+  public boolean isUsableId(String memId) {
+    String selectedId = shopMemberMapper.checkIdDup(memId);
+    return selectedId == null;
+  }
+
+  //비밀번호 찾기 질문 목록 조회
+  public List<ForgotPwDTO> getQuestion() {
+    return shopMemberMapper.getQuestion();
   }
 }
