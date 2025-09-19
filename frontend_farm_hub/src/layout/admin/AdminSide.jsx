@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './AdminSide.module.css'
+import { NavLink } from 'react-router'
 
 const AdminSide = () => {
   return (
@@ -39,8 +40,12 @@ const AdminSide = () => {
         <p>판매상품등록</p>
         <ul>
           <li>
-            <span><i className="bi bi-bag-plus-fill"></i></span>
-            상품등록
+            <NavLink to={'reg-product'}>
+              <p>
+                <span><i className="bi bi-bag-plus-fill"></i></span>
+                상품등록
+              </p>
+            </NavLink>
           </li>
           <li>
             <span><i className="bi bi-bag-check-fill"></i></span>

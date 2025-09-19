@@ -47,4 +47,12 @@
         SELECT IFNULL(MAX(ITEM_NUM), 0) +1 FROM ITEM
     </select>
 
+    <!--상품 목록 조회-->
+    <select id="getItemList" resultMap="items">
+        SELECT
+            ITEM_NUM
+            , ITEM_NAME
+            , PRICE
+            , ORIGIN
+    </select>
 </mapper>
