@@ -8,8 +8,7 @@
  	, MEM_ADDR VARCHAR (20) NOT NULL #주소
  	, ADDR_DETAIL VARCHAR(20) #상세주소
   , PW_KEY INT REFERENCES forgotpw(PW_KEY) #비밀번호 찾기 질문 번호
-  , PW_ANSWER VARCHAR(20) NOT NULL #비밀번호 찾기 질문 답변   
-  
+  , PW_ANSWER VARCHAR(20) NOT NULL #비밀번호 찾기 질문 답변    
   , MEM_ROLE VARCHAR(14) NOT NULL DEFAULT 'USER'     #관리자는 ADMIN
   , JOIN_DATE DATETIME DEFAULT SYSDATE()
  );  

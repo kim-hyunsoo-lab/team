@@ -1,14 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '../../common/Button'
 import PageTitle from '../../common/PageTitle'
 import styles from './Home.module.css'
 import Select from '../../common/Select'
 import { useNavigate } from 'react-router'
+import axios from 'axios'
 
 const Home = () => {
   const [itemList, setItemList] = useState([1,2,3,4,5,6,7,8]);
 
   const nav = useNavigate();
+
+  //신상품 목록을 저장할 state 변수
+  const [newProduct, setNewProduct] = useState([]);
+
+  //신상품 목록 조회
+  useEffect(() => {
+    axios.get('/api/')
+  }, [])
 
   return (
     <div className={styles.container}>
