@@ -53,8 +53,7 @@
 	, REVIEW_ORIGIN_IMG_NAME VARCHAR(100) #원본 파일명
 	, REVIEW_ATTACHED_IMG_NAME VARCHAR(100) #첨부된 파일명
 	, REVIEW_NUM INT REFERENCES REVIEW (REVIEW_NUM) ON DELETE CASCADE #리뷰 번호
- );
- 
+ ); 
  
  #라즈베리파이 관리자 기능(온,습도 센서를 이용한 fan 액츄에이터 구현)
  CREATE TABLE FAN_FUNCTION (

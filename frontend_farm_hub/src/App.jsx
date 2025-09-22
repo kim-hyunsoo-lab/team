@@ -25,10 +25,11 @@ function App() {
         {/* 일반 사용자 페이지 */}
         <Route path='/' element={ <UserLayout /> }>
           <Route path='' element={ <Home /> } />
+          <Route path='review' element={ <Review /> } />
           <Route path='new-product-list' element={ <NewProductList />} />
           <Route path='product-detail/:itemNum' element={ <ProductDetail /> }>
             <Route path='intro' element={ <ProductIntro /> } />
-            <Route path='review' element={ <Review /> } />
+            {/* <Route path='review' element={ <Review /> } /> */}
             <Route path='qna' element={ <QnA /> } />
           </Route>
           <Route path='popular-product-list' element={ <PopularProductList />} />
