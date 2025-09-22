@@ -27,9 +27,6 @@ const Login = ({isOpenLogin, onClose}) => {
   }  
   
   const loginNow = (e) =>{
-
-// ※로그인 api 주소 나중에 만들면 확인 
-
     axios.get('/api/members/login', {params:loginData})
     .then(res =>       
       {console.log(res.data)              
@@ -62,11 +59,7 @@ const Login = ({isOpenLogin, onClose}) => {
       }
     })
     .catch(e=>console.log(e))
-  }  
-
-  const forgotPw = (e) =>{
-  } 
-  
+  }    
   return (
     <>
     <Modal isOpen={isOpenLogin}

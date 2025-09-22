@@ -19,6 +19,7 @@ import java.util.List;
 public class ReviewController {
   private final ReviewService reviewService;
 
+  // 리뷰 등록
   @PostMapping("")
   public void regReview (
           @RequestParam(name = "reviewImgs", required = false) MultipartFile[] reviewImgs,
@@ -27,5 +28,11 @@ public class ReviewController {
     List<ReviewImgDTO> reviewImgList = ReviewImgUploadUtil.multipleReviewFileUpload(reviewImgs);
 
     reviewService.regReview(reviewDTO, reviewImgList);
+  }
+
+  // 이미지 없는 리뷰 등록
+  @PostMapping("/noimg")
+  public void regReviewNoImg(@RequestBody ReviewDTO reviewDTO){
+    reviewService.regReviewNoImg(reviewDTO);
   }
 }

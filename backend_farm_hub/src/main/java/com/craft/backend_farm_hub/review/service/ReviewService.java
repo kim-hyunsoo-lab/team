@@ -24,4 +24,9 @@ public class ReviewService {
     reviewMapper.regReview(reviewDTO);
     reviewMapper.insertReviewImgs(reviewImgList);
   }
+
+  // 이미지 없는 리뷰 등록
+  public void regReviewNoImg (ReviewDTO reviewDTO){
+    reviewMapper.regReview(reviewDTO);
+  }
 }
