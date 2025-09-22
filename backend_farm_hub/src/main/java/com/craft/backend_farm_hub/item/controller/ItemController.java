@@ -16,7 +16,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("items")
+@RequestMapping("/items")
 public class ItemController {
   private final ItemService itemService;
 
@@ -33,6 +33,11 @@ public class ItemController {
     itemService.insertItem(itemDTO, imgList);
   }
 
+  //신상품 목록 조회 api
+  @GetMapping("")
+  public List<ItemDTO> getItemList() {
+    return itemService.getItemList();
+  }
 
 
 

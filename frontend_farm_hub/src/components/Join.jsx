@@ -126,12 +126,12 @@ const Join = ({isOpenJoin, onClose}) => {
   // 비밀번호 찾기 질문목록 호출
   useEffect(()=>{axios.get('/api/members/pw-question ')
     .then((res)=>{
-      console.log(res.data);
+      //console.log(res.data);
       setPwQ(res.data);})
     .catch(error=>console.log(error));
   }, []);
   
-  console.log(newShopMember);
+  //console.log(newShopMember);
 
   return (
     <Modal

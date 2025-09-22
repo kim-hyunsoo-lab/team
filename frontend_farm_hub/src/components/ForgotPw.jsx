@@ -23,7 +23,7 @@ const ForgotPw = ({isOpenForgotPw, onClose}) => {
 
   const [realMemId, setRealMemId] = useState('')
 
-  console.log(userProfile);
+  //console.log(userProfile);
 
     // 값 입력시 실행하는 함수
   const settingUserProfile = (e) => {
@@ -48,7 +48,7 @@ const ForgotPw = ({isOpenForgotPw, onClose}) => {
 // 비밀번호 찾기 질문목록 호출
   useEffect(()=>{axios.get('/api/members/pw-question ')
     .then((res)=>{
-      console.log(res.data);
+      //console.log(res.data);
       setPwQ(res.data);})
     .catch(error=>console.log(error));
   }, []);
@@ -57,7 +57,7 @@ const ForgotPw = ({isOpenForgotPw, onClose}) => {
 // ※ 비번 확인 api 주소 나중에 만들면 확인   
     axios.get(`/api/members/forgotPw/${userProfile.memId}`)
     .then(res =>       
-      {console.log(res.data)
+      {//console.log(res.data)
         if ((res.data.memId === userProfile.memId)
         && (res.data.memName === userProfile.memName)
         && (res.data.memEmail === userProfile.memEmail)
