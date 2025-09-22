@@ -24,4 +24,9 @@ public class ItemService {
     itemMapper.insertImgs(itemImgList);
   }
 
+  //신상품 목록 조회
+  public List<ItemDTO> getItemList() {
+    return itemMapper.getItemList();
+  }
+
 }
