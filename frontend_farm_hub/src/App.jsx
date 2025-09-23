@@ -17,6 +17,7 @@ import Review from './components/ProductDetail/Review'
 import RegProduct from './pages/admin/products/RegProduct'
 import RegReview from './components/ProductDetail/RegReview'
 import axios from 'axios'
+import MemberList from './pages/admin/MemberList'
 
 function App() {
 
@@ -60,7 +61,8 @@ function App() {
         {/* 관리자 페이지 */}
         <Route path='/admin' element={ <AdminLayout /> }>
           <Route path='' element={ <AdminHome /> } />   
-          <Route path='reg-product' element={ <RegProduct /> } />           
+          <Route path='reg-product' element={ <RegProduct /> } />   
+          <Route path='member-list' element={ <MemberList /> } />   
         </Route>
       </Routes>
     </>

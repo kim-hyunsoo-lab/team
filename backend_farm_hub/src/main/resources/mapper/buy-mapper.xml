@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<!-- namespace에는 xml파일과 연결할 Mapper interface 파일명을 패키지를 포함하여 적어주세요 -->
+<mapper namespace="com.craft.backend_farm_hub.buy.mapper.BuyMapper">
+    <resultMap id="buy" type="com.craft.backend_farm_hub.buy.dto.BuyDTO">
+        <id column="BUY_NUM" property="buyNum" />
+        <result column="ITEM_NUM" property="itemNum" />
+        <result column="MEM_ID" property="memId" />
+        <result column="BUY_DATE" property="buyDate" />
+        <result column="BUY_CNT" property="buyCnt" />
+        <result column="ORDER_NUM" property="orderNum" />
+
+        <result column="TOTAL_PRICE" property="totalPrice" />
+        <association property="itemDTO" resultMap="com.craft.backend_farm_hub.item.mapper.ItemMapper.items" />
+    </resultMap>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

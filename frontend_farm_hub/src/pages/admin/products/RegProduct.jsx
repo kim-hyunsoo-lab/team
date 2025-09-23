@@ -16,8 +16,6 @@ const RegProduct = () => {
     'origin':''    
   })
 
-  console.log(newProduct)
-
   const [errorMsg, setErrorMsg] = useState({
     'itemName':'',
     'price':''
@@ -28,7 +26,6 @@ const RegProduct = () => {
 
   // 서브 이미지들을 저장할 state 변수 
   const [subImgs, setSubImgs] = useState(null);
-
 
   const regNewProduct = (e) =>{
   // 만약 가격 데이터가 들어왔다면 천단위 구분기호를 제외한다  
@@ -46,10 +43,8 @@ const RegProduct = () => {
     else{setIsDisabledBtn(true);}
   }, [newProduct])
 
-
   //등록버튼 
   const [isDisabledBtn, setIsDisabledBtn] = useState(true);
-
   
 // 상품 등록 함수
 const regNewItemOn = (e)=>{
@@ -86,7 +81,6 @@ const regNewItemOn = (e)=>{
   })
   .catch(e=>console.log(e))
   }
-
   
   return (    
     <div className={styles.container}>
