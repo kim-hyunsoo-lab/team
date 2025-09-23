@@ -1,18 +1,43 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PageTitle from '../../../common/PageTitle'
 import { NavLink, Outlet, useParams } from 'react-router'
 import styles from './ProductDetail.module.css'
+import axios from 'axios'
+import NewProductList from './NewProductList'
 
 const ProductDetail = () => {
   const {itemNum} = useParams();
-  console.log(itemNum);
+  //console.log(itemNum);
+
+  const [itemDetail, setItemDetail] = useState({});
+
+  useEffect(() => {
+    axios.get(`/api/items/${itemNum}`)
+    .then(res => {
+      console.log(res.data);
+      setItemDetail(res.data);
+    })
+    .catch(e => console.log(e));
+  }, []);
+
   return (
     <div className={styles.container}>
-      <PageTitle title={'상품명'} />
+      <PageTitle title={'상품 상세정보'} size='250px' />
       <div className={styles.item_info}>
-        <div className={styles.main_img_div}>메인 이미지</div>
+        <div className={styles.main_img_div}>
+          {
+            itemDetail.imgList &&
+            itemDetail.imgList.map((img, i) => {
+              if (img.isMain === 'Y') {
+                return (
+                  <img src={`http://localhost:8080/upload/${img.attachedImgName}`} className={styles.main_img} key={i} />
+                )
+              }
+            })
+          }
+        </div>
         <div className={styles.item_intro}>
-          <h1>상품명</h1>
+          <h1>{itemDetail.itemName}</h1>
           <table className={styles.main_info_table}>
             <colgroup>
               <col width={'20%'} />
@@ -21,23 +46,26 @@ const ProductDetail = () => {
             <tbody>
               <tr>
                 <td>판매가</td>
-                <td>--원</td>
+                <td>{
+                  itemDetail.price &&
+                  itemDetail.price.toLocaleString()
+                }원</td>
               </tr>
               <tr>
                 <td>상품 번호</td>
-                <td>1</td>
+                <td>{itemNum}</td>
               </tr>
               <tr>
                 <td>부위</td>
-                <td>부위명</td>
+                <td>{itemDetail.part}</td>
               </tr>
               <tr>
                 <td>원산지</td>
-                <td>원산지</td>
+                <td>{itemDetail.origin}</td>
               </tr>
               <tr>
                 <td>만족도</td>
-                <td>평균평점</td>
+                <td>{itemDetail.reviewAvg}</td>
               </tr>
             </tbody>
           </table>
@@ -67,7 +95,7 @@ const ProductDetail = () => {
           </ul>
         </div>
         <div className={styles.details}>
-          <Outlet />
+          <Outlet context={{itemDetail}} />
         </div>
       </div>
     </div>

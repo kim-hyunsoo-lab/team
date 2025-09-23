@@ -39,6 +39,11 @@ public class ItemController {
     return itemService.getItemList();
   }
 
+  //상품 상세 조회 api
+  @GetMapping("/{itemNum}")
+  public ItemDTO getItemDetail(@PathVariable("itemNum") int itemNum) {
+    return itemService.getItemDetail(itemNum);
+  }
 
 
 
