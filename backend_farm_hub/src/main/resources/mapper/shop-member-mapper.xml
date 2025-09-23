@@ -89,4 +89,10 @@
     WHERE MEM_ID = #{memId}
   </update>
 
+<!--  회원 정보 조회-->
+  <select id="selectMemberList" resultMap="member">
+    SELECT MEM_ID, MEM_NAME, MEM_TEL, MEM_EMAIL, MEM_ADDR, ADDR_DETAIL, JOIN_DATE
+    FROM SHOP_MEMBER
+  </select>
+
 </mapper>

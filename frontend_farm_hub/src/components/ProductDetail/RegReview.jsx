@@ -72,6 +72,7 @@ const RegReview = ({isOpenRegReview, onClose}) => {
     formData.append('rating', reviewData.rating);
     formData.append('content', reviewData.content);
     formData.append('memId', reviewData.memId);
+    formData.append('itemNum', reviewData.itemNum);
 
     if (!reviewData.title)
       {alert('리뷰 제목은 비워들 수 없습니다')}

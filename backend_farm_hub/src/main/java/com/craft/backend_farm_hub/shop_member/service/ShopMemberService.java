@@ -44,5 +44,10 @@ public class ShopMemberService {
     shopMemberMapper.renewalPw(shopMemberDTO);
   }
 
+  //회원정보 조회
+  public List<ShopMemberDTO> selectMemberList(){
+    return shopMemberMapper.selectMemberList();
+  }
+
 
 }

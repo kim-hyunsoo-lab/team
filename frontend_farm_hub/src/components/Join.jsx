@@ -59,16 +59,13 @@ const Join = ({isOpenJoin, onClose}) => {
         'memEmail': 
           e.target.name === 'firstEmail' 
           ? e.target.value + newShopMember.secondEmail
-          : newShopMember.firstEmail + e.target.value
-      })         
+          : newShopMember.firstEmail + e.target.value})         
     }
     // 이메일 이외의 항목 변경 시
     else (setNewShopMember({
       ...newShopMember,
-      [e.target.name]: e.target.value
-    }))
-  };
-
+      [e.target.name]: e.target.value}))
+    };
 
   // 회원가입 
   const regNewShopMember = () =>{     
@@ -131,8 +128,6 @@ const Join = ({isOpenJoin, onClose}) => {
     .catch(error=>console.log(error));
   }, []);
   
-  //console.log(newShopMember);
-
   return (
     <Modal
       isOpen={isOpenJoin}

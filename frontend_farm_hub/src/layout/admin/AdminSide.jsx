@@ -27,8 +27,12 @@ const AdminSide = () => {
         <p>회원정보조회</p>
         <ul>
           <li>
-            <span><i className="bi bi-person-lines-fill"></i></span>
-            회원정보
+            <NavLink to={`member-list`}>
+              <p>
+              <span><i className="bi bi-person-lines-fill"></i></span>
+              회원정보
+              </p>
+            </NavLink>
           </li>
           <li>
             <span><i className="bi bi-person-fill-gear"></i></span>

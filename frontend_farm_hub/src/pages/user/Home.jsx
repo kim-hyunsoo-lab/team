@@ -8,10 +8,7 @@ import axios from 'axios'
 import NewProductList from './products/NewProductList'
 
 const Home = ({newProducts}) => {
-
-  const nav = useNavigate();
-
-  
+  const nav = useNavigate();  
 
   return (
     <div className={styles.container}>

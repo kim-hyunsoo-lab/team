@@ -50,4 +50,12 @@ public class ShopMemberController {
   public void renewalPw(@RequestBody ShopMemberDTO shopMemberDTO) {
     shopMemberService.renewalPw(shopMemberDTO);
   }
+
+  //회원정보 조회
+  @GetMapping("/list")
+  public List<ShopMemberDTO> selectMemberList(){
+    return shopMemberService.selectMemberList();
+  }
+
+
 }
