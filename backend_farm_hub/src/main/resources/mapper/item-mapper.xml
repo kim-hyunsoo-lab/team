@@ -53,13 +53,24 @@
             ITEM.ITEM_NUM
             , ITEM_NAME
             , PRICE
+            , ATTACHED_IMG_NAME
+        FROM item INNER JOIN item_img IMG
+        ON item.ITEM_NUM = IMG.ITEM_NUM
+        WHERE IS_MAIN = 'Y'
+        ORDER BY REG_DATE DESC
+    </select>
+    <!--상품 상세 조회-->
+    <select id="getItemDetail" resultMap="items">
+        SELECT
+            ITEM.ITEM_NUM
+            , ITEM_NAME
+            , PRICE
             , PART
             , ORIGIN
             , ATTACHED_IMG_NAME
             , IS_MAIN
         FROM item INNER JOIN item_img IMG
         ON item.ITEM_NUM = IMG.ITEM_NUM
-        WHERE IS_MAIN = 'Y'
-        ORDER BY REG_DATE DESC
+        WHERE item.ITEM_NUM = #{itemNum}
     </select>
 </mapper>
