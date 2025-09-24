@@ -1,25 +1,26 @@
-import React from 'react'
-import MypageHeader from '../../layout/user/MypageHeader'
-import MypageSide from '../../layout/user/MypageSide'
-import { Outlet } from 'react-router'
+import React from "react";
+import MypageHeader from "../../layout/user/MypageHeader";
+import MypageSide from "../../layout/user/MypageSide";
+import { Outlet } from "react-router";
+import UserHeader from "../../layout/user/UserHeader";
+import styles from "./Mypage.module.css";
 
 const Mypage = () => {
   return (
-    <div>
+    <div className={styles.container}>
       <div>
-        <MypageHeader/>
+        <UserHeader />
       </div>
       <div>
         <div>
-          <MypageSide/>
+          <MypageSide />
         </div>
         <div>
-          <Outlet/>
+          <Outlet />
         </div>
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default Mypage
+export default Mypage;
