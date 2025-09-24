@@ -55,19 +55,33 @@
 	, REVIEW_NUM INT REFERENCES REVIEW (REVIEW_NUM) ON DELETE CASCADE #리뷰 번호
  ); 
  
+ 
+ 
  #라즈베리파이 관리자 기능(온,습도 센서를 이용한 fan 액츄에이터 구현)
  CREATE TABLE FAN_FUNCTION (
  	THV_ID INT PRIMARY KEY AUTO_INCREMENT
  	, TEMPERATURE FLOAT  	
  	, HUMIDITY FLOAT 
+ 	, AIR_QUALITY INT 
+ 	, CREATE_DATE DATETIME DEFAULT SYSDATE()
  );
+ 
+ 
+  #라즈베리파이 관리자 기능(조도센서를 이용한 LED 액츄에이터 구현)
+ CREATE TABLE illuminance_function(
+ 	IM_ID INT PRIMARY KEY AUTO_INCREMENT
+ 	, ILLUMINANCE INT
+ 	, CREATE_DATE DATETIME DEFAULT SYSDATE()
+ );
+
+ 
  
  #비밀번호 찾기용 질문 테이블
- CREATE TABLE FORGOTPW (
-  PW_KEY INT PRIMARY KEY AUTO_INCREMENT #질문 번호
-  , PW_QUESTION VARCHAR(50) NOT NULL #질문 내용 
+ CREATE TABLE forgotpw (
+ PW_KEY INT PRIMARY KEY AUTO_INCREMENT #질문 번호
+ , PW_QUESTION VARCHAR(50) NOT NULL #질문 내용 
  );
- 
+  
  
  #장바구니 테이블 
  CREATE TABLE SHOP_CART(
@@ -88,8 +102,6 @@
   , BUY_CNT INT #구매수량
   , ORDER_NUM INT #주문번호, 한 번에 여러 상품을 구매하면 동일한 주문번호를 가진다
  );
- 
- 
  
  
  
