@@ -3,15 +3,17 @@ import Button from '../../common/Button'
 import PageTitle from '../../common/PageTitle'
 import styles from './Home.module.css'
 import Select from '../../common/Select'
-import { useNavigate } from 'react-router'
+import { NavLink, useNavigate } from 'react-router'
 import axios from 'axios'
 import NewProductList from './products/NewProductList'
+import Menu from '../../components/Menu'
 
 const Home = ({newProducts}) => {
   const nav = useNavigate();  
 
   return (
     <div className={styles.container}>
+      <Menu />
       <div className={styles.new_product}>
         <PageTitle title='신상품' />
         <div className={`${styles.grid_div}`}>
@@ -22,7 +24,7 @@ const Home = ({newProducts}) => {
                 <div
                   className={styles.grid_content}
                   key={i}
-                  onClick={e => nav(`/product-detail/${newProduct.itemNum}`)}
+                  onClick={e => nav(`/product-detail/${newProduct.itemNum}/intro`)}
                 >
                   <div className={styles.grid_img}>
                     <img src={`http://localhost:8080/upload/${newProduct.imgList[0].attachedImgName}`} />

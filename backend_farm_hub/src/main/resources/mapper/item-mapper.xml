@@ -69,6 +69,9 @@
             , ORIGIN
             , ATTACHED_IMG_NAME
             , IS_MAIN
+            , ITEM_INTRO
+            , REG_DATE
+            , REVIEW_AVG
         FROM item INNER JOIN item_img IMG
         ON item.ITEM_NUM = IMG.ITEM_NUM
         WHERE item.ITEM_NUM = #{itemNum}
