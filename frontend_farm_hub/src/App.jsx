@@ -18,6 +18,8 @@ import RegProduct from './pages/admin/products/RegProduct'
 import RegReview from './components/ProductDetail/RegReview'
 import axios from 'axios'
 import MemberList from './pages/admin/MemberList'
+import Mypage from './pages/user/Mypage'
+import MemberInfo from './pages/user/products/MemberInfo'
 
 function App() {
 
@@ -56,6 +58,14 @@ function App() {
           </Route>
           <Route path='popular-product-list' element={ <PopularProductList />} />
           <Route path='discount-product-list' element={ <DiscountProductList />} />
+
+        </Route>
+
+        {/* 일반사용자 개인페이지 */}
+        <Route>
+          <Route path='/mypage' element={<Mypage/>}/>
+          <Route path='/memInfo' element={<MemberInfo/>}/>
+
         </Route>
 
         {/* 관리자 페이지 */}
