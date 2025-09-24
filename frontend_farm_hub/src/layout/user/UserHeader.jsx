@@ -56,39 +56,7 @@ const UserHeader = () => {
         <div className={styles.img_div} onClick={e => nav('/')}>헤더이미지</div>
        <Input />
       </div>
-      <div className={styles.menu}>
-        <ul>
-          <li>
-            <NavLink
-              to={'/new-product-list'}
-              className={({isActive}) => isActive ? styles.active : undefined}
-            >
-              <p>신상품</p>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to={'/popular-product-list'}
-              className={({isActive}) => isActive ? styles.active : undefined}
-            >
-              <p>인기상품</p>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to={'/discount-product-list'}
-              className={({isActive}) => isActive ? styles.active : undefined}
-            >
-              <p>할인상품</p>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink>
-              <p>기획전</p>
-            </NavLink>
-          </li>
-        </ul>
-      </div>
+      
     
     {/* 로그인 Modal */}
     <Login isOpenLogin={isOpenLogin}
