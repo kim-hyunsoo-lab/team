@@ -7,7 +7,7 @@ import Input from '../common/Input'
 import Button from '../common/Button'
 
 
-const RenewalPw = ({isOpenRenewalPw, onClose, memId}) => {
+const RenewalPw = ({isOpenRenewalPw, onClose, memId}) => {  
   const nav = useNavigate();
   const memPwRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]+$/;
 
@@ -30,9 +30,13 @@ const RenewalPw = ({isOpenRenewalPw, onClose, memId}) => {
 
   const RenewingPw = (e) => {
     if ((newPw.memPw) && (memPwRegex.test(newPw.memPw)) && (newPw.memPw === newPw.confirmPw)){
-      axios.put('/api/login ???', {'memId': memId, 'memPw': newPw.memPw})
+      axios.put('/api/members/renewalPw', {'memId': memId, 'memPw': newPw.memPw})
       .then(res => {
         alert('비밀번호가 변경되었습니다. 다시 로그인해주세요');
+        setNewPw({
+          'memPw': '',
+          'confirmPw': '' 
+        })
         onClose(); 
         nav('/');})
       .catch(e=>console.log(e))      
@@ -61,21 +65,24 @@ const RenewalPw = ({isOpenRenewalPw, onClose, memId}) => {
         break;
       }     
       return errorStr;        
-    }
-      
-  
+    }  
 
   return (
     <Modal isOpen={isOpenRenewalPw}
       title='Renewal Password'
       size='300px'    
-      onClose={onClose}
+      onClose={()=>{
+        onClose();
+        setNewPw({
+          'memPw': '',
+          'confirmPw': '' 
+        })
+      }}
     >
 
     <div className={styles.container}>
       <div>
-        <h5>아이디</h5>
-        {memId}        
+        <h5>아이디: {memId}</h5>              
       </div>
       <div>
         <h5>새 비밀번호</h5>

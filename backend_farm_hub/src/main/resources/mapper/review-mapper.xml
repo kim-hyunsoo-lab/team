@@ -5,31 +5,62 @@
 <!-- namespace에는 xml파일과 연결할 Mapper interface 파일명을 패키지를 포함하여 적어주세요 -->
 <mapper namespace="com.craft.backend_farm_hub.review.mapper.ReviewMapper">
 	<resultMap id="review" type="com.craft.backend_farm_hub.review.dto.ReviewDTO">
-    <id column="REVIEW_NUM" property="reviewNum" />
-    <result column="RATING" property="rating" />
-    <result column="TITLE" property="title" />
-    <result column="MEM_ID" property="memId" />
-    <result column="ITEM_NUM" property="itemNum" />
-    <result column="CONTENT" property="content" />
-    <result column="READ_CNT" property="readCnt" />
-    <result column="CREATE_DATE" property="createDate" />
-  </resultMap>
-  <!--리뷰 등록 쿼리-->
-  <insert id="regReview">
-    INSERT INTO REVIEW (
-      RATING
-      , TITLE
-      , MEM_ID
-      , ITEM_NUM
-      , CONTENT
-    ) VALUES (
-      #{rating}
-      , #{title}
-      , #{memId}
-      , #{itemNum}
-      , #{content}
-    )
-  </insert>
+        <id column="REVIEW_NUM" property="reviewNum" />
+        <result column="RATING" property="rating" />
+        <result column="TITLE" property="title" />
+        <result column="MEM_ID" property="memId" />
+        <result column="ITEM_NUM" property="itemNum" />
+        <result column="CONTENT" property="content" />
+        <result column="READ_CNT" property="readCnt" />
+        <result column="CREATE_DATE" property="createDate" />
+<!--        리뷰 하나에 이미지는 여러개-->
+        <collection property="reviewImgList" resultMap="reviewImg" />
+    </resultMap>
+
+    <resultMap id="reviewImg" type="com.craft.backend_farm_hub.review.dto.ReviewImgDTO">
+        <id column="REVIEW_IMG_NUM" property="reviewImgNum" />
+        <result column="REVIEW_ORIGIN_IMG_NAME" property="reviewOriginImgName" />
+        <result column="REVIEW_ATTACHED_IMG_NAME" property="reviewAttachedImgName" />
+        <result column="REVIEW_NUM" property="reviewNum" />
+    </resultMap>
+
+  <!--리뷰 등록-->
+    <insert id="regReview">
+        INSERT INTO REVIEW (
+          RATING
+          , TITLE
+          , MEM_ID
+          , ITEM_NUM
+          , CONTENT
+        ) VALUES (
+          #{rating}
+          , #{title}
+          , #{memId}
+          , #{itemNum}
+          , #{content}
+        )
+    </insert>
+
+    <!--    리뷰 이미지 등록-->
+    <insert id="insertReviewImgs">
+        INSERT INTO REVIEW_IMG(REVIEW_ORIGIN_IMG_NAME, REVIEW_ATTACHED_IMG_NAME, REVIEW_NUM)
+        VALUES
+        <foreach collection="reviewImgList" item="reviewImg" separator=",">
+            (#{reviewImg.reviewOriginImgName}, #{reviewImg.reviewAttachedImgName}, #{reviewImg.reviewNum})
+        </foreach>
+    </insert>
+
+    <!--    review 테이블에 데이터 삽입 시 저장되는 REVIEW_NUM을 조회하는 쿼리-->
+    <select id="getNextReviewNum" resultType="int">
+        SELECT IFNULL(MAX(REVIEW_NUM), 0) +1 FROM REVIEW
+    </select>
+
+
+
+
+
+
+
 </mapper>
 
 

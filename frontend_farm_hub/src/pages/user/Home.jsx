@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '../../common/Button'
 import PageTitle from '../../common/PageTitle'
 import styles from './Home.module.css'
 import Select from '../../common/Select'
 import { useNavigate } from 'react-router'
+import axios from 'axios'
+import NewProductList from './products/NewProductList'
 
-const Home = () => {
-  const [itemList, setItemList] = useState([1,2,3,4,5,6,7,8]);
-
-  const nav = useNavigate();
+const Home = ({newProducts}) => {
+  const nav = useNavigate();  
 
   return (
     <div className={styles.container}>
@@ -16,10 +16,22 @@ const Home = () => {
         <PageTitle title='신상품' />
         <div className={`${styles.grid_div}`}>
           {
-            itemList.map((e, i) => {
-              console.log(e);
+            newProducts.slice(0, 8).map((newProduct, i) => {
+              
               return (
-                <div key={i} onClick={e => nav(`/product-detail/${e}/intro`)}>{e}</div>
+                <div
+                  className={styles.grid_content}
+                  key={i}
+                  onClick={e => nav(`/product-detail/${newProduct.itemNum}`)}
+                >
+                  <div className={styles.grid_img}>
+                    <img src={`http://localhost:8080/upload/${newProduct.imgList[0].attachedImgName}`} />
+                  </div>
+                  <div className={styles.grid_info}>
+                    <h3>{newProduct.itemName}</h3>
+                    <p>{newProduct.price.toLocaleString()}원</p>
+                  </div>
+                </div>
               )
             })
           }
@@ -32,11 +44,7 @@ const Home = () => {
         <PageTitle title='인기상품' />
         <div className={`${styles.grid_div}`}>
           {
-            itemList.map((e, i) => {
-              return (
-                <div key={i}>{e}</div>
-              )
-            })
+            
           }
         </div>
         <p className={`${styles.more}`}>
@@ -46,13 +54,7 @@ const Home = () => {
       <div className={styles.discount_product}>
         <PageTitle title='할인상품' />
         <div className={`${styles.grid_div}`}>
-          {
-            itemList.map((e, i) => {
-              return (
-                <div key={i}>{e}</div>
-              )
-            })
-          }
+          
         </div>
         <p className={`${styles.more}`}>
           <span onClick={e => nav('/discount-product-list')}>더보기</span>

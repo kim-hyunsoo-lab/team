@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -15,19 +15,43 @@ import ProductIntro from './components/ProductDetail/ProductIntro'
 import QnA from './components/ProductDetail/QnA'
 import Review from './components/ProductDetail/Review'
 import RegProduct from './pages/admin/products/RegProduct'
+import RegReview from './components/ProductDetail/RegReview'
+import axios from 'axios'
+import MemberList from './pages/admin/MemberList'
 
 function App() {
+
+  //신상품 목록을 저장할 state 변수
+  const [newProducts, setNewProducts] = useState([]);
+
+  //신상품 목록 조회
+  useEffect(() => {
+    axios.get('/api/items')
+    .then(res => {
+      //console.log(res.data);
+      setNewProducts(res.data);
+    })
+    .catch(e => console.log(e));
+  }, []);
+  console.log(newProducts);
 
   return (
     <>
       <Routes>
         {/* 일반 사용자 페이지 */}
         <Route path='/' element={ <UserLayout /> }>
-          <Route path='' element={ <Home /> } />
-          <Route path='new-product-list' element={ <NewProductList />} />
+          <Route
+            path=''
+            element={ <Home newProducts={newProducts} /> }
+          />
+          <Route
+            path='new-product-list'
+            element={ <NewProductList newProducts={newProducts} /> }
+          />
+
           <Route path='product-detail/:itemNum' element={ <ProductDetail /> }>
             <Route path='intro' element={ <ProductIntro /> } />
-            <Route path='review' element={ <Review /> } />
+            {/* <Route path='review' element={ <Review /> } /> */}
             <Route path='qna' element={ <QnA /> } />
           </Route>
           <Route path='popular-product-list' element={ <PopularProductList />} />
@@ -36,7 +60,9 @@ function App() {
 
         {/* 관리자 페이지 */}
         <Route path='/admin' element={ <AdminLayout /> }>
-          <Route path='' element={ <AdminHome /> } />
+          <Route path='' element={ <AdminHome /> } />   
+          <Route path='reg-product' element={ <RegProduct /> } />   
+          <Route path='member-list' element={ <MemberList /> } />   
         </Route>
       </Routes>
     </>

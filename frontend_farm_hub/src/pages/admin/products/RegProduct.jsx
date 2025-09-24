@@ -27,7 +27,6 @@ const RegProduct = () => {
   // 서브 이미지들을 저장할 state 변수 
   const [subImgs, setSubImgs] = useState(null);
 
-
   const regNewProduct = (e) =>{
   // 만약 가격 데이터가 들어왔다면 천단위 구분기호를 제외한다  
   setNewProduct({
@@ -36,7 +35,7 @@ const RegProduct = () => {
     })
   }  
 
-  // 마운트 되거나, newBook이 변경되어 리렌더링되면 버튼 활성화 여부 변경
+  // 마운트 되거나, newProduct이 변경되어 리렌더링되면 버튼 활성화 여부 변경
   useEffect(()=>{
     // 버튼 활성화 여부를 판단하여 disable 변경 
     if (newProduct.itemName !== '' && newProduct.price !== ''){
@@ -44,13 +43,11 @@ const RegProduct = () => {
     else{setIsDisabledBtn(true);}
   }, [newProduct])
 
-
   //등록버튼 
   const [isDisabledBtn, setIsDisabledBtn] = useState(true);
-
   
 // 상품 등록 함수
-const regNewBookOn = (e)=>{
+const regNewItemOn = (e)=>{
   // 전달되는 데이터에 파일 데이터도 포함되어 있습니다, 라는 정의  
   const fileConfig = {'Content-Type': 'multipart/form-data'};
 
@@ -70,12 +67,11 @@ const regNewBookOn = (e)=>{
   formData.append('price', newProduct.price);
   formData.append('itemIntro', newProduct.itemIntro);
   formData.append('part', newProduct.part);
-  formData.append('origin', newProduct.origin);
-
-// ※이미지 등록 api 나중에 확인   
-  axios.post('/api/ ??? ', formData, fileConfig)
+  formData.append('origin', newProduct.origin);  
+ 
+  axios.post('/api/items', formData, fileConfig)
   .then(res=>{
-    alert('등록완')
+    alert('상품을 등록했습니다')
     setNewProduct({
     'itemName':'',
     'price':'',
@@ -85,8 +81,6 @@ const regNewBookOn = (e)=>{
   })
   .catch(e=>console.log(e))
   }
-
-  
   
   return (    
     <div className={styles.container}>
@@ -124,7 +118,7 @@ const regNewBookOn = (e)=>{
         <div>
           <p>상품 설명</p>
             <Textarea 
-            size='100%'
+            width='100%'
             name='itemIntro' 
             onChange={e=>regNewProduct(e)}
             value={newProduct.itemIntro}          
@@ -138,6 +132,7 @@ const regNewBookOn = (e)=>{
               name='part'
               onChange={e=>regNewProduct(e)}
               value={newProduct.part}>
+              <option value="">부위 선택</option>
               <option value="등심">등심</option>
               <option value="갈비">갈비</option>
               <option value="안심">안심</option>
@@ -191,7 +186,7 @@ const regNewBookOn = (e)=>{
         <div style={{'textAlign':'right'}}>
           <Button title='상품등록' 
             disabled={isDisabledBtn}
-            onClick={e=>regNewBookOn(e)}/>
+            onClick={e=>regNewItemOn(e)}/>
         </div>   
 
       </div>   
