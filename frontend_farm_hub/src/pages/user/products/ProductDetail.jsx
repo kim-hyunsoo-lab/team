@@ -90,7 +90,7 @@ const ProductDetail = () => {
               <NavLink
                 to={'qna'}
                 className={({isActive}) => isActive ? styles.active : undefined}
-              ><p>상품Q&amp;A</p></NavLink>
+              ><p>상품문의</p></NavLink>
             </li>
           </ul>
         </div>
