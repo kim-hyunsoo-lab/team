@@ -113,7 +113,7 @@ const Login = ({isOpenLogin, onClose}) => {
       <div>
       {/* 비밀번호 찾기 버튼 */}
       <Button 
-        onClick={e=>{onClose(), setIsOpenForgotPw(true)}}
+        onClick={e => {onClose(), setIsOpenForgotPw(true)}}
         size='100%'    
         title='Forgot Password'
         color='grey'
@@ -125,7 +125,6 @@ const Login = ({isOpenLogin, onClose}) => {
     {/* 비번찾기 Modal */}
     <ForgotPw isOpenForgotPw={isOpenForgotPw} 
       onClose={()=>setIsOpenForgotPw(false)}/>
-    
     </>
   )
 }

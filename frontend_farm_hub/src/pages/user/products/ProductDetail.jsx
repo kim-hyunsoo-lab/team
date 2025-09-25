@@ -4,6 +4,7 @@ import { NavLink, Outlet, useParams } from 'react-router'
 import styles from './ProductDetail.module.css'
 import axios from 'axios'
 import NewProductList from './NewProductList'
+import Button from '../../../common/Button'
 
 const ProductDetail = () => {
   const {itemNum} = useParams();
@@ -69,6 +70,22 @@ const ProductDetail = () => {
               </tr>
             </tbody>
           </table>
+          <div className={styles.btns}>
+            <Button
+              title='즐겨찾기'
+              color='gray'
+              size='100%'
+            />
+            <Button
+              title='장바구니'
+              size='100%'
+            />
+            <Button
+              title='구매하기'
+              color='green'
+              size='100%'
+            />
+          </div>
         </div>
       </div>
       <div className={styles.detail_div}>
@@ -90,7 +107,7 @@ const ProductDetail = () => {
               <NavLink
                 to={'qna'}
                 className={({isActive}) => isActive ? styles.active : undefined}
-              ><p>상품Q&amp;A</p></NavLink>
+              ><p>상품문의</p></NavLink>
             </li>
           </ul>
         </div>
