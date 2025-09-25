@@ -6,10 +6,41 @@
 <mapper namespace="com.craft.backend_farm_hub.qna.mapper.QnaMapper">
 	<resultMap id="qna" type="com.craft.backend_farm_hub.qna.dto.QnaDTO">
         <id column="QNA_NUM" property="qnaNum"/>
-        <result column="CONTENT" property="content"/>
-        <result column="QNA_DATE" property="qnaDate"/>
         <result column="ITEM_NUM" property="itemNum"/>
+        <result column="QNA_DATE" property="qnaDate"/>
+        <result column="CONTENT" property="content"/>
+        <association property="itemDTO" resultMap="ItemDTO"/>
     </resultMap>
+
+    <resultMap id="ItemDTO" type="com.craft.backend_farm_hub.item.dto.ItemDTO">
+        <result column="ITEM_NUM" property="itemNum" />
+        <result column="ITEM_NAME" property="itemName" />
+    </resultMap>
+
+    <!--상품 문의 내용 등록-->
+    <insert id="regQna">
+        INSERT INTO QNA(
+            CONTENT
+            , ITEM_NUM
+        ) VALUES (
+            #{content}
+            , #{itemNum}
+        )
+    </insert>
+
+    <!--상품 문의 내용 조회-->
+    <select id="getQnaList" resultMap="qna">
+        SELECT
+            QNA_NUM
+            , QNA_DATE
+            , CONTENT
+            , Q.ITEM_NUM
+            , ITEM_NAME
+        FROM QNA Q INNER JOIN ITEM I
+        ON Q.ITEM_NUM = I.ITEM_NUM
+        WHERE I.ITEM_NUM = #{itemNum}
+        ORDER BY QNA_NUM DESC
+    </select>
 </mapper>
 
 

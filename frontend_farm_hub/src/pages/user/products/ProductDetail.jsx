@@ -105,7 +105,7 @@ const ProductDetail = () => {
             </li>
             <li>
               <NavLink
-                to={'qna'}
+                to={`qna/${itemNum}`}
                 className={({isActive}) => isActive ? styles.active : undefined}
               ><p>상품문의</p></NavLink>
             </li>
