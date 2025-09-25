@@ -1,0 +1,25 @@
+.container{
+  border: 1px solid #dddddd;
+  padding: 12px 16px;
+}
+
+.header{
+  display: flex;
+  justify-content: space-between;
+}
+
+.header > p{
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.search_div{
+  margin-top: 10px;
+}
+
+.reg_QnA{
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
