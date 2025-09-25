@@ -5,8 +5,11 @@ import Input from '../../common/Input'
 import Textarea from '../../common/Textarea'
 import Button from '../../common/Button'
 import axios from 'axios'
+import { useOutletContext } from 'react-router'
 
 const RegReview = ({isOpenRegReview, onClose}) => {    
+  const { itemDetail } = useOutletContext();
+
   const loginInfo = sessionStorage.getItem('loginInfo')
   // JSON 객체 변환
   const memId = JSON.parse(loginInfo).memId;  
@@ -19,6 +22,13 @@ const RegReview = ({isOpenRegReview, onClose}) => {
     'memId': memId,
     'itemNum': ''
   });
+
+  useEffect(()=>{
+    setReviewData({
+      ...reviewData,
+      'itemNum': itemDetail.itemNum
+    })
+  }, [])
 
   const [errorMsg, setErrorMsg] = useState({
     'title' : '',
