@@ -20,4 +20,11 @@ public class ShopMemberDTO {
 
   //React에서 받아온 전화번호 배열
   private String[] memTelArr;
+
+  //구매 내역
+  private String purchase;
+
+
+
+
 }
