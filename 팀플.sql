@@ -103,6 +103,13 @@
   , ORDER_NUM INT #주문번호, 한 번에 여러 상품을 구매하면 동일한 주문번호를 가진다
  );
  
+ #Q&A 테이블
+ CREATE TABLE qna(
+ 	QNA_NUM INT PRIMARY KEY AUTO_INCREMENT
+ 	,	ITEM_NUM INT REFERENCES ITEM(ITEM_NUM)
+ 	,	QNA_DATE DATETIME DEFAULT SYSDATE()
+ 	,	CONTENT VARCHAR(300)
+ );
  
  
  

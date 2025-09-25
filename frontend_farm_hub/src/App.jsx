@@ -52,7 +52,7 @@ function App() {
           <Route path='product-detail/:itemNum' element={ <ProductDetail /> }>
             <Route path='intro' element={ <ProductIntro /> } />
             {/* <Route path='review' element={ <Review /> } /> */}
-            <Route path='qna' element={ <QnA /> } />
+            <Route path='qna/:itemNum' element={ <QnA /> } />
           </Route>
           <Route path='popular-product-list' element={ <PopularProductList />} />
           <Route path='discount-product-list' element={ <DiscountProductList />} />
