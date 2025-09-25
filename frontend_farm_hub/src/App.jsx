@@ -22,6 +22,7 @@ import Mypage from "./pages/user/Mypage";
 import MemberInfo from "./pages/user/products/Memberdel";
 import UserInfoUpdate from "./pages/user/products/UserInfoUpdate";
 import Memberdel from "./pages/user/products/Memberdel";
+import ShopCart from "./pages/ShopCart";
 
 function App() {
 
@@ -44,8 +45,8 @@ function App() {
 
           <Route path="product-detail/:itemNum" element={<ProductDetail />}>
             <Route path="intro" element={<ProductIntro />} />
-            <Route path='review' element={ <Review /> } />
-            <Route path="qna" element={<QnA />} />
+            {/* <Route path='review' element={ <Review /> } /> */}
+            <Route path='qna/:itemNum' element={ <QnA /> } />
           </Route>
           <Route path="popular-product-list" element={<PopularProductList />} />
           <Route
@@ -59,6 +60,7 @@ function App() {
         <Route path="/mypage" element={<Mypage />}>
           <Route path="/mypage/update" element={<UserInfoUpdate />} />
           <Route path="/mypage/memdel" element={<Memberdel />} />
+          <Route path="shop-cart" element={ <ShopCart /> } />
         </Route>
 
         {/* 관리자 페이지 */}
