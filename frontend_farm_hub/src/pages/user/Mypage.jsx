@@ -8,17 +8,14 @@ import styles from "./Mypage.module.css";
 const Mypage = () => {
   return (
     <div className={styles.container}>
-      <div>
+      <div className={styles.myheader}>
         <UserHeader />
       </div>
-      <div>
-        <div>
-          <MypageSide />
-        </div>
-        <div>
-          <Outlet />
-        </div>
+      <div className={styles.mybody}>
+        <MypageSide />
+        <Outlet />
       </div>
+
     </div>
   );
 };

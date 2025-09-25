@@ -19,8 +19,9 @@ import RegReview from "./components/ProductDetail/RegReview";
 import axios from "axios";
 import MemberList from "./pages/admin/MemberList";
 import Mypage from "./pages/user/Mypage";
-import MemberInfo from "./pages/user/products/MemberInfo";
+import MemberInfo from "./pages/user/products/Memberdel";
 import UserInfoUpdate from "./pages/user/products/UserInfoUpdate";
+import Memberdel from "./pages/user/products/Memberdel";
 
 function App() {
   //신상품 목록을 저장할 state 변수
@@ -62,11 +63,10 @@ function App() {
         </Route>
 
         {/* 일반사용자 개인페이지 */}
-        <Route>
-          <Route path="/mypage" element={<Mypage />}>
-            <Route path="/memInfo" element={<MemberInfo />} />
-            <Route path="/update" element={<UserInfoUpdate />} />
-          </Route>
+
+        <Route path="/mypage" element={<Mypage />}>
+          <Route path="/mypage/update" element={<UserInfoUpdate />} />
+          <Route path="/mypage/memdel" element={<Memberdel />} />
         </Route>
 
         {/* 관리자 페이지 */}

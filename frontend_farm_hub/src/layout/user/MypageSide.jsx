@@ -1,7 +1,10 @@
 import React from "react";
 import styles from "./MypageSide.module.css";
+import { useNavigate } from "react-router";
 
 const MypageSide = () => {
+  const nav = useNavigate();
+
   return (
     <div className={styles.container}>
       <div className={styles.category}>
@@ -47,7 +50,7 @@ const MypageSide = () => {
       <div className={styles.category}>
         <p>회원정보</p>
         <ul>
-          <li >
+          <li onClick={e => {nav('/mypage/update')}}>
             <p>
               <span>
                 <i className="bi bi-person-lines-fill"></i>
@@ -55,7 +58,7 @@ const MypageSide = () => {
               회원정보 수정
             </p>
           </li>
-          <li>
+          <li onClick={e => {nav('/mypage/memdel')}}>
             <p>
               <span>
                 <i className="bi bi-person-lines-fill"></i>
