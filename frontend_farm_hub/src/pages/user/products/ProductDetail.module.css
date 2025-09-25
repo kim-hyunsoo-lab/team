@@ -29,6 +29,17 @@
   margin: 10px;
 }
 
+.btns {
+  text-align: center;
+  display: flex;
+  margin-top: 100px;
+  gap: 10px;
+}
+
+.btns > button {
+  padding: 10px;
+}
+
 .detail_menu_div > ul {
   display: flex;
   margin: 20px 0px;
