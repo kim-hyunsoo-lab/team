@@ -26,7 +26,7 @@ public interface ShopMemberMapper {
   //비밀번호 변경
   public void renewalPw(ShopMemberDTO shopMemberDTO);
 
-  //회원정보 조회
-  public List<ShopMemberDTO> selectMemberList();
+  //멤버 목록 조회
+  public List<ShopMemberDTO> selectMembers();
 
 }

@@ -59,6 +59,7 @@
         WHERE IS_MAIN = 'Y'
         ORDER BY REG_DATE DESC
     </select>
+
     <!--상품 상세 조회-->
     <select id="getItemDetail" resultMap="items">
         SELECT

@@ -5,12 +5,11 @@ import PageTitle from '../../common/PageTitle'
 import dayjs from 'dayjs'
 
 const MemberList = () => {
-  const [memberList, setMemberList] = useState([]);
+  const [memberList, setMemberList] = useState([]);  
   
-  
-  useEffect(()=>{axios.get('/api/members/list')
+  useEffect(()=>{axios.get('/api/members/selectmembers')
     .then((res)=>{
-      console.log(res.data)      
+      console.log(res.data);      
       setMemberList(res.data);})
     .catch(error=>console.log(error));
     }, []);
@@ -23,9 +22,10 @@ const MemberList = () => {
         <table>
           <colgroup>
             <col width="10%" />
-            <col width="20%" />
-            <col width="10%" />
-            <col width="20%" />        
+            <col width="17%" />
+            <col width="14%" />
+            <col width="27%" />        
+            <col width="*%" />        
           </colgroup>
           <thead>
             <tr>
@@ -33,6 +33,7 @@ const MemberList = () => {
               <td>아이디</td>
               <td>이름</td>
               <td>가입일</td>
+              <td>구매 목록</td>
             </tr>
           </thead>
           <tbody>
@@ -45,11 +46,12 @@ const MemberList = () => {
             :
             memberList.map((e, i)=>{
               return(
-                <tr key={i}>
+                <tr data-details="test" key={i}>
                   <td>{memberList.length-i}</td>
                   <td>{e.memId}</td>
                   <td>{e.memName}</td>
-                  <td>{dayjs(e.joinDate).format('YYYY.MM.DD HH:mm')}</td>
+                  <td>{dayjs(e.joinDate).format('YYYY년 MM월 DD일')}</td>
+                  <td>{e.purchase}</td>
                 </tr>
               )
             })
