@@ -24,30 +24,22 @@ import UserInfoUpdate from "./pages/user/products/UserInfoUpdate";
 import Memberdel from "./pages/user/products/Memberdel";
 
 function App() {
-  //신상품 목록을 저장할 state 변수
-  const [newProducts, setNewProducts] = useState([]);
 
-  //신상품 목록 조회
-  useEffect(() => {
-    axios
-      .get("/api/items")
-      .then((res) => {
-        //console.log(res.data);
-        setNewProducts(res.data);
-      })
-      .catch((e) => console.log(e));
-  }, []);
-  console.log(newProducts);
 
   return (
     <>
       <Routes>
         {/* 일반 사용자 페이지 */}
-        <Route path="/" element={<UserLayout />}>
-          <Route path="" element={<Home newProducts={newProducts} />} />
+
+        <Route path='/' element={ <UserLayout /> }>
           <Route
-            path="new-product-list"
-            element={<NewProductList newProducts={newProducts} />}
+            path=''
+            element={ <Home /> }
+          />
+          <Route
+            path='new-product-list'
+            element={ <NewProductList /> }
+
           />
 
           <Route path="product-detail/:itemNum" element={<ProductDetail />}>
