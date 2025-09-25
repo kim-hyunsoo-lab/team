@@ -51,11 +51,10 @@ public class ShopMemberController {
     shopMemberService.renewalPw(shopMemberDTO);
   }
 
-  //회원정보 조회
-  @GetMapping("/list")
-  public List<ShopMemberDTO> selectMemberList(){
-    return shopMemberService.selectMemberList();
+  //멤버 목록 조회
+  @GetMapping("/selectmembers")
+  public List<ShopMemberDTO> selectMembers(){
+    return shopMemberService.selectMembers();
   }
-
 
 }

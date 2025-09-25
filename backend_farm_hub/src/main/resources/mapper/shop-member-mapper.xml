@@ -6,23 +6,26 @@
 <mapper namespace="com.craft.backend_farm_hub.shop_member.mapper.ShopMemberMapper">
   <!--멤버 resultMap-->
 	<resultMap id="member" type="com.craft.backend_farm_hub.shop_member.dto.ShopMemberDTO">
-    <id column="MEM_ID" property="memId" />
-    <result column="MEM_PW" property="memPw" />
-    <result column="MEM_NAME" property="memName" />
-    <result column="MEM_TEL" property="memTel" />
-    <result column="MEM_EMAIL" property="memEmail" />
-    <result column="MEM_ADDR" property="memAddr" />
-    <result column="ADDR_DETAIL" property="addrDetail" />
-    <result column="PW_KEY" property="pwKey" />
-    <result column="PW_ANSWER" property="pwAnswer" />
-    <result column="MEM_ROLE" property="memRole" />
-    <result column="JOIN_DATE" property="joinDate" />
-  </resultMap>
+      <id column="MEM_ID" property="memId" />
+      <result column="MEM_PW" property="memPw" />
+      <result column="MEM_NAME" property="memName" />
+      <result column="MEM_TEL" property="memTel" />
+      <result column="MEM_EMAIL" property="memEmail" />
+      <result column="MEM_ADDR" property="memAddr" />
+      <result column="ADDR_DETAIL" property="addrDetail" />
+      <result column="PW_KEY" property="pwKey" />
+      <result column="PW_ANSWER" property="pwAnswer" />
+      <result column="MEM_ROLE" property="memRole" />
+      <result column="JOIN_DATE" property="joinDate" />
+<!--      구매내역-->
+      <result column="PURCHASE" property="purchase" />
+    </resultMap>
+
   <!--비밀번호 찾기 질문 resultMap-->
-  <resultMap id="question" type="com.craft.backend_farm_hub.shop_member.dto.ForgotPwDTO">
-    <id column="PW_KEY" property="pwKey" />
-    <result column="PW_QUESTION" property="pwQuestion" />
-  </resultMap>
+    <resultMap id="question" type="com.craft.backend_farm_hub.shop_member.dto.ForgotPwDTO">
+      <id column="PW_KEY" property="pwKey" />
+      <result column="PW_QUESTION" property="pwQuestion" />
+    </resultMap>
 
 <!--회원등록 쿼리문-->
   <insert id="regMember">
@@ -89,10 +92,20 @@
     WHERE MEM_ID = #{memId}
   </update>
 
-<!--  회원 정보 조회-->
-  <select id="selectMemberList" resultMap="member">
-    SELECT MEM_ID, MEM_NAME, MEM_TEL, MEM_EMAIL, MEM_ADDR, ADDR_DETAIL, JOIN_DATE
-    FROM SHOP_MEMBER
+<!--  멤버 및 구매 목록 조회-->
+  <select id="selectMembers" resultMap="member">
+    SELECT SHOP_MEMBER.MEM_ID, MEM_NAME, JOIN_DATE, MEM_EMAIL
+    , IFNULL (CASE COUNT(ORDER_NUM-1)
+    WHEN 0 THEN MAX((SELECT ITEM_NAME FROM item WHERE SHOP_BUY.ITEM_NUM = item.ITEM_NUM))
+    ELSE
+    CONCAT (MAX((SELECT ITEM_NAME FROM item WHERE SHOP_BUY.ITEM_NUM = item.ITEM_NUM)), ' 외 ',  COUNT(ORDER_NUM)-1, '건')
+    END, '구매 내역 없음') AS PURCHASE
+    FROM shop_member LEFT OUTER JOIN SHOP_BUY
+    ON SHOP_MEMBER.MEM_ID = SHOP_BUY.MEM_ID
+    GROUP BY MEM_ID
+    ORDER BY JOIN_DATE DESC
   </select>
+
+
 
 </mapper>

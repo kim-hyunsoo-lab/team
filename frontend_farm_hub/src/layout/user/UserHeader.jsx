@@ -36,8 +36,7 @@ const UserHeader = () => {
               <li>
                 <span>{loginInfoData.memId}님 환영합니다</span>
               </li>
-              <li>장바구니</li>
-              <li>주문/배송조회</li>
+              <li onClick={e => {nav('/mypage')}}>마이페이지</li>
               <li onClick={e => {sessionStorage.removeItem('loginInfo'); nav(`/`);}}>로그아웃
 
               </li>

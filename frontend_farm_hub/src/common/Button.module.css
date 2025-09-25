@@ -37,6 +37,15 @@
   transition: all 1s;
 }
 
+.gray {
+  background-color: gray;
+}
+
+.gray:hover {
+  background-color: rgb(105, 105, 105);
+  transition: all 1s;
+}
+
 /* 비활성화 되었을 때  */
 .disabled{
   opacity: 0.5;
