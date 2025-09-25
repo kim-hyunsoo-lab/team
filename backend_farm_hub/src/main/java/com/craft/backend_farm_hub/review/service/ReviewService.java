@@ -29,4 +29,11 @@ public class ReviewService {
   public void regReviewNoImg (ReviewDTO reviewDTO){
     reviewMapper.regReview(reviewDTO);
   }
+
+  // 상품별 리뷰 목록 조회
+  public List<ReviewDTO> getReviewListforItem(int itemNum){
+    return reviewMapper.getReviewListforItem(itemNum);
+  }
+
+
 }

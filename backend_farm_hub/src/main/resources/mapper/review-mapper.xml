@@ -54,4 +54,14 @@
     <select id="getNextReviewNum" resultType="int">
         SELECT IFNULL(MAX(REVIEW_NUM), 0) +1 FROM REVIEW
     </select>
+
+<!--    상품별 리뷰 목록 조회-->
+    <select id="getReviewListforItem" resultMap="review">
+        SELECT REVIEW_NUM, RATING, TITLE, MEM_ID, ITEM_NUM, CONTENT, READ_CNT, CREATE_DATE
+        FROM REVIEW
+        WHERE ITEM_NUM = #{itemNum}
+        ORDER BY CREATE_DATE DESC
+    </select>
+
+
 </mapper>

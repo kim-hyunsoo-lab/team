@@ -10,7 +10,6 @@ const ProductDetail = () => {
   const nav = useNavigate();
 
   const {itemNum} = useParams();
-  //console.log(itemNum);
 
   const [itemDetail, setItemDetail] = useState({});
 
@@ -53,11 +52,7 @@ const ProductDetail = () => {
                   itemDetail.price &&
                   itemDetail.price.toLocaleString()
                 }원</td>
-              </tr>
-              <tr>
-                <td>상품 번호</td>
-                <td>{itemNum}</td>
-              </tr>
+              </tr>              
               <tr>
                 <td>부위</td>
                 <td>{itemDetail.part}</td>

@@ -1,14 +1,33 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '../../common/Button'
 import RegReview from './RegReview'
 import styles from './Review.module.css'
+import ProductDetail from '../../pages/user/products/ProductDetail'
+import { useOutletContext } from 'react-router'
+import axios from 'axios'
 
 const Review = () => {
+  const { itemDetail } = useOutletContext();
+
   //후기 모달창 여는지 여부
   const [isOpenRegReview, setIsOpenRegReview] = useState(false);
 
   //리뷰 내용을 보이게 하는 여부를 저장할 state 변수
   const [isShowContent, setIsShowContent] = useState(false);
+
+  const [reviewList, setReviewList] = useState([])
+
+
+  useEffect(()=>{
+    axios.get(`/api/reviews/getList/${itemDetail.itemNum}`)
+    .then(res=>{
+      console.log(res.data);
+      setReviewList(res.data);
+    })    
+    .catch(e=>console.log(e));
+  }, [])
+
+  
 
   return (
     <div>
@@ -48,7 +67,7 @@ const Review = () => {
         </table>
       </div>
       {/* 리뷰작성 모달창 */}
-      <RegReview
+      <RegReview        
         isOpenRegReview={isOpenRegReview}
         onClose={() => setIsOpenRegReview(false)}
       />
