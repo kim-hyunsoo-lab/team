@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import PageTitle from '../../../common/PageTitle'
-import { NavLink, Outlet, useParams } from 'react-router'
+import { NavLink, Outlet, useNavigate, useParams } from 'react-router'
 import styles from './ProductDetail.module.css'
 import axios from 'axios'
 import NewProductList from './NewProductList'
 import Button from '../../../common/Button'
 
 const ProductDetail = () => {
+  const nav = useNavigate();
+
   const {itemNum} = useParams();
   //console.log(itemNum);
 
@@ -68,6 +70,10 @@ const ProductDetail = () => {
                 <td>만족도</td>
                 <td>{itemDetail.reviewAvg}</td>
               </tr>
+              <tr>
+                <td>판매자</td>
+                <td>{itemDetail.seller}</td>
+              </tr>
             </tbody>
           </table>
           <div className={styles.btns}>
@@ -79,6 +85,7 @@ const ProductDetail = () => {
             <Button
               title='장바구니'
               size='100%'
+              onClick={e => {}}
             />
             <Button
               title='구매하기'

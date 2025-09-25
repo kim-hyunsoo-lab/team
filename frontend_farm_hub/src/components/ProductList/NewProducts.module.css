@@ -4,7 +4,7 @@
 }
 
 .grid_content {
-  height: 350px;
+  height: 400px;
   margin: 10px;
   padding: 15px;
   background-color: rgb(255, 240, 220);
@@ -28,7 +28,11 @@
 }
 
 .grid_info {
-  margin-top: 15px;
+  margin-top: 10px;
   height: 20%;
   text-align: center;
+}
+
+.grid_info > * {
+  margin: 0px;
 }

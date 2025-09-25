@@ -22,6 +22,7 @@ import Mypage from "./pages/user/Mypage";
 import MemberInfo from "./pages/user/products/Memberdel";
 import UserInfoUpdate from "./pages/user/products/UserInfoUpdate";
 import Memberdel from "./pages/user/products/Memberdel";
+import ShopCart from "./pages/ShopCart";
 
 function App() {
 
@@ -63,6 +64,7 @@ function App() {
         <Route path="/mypage" element={<Mypage />}>
           <Route path="/mypage/update" element={<UserInfoUpdate />} />
           <Route path="/mypage/memdel" element={<Memberdel />} />
+          <Route path="shop-cart" element={ <ShopCart /> } />
         </Route>
 
         {/* 관리자 페이지 */}

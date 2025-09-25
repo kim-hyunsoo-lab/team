@@ -14,5 +14,21 @@
         <!--        장바구니에는 상품이 하나 들어가있다 -->
         <association property="itemDTO" resultMap="com.craft.backend_farm_hub.item.mapper.ItemMapper.items" />
     </resultMap>
-	
+    <insert id="insertCart">
+        INSERT INTO SHOP_CART (
+            ITEM_NUM
+            , CART_CNT
+            , MEM_ID
+            , TOTAL_PRICE
+        ) VALUES (
+            #{itemNum}
+            , #{cartCnt}
+            , #{memId}
+            , (
+                SELECT PRICE
+                FROM ITEM
+                WHERE ITEM_NUM = #{itemNum}
+            ) * #{cartCnt}
+        )
+    </insert>
 </mapper>
