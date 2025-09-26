@@ -7,29 +7,15 @@ import Button from '../../common/Button'
 import axios from 'axios'
 import { useOutletContext } from 'react-router'
 
-const RegReview = ({isOpenRegReview, onClose}) => {    
-  const { itemDetail } = useOutletContext();
-
-  const loginInfo = sessionStorage.getItem('loginInfo')
-  // JSON 객체 변환
-  const memId = JSON.parse(loginInfo).memId;  
-
+const RegReview = ({reload, itemNum, isOpenRegReview, onClose}) => { 
+  
   //입력한 리뷰 내용을 저장할 state변수
   const [reviewData, setReviewData] = useState({
     'title' : '',
     'rating' : '',
     'content' : '',
-    'memId': memId,
-    'itemNum': ''
   });
-
-  useEffect(()=>{
-    setReviewData({
-      ...reviewData,
-      'itemNum': itemDetail.itemNum
-    })
-  }, [])
-
+  
   const [errorMsg, setErrorMsg] = useState({
     'title' : '',
     'rating' : '',
@@ -50,7 +36,6 @@ const RegReview = ({isOpenRegReview, onClose}) => {
 
   const handleErrorMsg = (e) => {
     let errorStr = '';
-
     switch(e.target.name){
       case 'title':
         if(!e.target.value)
@@ -70,8 +55,6 @@ const RegReview = ({isOpenRegReview, onClose}) => {
     return errorStr;
   }
 
-  console.log(reviewData)
-
   const regNewReview = (e) =>{
     const fileConfig = {'Content-Type': 'multipart/form-data'};
     const formData = new FormData();
@@ -81,8 +64,8 @@ const RegReview = ({isOpenRegReview, onClose}) => {
     formData.append('title', reviewData.title);
     formData.append('rating', reviewData.rating);
     formData.append('content', reviewData.content);
-    formData.append('memId', reviewData.memId);
-    formData.append('itemNum', reviewData.itemNum);
+    formData.append('memId', JSON.parse(sessionStorage.getItem('loginInfo')).memId);
+    formData.append('itemNum', itemNum);
 
     if (!reviewData.title)
       {alert('리뷰 제목은 비워들 수 없습니다')}
@@ -104,8 +87,8 @@ const RegReview = ({isOpenRegReview, onClose}) => {
         'title' : '',
         'rating' : '',
         'content' : ''
-      })            
-      onClose();})
+      })  
+       onClose();})
       .catch(e=>console.log(e))
     )
   }
@@ -118,7 +101,10 @@ const RegReview = ({isOpenRegReview, onClose}) => {
     else if (!reviewData.content)
       {alert('리뷰 내용은 비워둘 수 없습니다')}
     else(
-      axios.post('/api/reviews/noimg', reviewData)
+      axios.post('/api/reviews/noimg', {
+        ...reviewData, 
+        'memId': JSON.parse(sessionStorage.getItem('loginInfo')).memId,
+        'itemNum': itemNum})
       .then(res=>{
       alert('리뷰를 등록했습니다')
       setReviewData({
@@ -137,12 +123,10 @@ const RegReview = ({isOpenRegReview, onClose}) => {
     )
   }
 
-
   return (
     <Modal
       isOpen={isOpenRegReview}
-      onClose={() =>{
-        onClose();
+      onClose={() =>{        
         setReviewData({
         'title' : '',
         'rating' : '',
@@ -155,7 +139,10 @@ const RegReview = ({isOpenRegReview, onClose}) => {
         'rating' : '',
         'content' : ''
         })
+
         setIsDisabledBtn(true)
+
+        onClose();
       }}
     >
       <div className={styles.container}>

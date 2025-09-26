@@ -33,7 +33,7 @@ const MypageSide = () => {
               <span>
                 <i className="bi bi-file-earmark-text-fill"></i>
               </span>
-              장바구니
+            장바구니
             </p>
           </li>
         </ul>
