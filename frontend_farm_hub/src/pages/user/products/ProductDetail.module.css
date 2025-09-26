@@ -42,6 +42,10 @@
   padding: 10px;
 }
 
+.cart_cnt > input {
+  padding: 10px;
+}
+
 .detail_menu_div > ul {
   display: flex;
   margin: 20px 0px;

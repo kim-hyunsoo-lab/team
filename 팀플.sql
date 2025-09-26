@@ -11,7 +11,7 @@
   , PW_ANSWER VARCHAR(20) NOT NULL #비밀번호 찾기 질문 답변    
   , MEM_ROLE VARCHAR(14) NOT NULL DEFAULT 'USER'     #관리자는 ADMIN
   , JOIN_DATE DATETIME DEFAULT SYSDATE()
- );   
+  ); 
  
  #상품정보
  CREATE TABLE ITEM (
@@ -100,10 +100,10 @@
  CREATE TABLE qna(
  	QNA_NUM INT PRIMARY KEY AUTO_INCREMENT
  	,	ITEM_NUM INT REFERENCES ITEM(ITEM_NUM)
+ 	,	MEM_ID VARCHAR(20) REFERENCES SHOP_MEMBER(MEM_ID)
  	,	QNA_DATE DATETIME DEFAULT SYSDATE()
  	,	CONTENT VARCHAR(300)
  ); 
- 
  
  #################################################
  ### 이 워크시트에 CREATE 문을 다 작성해주세요 ###

@@ -3,8 +3,9 @@ import PageTitle from '../../../common/PageTitle'
 import { NavLink, Outlet, useNavigate, useParams } from 'react-router'
 import styles from './ProductDetail.module.css'
 import axios from 'axios'
-import NewProductList from './NewProductList'
 import Button from '../../../common/Button'
+import Input from '../../../common/Input'
+import Login from '../../../components/login'
 
 const ProductDetail = () => {
   const nav = useNavigate();
@@ -12,6 +13,44 @@ const ProductDetail = () => {
   const {itemNum} = useParams();
 
   const [itemDetail, setItemDetail] = useState({});
+
+  // 로그인 Modal 창 숨김/보이기 여부
+  const [isOpenLogin, setIsOpenLogin] = useState(false);
+
+  //장바구니에 담을 수량
+  const [cartCnt, setCartCnt] = useState(1);
+  
+  //로그인 데이터
+  const loginData = sessionStorage.getItem('loginInfo');
+
+  console.log(JSON.parse(loginData));
+
+
+  //장바구니 버튼 클릭했을 때 실행되는 함수
+  const insertCart = () => {
+    JSON.parse(loginData) === null
+    ?
+    //로그인 안 되어 있을 때 alert 띄우고 로그인 모달창 열림
+    (
+      alert('장바구니는 로그인이 필요한 서비스입니다.'),setIsOpenLogin(true)
+    )
+    :
+    axios.post('/api/carts', {
+      itemNum,
+      cartCnt,
+      memId : JSON.parse(loginData).memId,
+    })
+    .then(res => {
+      console.log(res.data);
+      const changePage = confirm('장바구니에 상품을 담았습니다.\n장바구니 페이지로 이동할까요?');
+      changePage ? nav('/mypage/shop-cart') : undefined
+    })
+    .catch(e => {
+      console.log(e);
+      alert(e.response.data);
+    });
+  }
+
 
   useEffect(() => {
     axios.get(`/api/items/${itemNum}`)
@@ -73,16 +112,25 @@ const ProductDetail = () => {
               </tr>
             </tbody>
           </table>
+          <div className={styles.cart_cnt}>
+            <Input
+              size='100%'
+              type='number'
+              value={cartCnt}
+              min='1'
+              onChange={e => setCartCnt(e.target.value)}
+            />
+          </div>
           <div className={styles.btns}>
             <Button
-              title='즐겨찾기'
+              title='찜한상품'
               color='gray'
               size='100%'
             />
             <Button
               title='장바구니'
               size='100%'
-              onClick={e => {}}
+              onClick={e => insertCart()}
             />
             <Button
               title='구매하기'
@@ -119,6 +167,10 @@ const ProductDetail = () => {
           <Outlet context={{itemDetail}} />
         </div>
       </div>
+      {/* 로그인 Modal */}
+      <Login isOpenLogin={isOpenLogin}
+        onClose={()=>setIsOpenLogin(false)}
+      />
     </div>
   )
 }

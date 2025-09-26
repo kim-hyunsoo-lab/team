@@ -5,10 +5,11 @@
 <!-- namespace에는 xml파일과 연결할 Mapper interface 파일명을 패키지를 포함하여 적어주세요 -->
 <mapper namespace="com.craft.backend_farm_hub.qna.mapper.QnaMapper">
 	<resultMap id="qna" type="com.craft.backend_farm_hub.qna.dto.QnaDTO">
-        <id column="QNA_NUM" property="qnaNum"/>
-        <result column="ITEM_NUM" property="itemNum"/>
-        <result column="QNA_DATE" property="qnaDate"/>
-        <result column="CONTENT" property="content"/>
+        <id column="QNA_NUM"        property="qnaNum"/>
+        <result column="ITEM_NUM"   property="itemNum"/>
+        <result column="MEM_ID"     property="memId"/>
+        <result column="QNA_DATE"   property="qnaDate"/>
+        <result column="CONTENT"    property="content"/>
         <association property="itemDTO" resultMap="ItemDTO"/>
     </resultMap>
 
@@ -22,9 +23,11 @@
         INSERT INTO QNA(
             CONTENT
             , ITEM_NUM
+            , MEM_ID
         ) VALUES (
             #{content}
             , #{itemNum}
+            , #{memId}
         )
     </insert>
 
