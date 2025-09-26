@@ -56,7 +56,6 @@ function App() {
         </Route>
 
         {/* 일반사용자 개인페이지 */}
-
         <Route path="/mypage" element={<Mypage />}>
           <Route path="/mypage/update" element={<UserInfoUpdate />} />
           <Route path="/mypage/memdel" element={<Memberdel />} />

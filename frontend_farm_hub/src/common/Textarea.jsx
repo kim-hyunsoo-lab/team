@@ -1,7 +1,12 @@
 import React from 'react'
 import styles from './Textarea.module.css'
 
-const Textarea = ({width='200px', height=5, ...props}) => {
+const Textarea = ({
+  width='200px', 
+  height=5,
+  ...props
+}) => {
+
   return (
     <textarea
       style={{
