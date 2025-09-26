@@ -50,7 +50,11 @@ const MypageSide = () => {
       <div className={styles.category}>
         <p>회원정보</p>
         <ul>
-          <li onClick={e => {nav('/mypage/update')}}>
+          <li
+            onClick={(e) => {
+              nav("/mypage/update");
+            }}
+          >
             <p>
               <span>
                 <i className="bi bi-person-lines-fill"></i>
@@ -58,7 +62,11 @@ const MypageSide = () => {
               회원정보 수정
             </p>
           </li>
-          <li onClick={e => {nav('/mypage/memdel')}}>
+          <li
+            onClick={(e) => {
+              nav("/mypage/memdel");
+            }}
+          >
             <p>
               <span>
                 <i className="bi bi-person-lines-fill"></i>

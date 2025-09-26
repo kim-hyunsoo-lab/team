@@ -24,23 +24,14 @@ import UserInfoUpdate from "./pages/user/products/UserInfoUpdate";
 import Memberdel from "./pages/user/products/Memberdel";
 
 function App() {
-
-
   return (
     <>
       <Routes>
         {/* 일반 사용자 페이지 */}
 
-        <Route path='/' element={ <UserLayout /> }>
-          <Route
-            path=''
-            element={ <Home /> }
-          />
-          <Route
-            path='new-product-list'
-            element={ <NewProductList /> }
-
-          />
+        <Route path="/" element={<UserLayout />}>
+          <Route path="" element={<Home />} />
+          <Route path="new-product-list" element={<NewProductList />} />
 
           <Route path="product-detail/:itemNum" element={<ProductDetail />}>
             <Route path="intro" element={<ProductIntro />} />

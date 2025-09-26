@@ -1,5 +1,4 @@
 import React from "react";
-import MypageHeader from "../../layout/user/MypageHeader";
 import MypageSide from "../../layout/user/MypageSide";
 import { Outlet } from "react-router";
 import UserHeader from "../../layout/user/UserHeader";
@@ -15,7 +14,6 @@ const Mypage = () => {
         <MypageSide />
         <Outlet />
       </div>
-
     </div>
   );
 };

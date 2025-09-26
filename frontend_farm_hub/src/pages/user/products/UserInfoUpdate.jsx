@@ -5,15 +5,18 @@ import styles from "./UserInfoUpdate.module.css";
 import axios from "axios";
 
 const UserInfoUpdate = () => {
-  //고객 정보 중 이름, 아이디를 조회하는 state 변수
-  const [memInfo, setmemInfo] = useState([]);
+  //데이터베이스에서 회원 정보를 조회 -> 우선 로그인한 회원 id가 있어야함
+  const data = sessionStorage.getItem("loginInfo");
+  const userName = JSON.parse(sessionStorage.getItem("memName"));
+  const userId = JSON.parse(sessionStorage.getItem("memId"));
+
+  console.log(data);
 
   useEffect(() => {
     axios
-      .get("/api/members/list")
+      .get("/api/members/selectmembers")
       .then((res) => {
         console.log(res.data);
-        setmemInfo(res.data);
       })
       .catch((e) => console.log(e));
   }, []);
@@ -37,11 +40,11 @@ const UserInfoUpdate = () => {
             <tbody>
               <tr>
                 <td>이름</td>
-                <td>{memInfo.memName}</td>
+                <td>{userName}</td>
               </tr>
               <tr>
                 <td>아이디</td>
-                <td>(데이터 조회)</td>
+                <td>{userId}</td>
               </tr>
               <tr>
                 <td>비밀번호</td>
