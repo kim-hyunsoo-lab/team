@@ -22,6 +22,8 @@ const ProductDetail = () => {
     .catch(e => console.log(e));
   }, []);
 
+  const [reviewList, setReviewList] = useState([]) 
+
   return (
     <div className={styles.container}>
       <PageTitle title={'상품 상세정보'} size='250px' />
@@ -42,8 +44,8 @@ const ProductDetail = () => {
           <h1>{itemDetail.itemName}</h1>
           <table className={styles.main_info_table}>
             <colgroup>
-              <col width={'20%'} />
-              <col width={'80%'} />
+              <col width={'22%'} />
+              <col width={'78%'} />
             </colgroup>
             <tbody>
               <tr>
@@ -62,8 +64,8 @@ const ProductDetail = () => {
                 <td>{itemDetail.origin}</td>
               </tr>
               <tr>
-                <td>만족도</td>
-                <td>{itemDetail.reviewAvg}</td>
+                <td>만족도 평균</td>
+                <td><i className='bi bi-star-fill' />{itemDetail.reviewAvg}</td>
               </tr>
               <tr>
                 <td>판매자</td>
@@ -101,7 +103,7 @@ const ProductDetail = () => {
             </li>
             <li>
               <NavLink
-                to={'review'}
+                to={`review/${itemNum}`}
                 className={({isActive}) => isActive ? styles.active : undefined}
               ><p>이용후기</p></NavLink>
             </li>

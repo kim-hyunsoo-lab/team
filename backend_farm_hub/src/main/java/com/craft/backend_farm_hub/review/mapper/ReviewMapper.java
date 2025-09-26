@@ -17,7 +17,11 @@ public interface ReviewMapper {
   //  reviewNum 조회
   public int getNextReviewNum();
 
+  // 리뷰 등록시 상품 평점 변경
+  public void updateRating(int itemNum);
+
   // 상품별 리뷰 목록 조회
   public List<ReviewDTO> getReviewListforItem(int itemNum);
+
 
 }

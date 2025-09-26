@@ -11,8 +11,7 @@
   , PW_ANSWER VARCHAR(20) NOT NULL #비밀번호 찾기 질문 답변    
   , MEM_ROLE VARCHAR(14) NOT NULL DEFAULT 'USER'     #관리자는 ADMIN
   , JOIN_DATE DATETIME DEFAULT SYSDATE()
- );  
- 
+ );   
  
  #상품정보
  CREATE TABLE ITEM (
@@ -21,7 +20,7 @@
  	, PRICE INT NOT NULL #가격
  	, ITEM_INTRO VARCHAR(500) #상품 소개
  	, PART VARCHAR(10) #부위
- 	, REVIEW_AVG DOUBLE #평균 평점
+ 	, REVIEW_AVG DOUBLE DEFAULT 0 #평균 평점
  	, ORIGIN VARCHAR(15) #원산지
  	, REG_DATE DATETIME DEFAULT SYSDATE() #상품 등록일
  );
@@ -46,7 +45,6 @@
  	, READ_CNT INT DEFAULT 0  #조회수
  	, CREATE_DATE DATETIME DEFAULT SYSDATE() #등록일
  ); 
-
   
  #평점 이미지 등록 테이블
  CREATE TABLE REVIEW_IMG (
@@ -54,9 +52,7 @@
 	, REVIEW_ORIGIN_IMG_NAME VARCHAR(100) #원본 파일명
 	, REVIEW_ATTACHED_IMG_NAME VARCHAR(100) #첨부된 파일명
 	, REVIEW_NUM INT REFERENCES REVIEW (REVIEW_NUM) ON DELETE CASCADE #리뷰 번호
- ); 
- 
- 
+ );  
  
  #라즈베리파이 관리자 기능(온,습도 센서를 이용한 fan 액츄에이터 구현)
  CREATE TABLE FAN_FUNCTION (
@@ -65,24 +61,20 @@
  	, HUMIDITY FLOAT 
  	, AIR_QUALITY INT 
  	, CREATE_DATE DATETIME DEFAULT SYSDATE()
- );
- 
+ ); 
  
   #라즈베리파이 관리자 기능(조도센서를 이용한 LED 액츄에이터 구현)
  CREATE TABLE illuminance_function(
  	IM_ID INT PRIMARY KEY AUTO_INCREMENT
  	, ILLUMINANCE INT
  	, CREATE_DATE DATETIME DEFAULT SYSDATE()
- );
-
- 
+ ); 
  
  #비밀번호 찾기용 질문 테이블
  CREATE TABLE forgotpw (
  PW_KEY INT PRIMARY KEY AUTO_INCREMENT #질문 번호
  , PW_QUESTION VARCHAR(50) NOT NULL #질문 내용 
- );
-  
+ );  
  
  #장바구니 테이블 
  CREATE TABLE SHOP_CART(
@@ -110,12 +102,8 @@
  	,	ITEM_NUM INT REFERENCES ITEM(ITEM_NUM)
  	,	QNA_DATE DATETIME DEFAULT SYSDATE()
  	,	CONTENT VARCHAR(300)
- );
+ ); 
  
-
-
-
-
  
  #################################################
  ### 이 워크시트에 CREATE 문을 다 작성해주세요 ###

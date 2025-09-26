@@ -21,13 +21,17 @@ public class ReviewService {
     for (ReviewImgDTO dto : reviewImgList){
       dto.setReviewNum(nextReviewNum);
     }
+    int itemNum = reviewDTO.getItemNum();
     reviewMapper.regReview(reviewDTO);
     reviewMapper.insertReviewImgs(reviewImgList);
+    reviewMapper.updateRating(itemNum);
   }
 
   // 이미지 없는 리뷰 등록
   public void regReviewNoImg (ReviewDTO reviewDTO){
+    int itemNum = reviewDTO.getItemNum();
     reviewMapper.regReview(reviewDTO);
+    reviewMapper.updateRating(itemNum);
   }
 
   // 상품별 리뷰 목록 조회

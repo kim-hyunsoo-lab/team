@@ -16,3 +16,11 @@
 .review_table > thead > tr {
   background-color: #eeeeee;
 }
+
+.img{
+  display: flex;  
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+}
