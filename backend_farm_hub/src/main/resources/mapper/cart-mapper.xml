@@ -14,6 +14,7 @@
         <!--        장바구니에는 상품이 하나 들어가있다 -->
         <association property="itemDTO" resultMap="com.craft.backend_farm_hub.item.mapper.ItemMapper.items" />
     </resultMap>
+    <!--장바구니에 상품 담기-->
     <insert id="insertCart">
         INSERT INTO SHOP_CART (
             ITEM_NUM
@@ -31,4 +32,41 @@
             ) * #{cartCnt}
         )
     </insert>
+    <!--카트에 담은 상품이 중복인지 조회-->
+    <select id="findDup" resultType="String">
+        SELECT MEM_ID
+        FROM SHOP_CART
+        WHERE ITEM_NUM = #{itemNum}
+        AND MEM_ID = #{memId}
+    </select>
+    <!--중복된 항목이 있으면 수량만 변경하는 쿼리-->
+    <update id="updateCnt">
+        UPDATE SHOP_CART
+        SET
+            CART_CNT = CART_CNT + #{cartCnt}
+            , TOTAL_PRICE = (
+                (
+                    SELECT PRICE
+                    FROM ITEM
+                    WHERE ITEM_NUM = #{itemNum}
+                ) * #{cartCnt}
+            )
+        WHERE MEM_ID = #{memId}
+        AND ITEM_NUM = #{itemNum}
+    </update>
+    <!--장바구니 상품 목록 조회-->
+    <select id="getCartList" resultMap="cart">
+        SELECT
+            CART_NUM
+            , ITEM_NAME
+            , CART_CNT
+            , TOTAL_PRICE
+            , CART_DATE
+        FROM shop_cart C
+        INNER JOIN item I
+        ON C.ITEM_NUM = I.ITEM_NUM
+        INNER JOIN shop_member M
+        ON M.MEM_ID = C.MEM_ID
+        WHERE M.MEM_ID = #{memId}
+    </select>
 </mapper>

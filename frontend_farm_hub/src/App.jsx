@@ -22,7 +22,7 @@ import Mypage from "./pages/user/Mypage";
 import MemberInfo from "./pages/user/products/Memberdel";
 import UserInfoUpdate from "./pages/user/products/UserInfoUpdate";
 import Memberdel from "./pages/user/products/Memberdel";
-import ShopCart from "./pages/ShopCart";
+import ShopCart from "./pages/user/ShopCart";
 
 function App() {
 
