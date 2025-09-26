@@ -9,22 +9,40 @@ import { data, useParams } from 'react-router'
 import dayjs from 'dayjs'
 
 const QnA = () => {
+  //글 등록 후 리렌더링 할 state 변수
+  const [reload, setReload] = useState(0);
+
   const {itemNum} = useParams();
-  // console.log(QnaData)
-  
-  //조회한 데이터를 저장할 state 변수
-  const [QnaList, setQnaList] = useState([]);
 
   //JSON 형태로 저장된 로그인 정보 가져오기
   const loginInfo = sessionStorage.getItem('loginInfo')
-  
+  let memId = null
+
+  if(loginInfo){
+    try{
+      const loginData = JSON.parse(loginInfo)
+      memId = loginData.memId
+    } catch (error) {
+      console.error('로그인 정보 파싱 에러:', error);
+    }
+  }
+
+  //JSON 형태로 저장된 로그인 정보를 파싱하여 id만 가져오기 
+  // const loginData = JSON.parse(loginInfo)
+  // const memId = loginData.memId
+  // console.log(memId)
+
+  //조회한 데이터를 저장할 state 변수
+  const [QnaList, setQnaList] = useState([]);
+
   //문의 모달창 숨김/보이기 여부
   const [isOpenQnA, setIsOpenQnA] = useState(false)
-
+ 
   //QNA 내용을 저장할 state 변수
   const [QnaData, setQnaData] = useState({
     'content' : '',
-    'itemNum' : itemNum
+    'itemNum' : itemNum,
+    'memId' : memId
   })
 
   //값 입력 시 실행하는 함수
@@ -35,14 +53,19 @@ const QnA = () => {
     })
   }
 
+  console.log(QnaData)
+
   //버튼 클릭 시 문의내용을 등록할 함수
   const regQnA = () => {
     axios.post('/api/qna', QnaData)
     .then(res => {
       alert('상품 문의가 등록되었습니다.')
       setQnaData({
-        'content' : ''
+        'content' : '',
+        'itemNum' : itemNum,
+        'memId' : memId
       })
+      setReload(reload + 1)
       setIsOpenQnA(false)
     })
     .catch(e => console.log(e))
@@ -56,20 +79,21 @@ const QnA = () => {
       setQnaList(res.data)
     })
     .catch(e => console.log(e))
-  }, [])
+  }, [reload])
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <p>상품 문의</p>
         <div>
-          {
-            loginInfo &&
+          {loginInfo ? (
             <Button 
               title='문의하기'
-              onClick={() => {setIsOpenQnA(true)}}
+              onClick={() => setIsOpenQnA(true)}
             />
-          }
+          ) : (
+            <p>상품문의는 로그인 후 이용가능합니다.</p>
+          )}
         </div>
       </div>
       <div className={styles.search_div}>
@@ -84,9 +108,10 @@ const QnA = () => {
           QnaList.map((qna, i) => {
             return(
               <div key={i} className={styles.qna_item}>
-                {/* 상품 번호/상품 이름 */}
+                {/* 문의 번호/상품 이름 */}
                 <div className={styles.item_info}>
-                  <span>{qna.itemDTO.itemNum} / {qna.itemDTO.itemName}</span>
+                  <span>{qna.qnaNum} / {qna.itemDTO.itemName}</span>
+                  <span>{dayjs(qna.qnaDate).format('YYYY/MM/DD HH:mm:ss')}</span>
                 </div>
                 
                 {/* 문의 내용 */}
@@ -94,11 +119,6 @@ const QnA = () => {
                   <div className={styles.question}>
                     <span className={styles.q_label}>Q.</span>
                     <span className={styles.q_content}>{qna.content}</span>
-                  </div>
-                  
-                  {/* 작성 시간 */}
-                  <div className={styles.q_date}>
-                    {dayjs(qna.qnaDate).format('YYYY-MM-DD')}
                   </div>
                 </div>
                 
@@ -109,9 +129,6 @@ const QnA = () => {
                       <span className={styles.a_label}>A.</span>
                       <span className={styles.a_content}>답변 준비 중...</span>
                     </div>
-                    <Button 
-                      title='재 문의'
-                    />
                   </div>
                 </div>
               </div>
@@ -120,7 +137,7 @@ const QnA = () => {
         }
       </div>
 
-      {/* QnA 질문 등록 모달 */}
+      {/* 상품문의 등록 모달 */}
       <Modal
         isOpen={isOpenQnA}
         onClose={() => setIsOpenQnA(false)}

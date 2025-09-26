@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public class QnaDTO {
   private int qnaNum;
   private int itemNum;
+  private String memId;
   private LocalDateTime qnaDate;
   private String content;
   private ItemDTO itemDTO;
