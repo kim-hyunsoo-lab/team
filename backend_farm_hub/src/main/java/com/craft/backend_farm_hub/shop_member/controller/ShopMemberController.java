@@ -57,4 +57,10 @@ public class ShopMemberController {
     return shopMemberService.selectMembers();
   }
 
+  //<!--회원정보 수정 시 1명의 회원정보를 조회-->
+  @GetMapping("/select/{memId}")
+  public ShopMemberDTO selectId(@PathVariable("memId") String memId){
+    return shopMemberService.selectId(memId);
+  }
+
 }
