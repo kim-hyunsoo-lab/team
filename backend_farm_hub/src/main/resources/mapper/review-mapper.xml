@@ -58,7 +58,7 @@
     <!--    리뷰 등록시 상품 평균 평점 반영 -->
     <update id="updateRating">
         UPDATE ITEM
-        SET REVIEW_AVG = (SELECT AVG(RATING) FROM review WHERE ITEM_NUM = #{itemNum})
+        SET REVIEW_AVG = (SELECT ROUND(AVG(RATING), 1) FROM REVIEW WHERE ITEM_NUM = #{itemNum})
         WHERE ITEM_NUM = #{itemNum}
     </update>
 

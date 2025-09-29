@@ -53,34 +53,30 @@ const ForgotPw = ({isOpenForgotPw, onClose}) => {
     .catch(error=>console.log(error));
   }, []);
 
-  const setNewPw = () =>{
-// ※ 비번 확인 api 주소 나중에 만들면 확인   
+  const setNewPw = () => {
     axios.get(`/api/members/forgotPw/${userProfile.memId}`)
-    .then(res =>       
-      {//console.log(res.data)
-        if ((res.data.memId === userProfile.memId)
-        && (res.data.memName === userProfile.memName)
-        && (res.data.memEmail === userProfile.memEmail)
-        && (res.data.pwKey == userProfile.pwKey)
-        && (res.data.pwAnswer === userProfile.pwAnswer)
-      )    
-      {
-        alert('비밀번호 변경 페이지로 이동합니다');
-        onClose(); 
-        setIsOpenRenewalPw(true);
-        setUserProfile({        
-          'memName': '', 
-          'firstEmail':'', 
-          'secondEmail':'',
-          'memEmail':'',
-          'pwKey': '',
-          'pwAnswer':''
-        })        
-      }
-      else {alert('내용이 일치하지 않습니다');        
-      }})
-    .catch(error=>console.log(error));
-  }
+      .then(res => {
+        const isMatch = ['memId', 'memName', 'memEmail', 'pwKey', 'pwAnswer']
+          .every(key => res.data[key] == userProfile[key]);
+        
+        if (isMatch) {
+          alert('비밀번호 변경 페이지로 이동합니다');
+          onClose(); 
+          setIsOpenRenewalPw(true);
+          setUserProfile({        
+            'memName': '', 
+            'firstEmail':'', 
+            'secondEmail':'',
+            'memEmail':'',
+            'pwKey': '',
+            'pwAnswer':''
+          });
+        } else {
+          alert('내용이 일치하지 않습니다');
+        }
+      })
+      .catch(error => console.log(error));
+    }
   
 // 비번 새로 설정 Modal 창 숨김/보이기 여부
   const [isOpenRenewalPw, setIsOpenRenewalPw] = useState(false);

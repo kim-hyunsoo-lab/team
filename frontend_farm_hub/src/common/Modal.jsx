@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './Modal.module.css'
 
 const Modal = ({
@@ -8,6 +8,17 @@ const Modal = ({
   onClose,
   children
 }) => {
+
+  // ESC 키로 모달 닫기
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') {
+        onClose();}};
+    if (isOpen) {
+      window.addEventListener('keydown', handleEsc);}
+    return () => {
+      window.removeEventListener('keydown', handleEsc);};
+  }, [isOpen, onClose]);
 
   //isOpen이 false면 모달을 닫는다.
   if(!isOpen) return null
