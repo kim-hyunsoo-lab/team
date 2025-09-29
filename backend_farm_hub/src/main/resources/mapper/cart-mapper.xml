@@ -58,6 +58,7 @@
     <select id="getCartList" resultMap="cart">
         SELECT
             CART_NUM
+            , C.ITEM_NUM
             , ITEM_NAME
             , CART_CNT
             , TOTAL_PRICE

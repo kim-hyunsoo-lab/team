@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<!-- namespace에는 xml파일과 연결할 Mapper interface 파일명을 패키지를 포함하여 적어주세요 -->
+<mapper namespace="com.craft.backend_farm_hub.qna.mapper.ReplyMapper">
+	<resultMap id="reply" type="com.craft.backend_farm_hub.qna.dto.ReplyDTO">
+      <id column="REPLY_NUM" property="replyNum" />
+      <result column="MEM_ID" property="memId" />
+      <result column="REPLY_DATE" property="replyDate" />
+      <result column="CONTENT" property="content" />
+  </resultMap>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

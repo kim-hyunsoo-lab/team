@@ -25,4 +25,10 @@ public class QnaController {
     return qnaService.getQnaList(itemNum);
   }
 
+  //관리자 페이지 상품 문의 내용 조회 api
+  @GetMapping("")
+  public List<QnaDTO> getQnaListInAdmin(){
+    return qnaService.getQnaListInAdmin();
+  }
+
 }

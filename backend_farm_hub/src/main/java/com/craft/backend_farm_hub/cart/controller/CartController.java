@@ -34,7 +34,7 @@ public class CartController {
     }
   }
 
-  //상파구니 목록 조회
+  //장바구니 목록 조회
   @GetMapping("/{memId}")
   public ResponseEntity<?> getCartList(
           @PathVariable("memId") String memId
