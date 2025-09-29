@@ -23,6 +23,8 @@ import MemberInfo from "./pages/user/products/Memberdel";
 import UserInfoUpdate from "./pages/user/products/UserInfoUpdate";
 import Memberdel from "./pages/user/products/Memberdel";
 import ShopCart from "./pages/user/ShopCart";
+import Reply from "./pages/admin/Reply";
+import ReplyList from "./pages/admin/ReplyList";
 
 function App() {
 
@@ -66,6 +68,8 @@ function App() {
           <Route path="" element={<AdminHome />} />
           <Route path="reg-product" element={<RegProduct />} />
           <Route path="member-list" element={<MemberList />} />
+          <Route path="qna-reply" element={<Reply />}/>
+          <Route path="reply-list" element={<ReplyList />}/>
         </Route>
       </Routes>
     </>
