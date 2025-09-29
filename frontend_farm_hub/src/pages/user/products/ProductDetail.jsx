@@ -18,7 +18,7 @@ const ProductDetail = () => {
   const [isOpenLogin, setIsOpenLogin] = useState(false);
 
   //장바구니에 담을 수량
-  const [cartCnt, setCartCnt] = useState(1);
+  const [cnt, setCnt] = useState(1);
   
   //로그인 데이터
   const loginData = sessionStorage.getItem('loginInfo');
@@ -37,13 +37,40 @@ const ProductDetail = () => {
     :
     axios.post('/api/carts', {
       itemNum,
-      cartCnt,
+      cartCnt : cnt,
       memId : JSON.parse(loginData).memId,
     })
     .then(res => {
       console.log(res.data);
       const changePage = confirm('장바구니에 상품을 담았습니다.\n장바구니 페이지로 이동할까요?');
       changePage ? nav('/mypage/shop-cart') : undefined
+    })
+    .catch(e => {
+      console.log(e);
+      alert(e.response.data);
+    });
+  }
+
+  //구매버튼 클릭했을 시 구매가 실행되는 함수
+  const buyItem = () => {
+    const confirmBuy = confirm('상품을 구매하시겠습니까?')
+    JSON.parse(loginData) === null
+    ?
+    //로그인 안 되어 있을 때 alert 띄우고 로그인 모달창 열림
+    (
+      alert('로그인해 주세요.'),setIsOpenLogin(true)
+    )
+    :
+    confirmBuy &&
+    axios.post('/api/buy', {
+      itemNum,
+      memId : JSON.parse(loginData).memId,
+      buyCnt : cnt
+    })
+    .then(res => {
+      alert('구매 완료');
+      //추후 구매목록 페이지로 이동 예정
+      nav('/');
     })
     .catch(e => {
       console.log(e);
@@ -116,9 +143,9 @@ const ProductDetail = () => {
             <Input
               size='100%'
               type='number'
-              value={cartCnt}
+              value={cnt}
               min='1'
-              onChange={e => setCartCnt(e.target.value)}
+              onChange={e => setCnt(e.target.value)}
             />
           </div>
           <div className={styles.btns}>
@@ -136,6 +163,7 @@ const ProductDetail = () => {
               title='구매하기'
               color='green'
               size='100%'
+              onClick={e => buyItem()}
             />
           </div>
         </div>

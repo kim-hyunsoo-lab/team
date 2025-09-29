@@ -16,6 +16,20 @@
         <association property="itemDTO" resultMap="com.craft.backend_farm_hub.item.mapper.ItemMapper.items" />
     </resultMap>
 
+    <!--상품 구매(item insert)-->
+    <insert id="buyItem">
+        INSERT INTO SHOP_BUY (
+            ITEM_NUM
+            , MEM_ID
+            , BUY_CNT
+            , ORDER_NUM
+        ) VALUES (
+            #{itemNum}
+            , #{memId}
+            , #{buyCnt}
+            , (SELECT IFNULL(MAX(ORDER_NUM), 0) + 1 FROM SHOP_BUY)
+        )
+    </insert>
 
 
 </mapper>
