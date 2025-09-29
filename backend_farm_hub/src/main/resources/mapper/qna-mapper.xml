@@ -44,6 +44,20 @@
         WHERE I.ITEM_NUM = #{itemNum}
         ORDER BY QNA_NUM DESC
     </select>
+
+    <!--관리자 페이지 상품 문의 내용 조회-->
+    <select id="getQnaListInAdmin" resultMap="qna">
+        SELECT
+            QNA_NUM
+            , Q.ITEM_NUM
+            , MEM_ID
+            , QNA_DATE
+            , CONTENT
+            , ITEM_NAME
+        FROM QNA Q INNER JOIN ITEM I
+        ON Q.ITEM_NUM = I.ITEM_NUM
+        ORDER BY QNA_NUM
+    </select>
 </mapper>
 
 
