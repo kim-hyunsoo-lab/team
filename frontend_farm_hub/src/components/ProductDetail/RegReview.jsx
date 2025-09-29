@@ -8,7 +8,19 @@ import axios from 'axios'
 import { useOutletContext } from 'react-router'
 
 const RegReview = ({reload, itemNum, isOpenRegReview, onClose}) => { 
-  
+  //JSON 형태로 저장된 로그인 정보 가져오기
+  const loginInfo = sessionStorage.getItem('loginInfo')
+  let memId = null
+
+  if(loginInfo){
+    try{
+      const loginData = JSON.parse(loginInfo)
+      memId = loginData.memId
+    } catch (error) {
+      console.error('로그인 정보 파싱 에러:', error);
+    }
+  }
+
   //입력한 리뷰 내용을 저장할 state변수
   const [reviewData, setReviewData] = useState({
     'title' : '',
@@ -64,7 +76,7 @@ const RegReview = ({reload, itemNum, isOpenRegReview, onClose}) => {
     formData.append('title', reviewData.title);
     formData.append('rating', reviewData.rating);
     formData.append('content', reviewData.content);
-    formData.append('memId', JSON.parse(sessionStorage.getItem('loginInfo')).memId);
+    formData.append('memId', memId);
     formData.append('itemNum', itemNum);
 
     if (!reviewData.title)
@@ -77,6 +89,7 @@ const RegReview = ({reload, itemNum, isOpenRegReview, onClose}) => {
       axios.post('/api/reviews', formData, fileConfig)
       .then(res=>{
       alert('리뷰를 등록했습니다')
+      window.dispatchEvent(new Event('reviewUpdated'));
       setReviewData({
         'title' : '',
         'rating' : '',
@@ -88,7 +101,7 @@ const RegReview = ({reload, itemNum, isOpenRegReview, onClose}) => {
         'rating' : '',
         'content' : ''
       })  
-       onClose();})
+      onClose();})
       .catch(e=>console.log(e))
     )
   }
@@ -103,10 +116,11 @@ const RegReview = ({reload, itemNum, isOpenRegReview, onClose}) => {
     else(
       axios.post('/api/reviews/noimg', {
         ...reviewData, 
-        'memId': JSON.parse(sessionStorage.getItem('loginInfo')).memId,
+        'memId': memId,
         'itemNum': itemNum})
       .then(res=>{
-      alert('리뷰를 등록했습니다')
+      alert('리뷰가 등록되었습니다')
+      window.dispatchEvent(new Event('reviewUpdated'));
       setReviewData({
         'title' : '',
         'rating' : '',
@@ -117,7 +131,7 @@ const RegReview = ({reload, itemNum, isOpenRegReview, onClose}) => {
         'title' : '',
         'rating' : '',
         'content' : ''
-      })            
+      })      
       onClose();})
       .catch(e=>console.log(e))
     )
@@ -240,6 +254,7 @@ const RegReview = ({reload, itemNum, isOpenRegReview, onClose}) => {
         <div className={styles.btn_div}>
           <Button title='리뷰 등록' 
             disabled={isDisabledBtn}
+            onKeyDown={e=>{ if(e.key==='Enter') {(reviewImgs) ? regNewReview(e) : regNewReviewNoImg(e)} }}
             onClick={e=>(
               (reviewImgs) ? regNewReview(e) : regNewReviewNoImg(e))}
             />

@@ -1,4 +1,5 @@
 .review_table {
+  table-layout: fixed;
   width: 100%;
   font-size: 1.1rem;
   text-align: center;
@@ -22,5 +23,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
+}
+
+.img img{
+  width: 50%;
 }

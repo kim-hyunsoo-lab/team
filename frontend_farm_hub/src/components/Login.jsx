@@ -104,7 +104,10 @@ const Login = ({ isOpenLogin, onClose }) => {
 
           <div>
             {/* 확인 버튼 */}
-            <Button onClick={(e) => loginNow(e)} size="100%" title="Sign In" />
+            <Button 
+            onKeyDown={e=>{if(e.key==='Enter') loginNow(e)}}
+            onClick={(e) => loginNow(e)} 
+            size="100%" title="Sign In" />
           </div>
 
       <div>

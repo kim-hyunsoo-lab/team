@@ -10,7 +10,41 @@ import dayjs from 'dayjs'
 const Review = () => {
   const {itemNum} = useParams(); 
 
-  const [reload, setReload] = useState(1);
+  //JSON 형태로 저장된 로그인 정보 가져오기
+  const loginInfo = sessionStorage.getItem('loginInfo')
+  let memId = null
+
+  if(loginInfo){
+    try{
+      const loginData = JSON.parse(loginInfo)
+      memId = loginData.memId
+    } catch (error) {
+      console.error('로그인 정보 파싱 에러:', error);
+    }
+  }
+
+  // 리로드용 
+  const [reload, setReload] = useState(false);
+
+  const handleModalClose = () => {
+    setIsOpenRegReview(false);
+    setReload(prev => !prev); // reload 상태를 토글하여 useEffect 재실행
+  };
+
+  // 별점용
+  function StarRating({ rating }) {
+    return (
+      <div className="stars" style={{ color: '#ffc107', fontSize: '1.2rem' }}>
+        {Array.from({ length: 5 }, (_, index) => (
+          <i 
+            key={index} 
+            className={index < rating ? 'bi bi-star-fill' : 'bi bi-star'}
+            style={{ marginRight: '2px' }}
+          />
+        ))}
+      </div>
+    );
+  }
   
   //후기 모달창 여는지 여부
   const [isOpenRegReview, setIsOpenRegReview] = useState(false);
@@ -37,7 +71,8 @@ const Review = () => {
       <div>
         <p>이용후기 총 {reviewList.length}건</p>
         <p>
-          <Button title='후기 작성' onClick={e => {sessionStorage.getItem('loginInfo') ? setIsOpenRegReview(true) : alert('리뷰를 쓰려면 먼저 로그인을 해야 합니다')} } />
+          {loginInfo ? (<Button title='후기 작성' onClick={() => setIsOpenRegReview(true)}/>)
+          : (<p>리뷰를 쓰려면 먼저 로그인을 해야 합니다</p>)}
         </p>
       </div>
       <div>
@@ -47,7 +82,7 @@ const Review = () => {
               <td>No</td>
               <td>제목</td>
               <td>
-                <span><i className='bi bi-star-fill'></i></span> 평점
+                <span>평점</span>
               </td>
               <td>작성자</td>
               <td>작성일</td>
@@ -69,7 +104,7 @@ const Review = () => {
                   <td>{reviewList.length-i}</td>
                   <td>{e.title}</td>
                   <td>                    
-                    <span><i className='bi bi-star-fill' /> {e.rating}</span>                  
+                    <span><StarRating rating={e.rating} /></span>                  
                   </td>
                   <td>{e.memId}</td>
                   <td>{dayjs(e.createDate).format('YYYY년 MM월 DD일')}</td>
@@ -103,7 +138,7 @@ const Review = () => {
       <RegReview   
         itemNum={itemNum}    
         isOpenRegReview={isOpenRegReview}
-        onClose={() => {setIsOpenRegReview(false)}}
+        onClose={() => handleModalClose(false)}
       />
     </div>
   )

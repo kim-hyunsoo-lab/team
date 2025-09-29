@@ -23,8 +23,6 @@ const ProductDetail = () => {
   //로그인 데이터
   const loginData = sessionStorage.getItem('loginInfo');
 
-  console.log(JSON.parse(loginData));
-
 
   //장바구니 버튼 클릭했을 때 실행되는 함수
   const insertCart = () => {
@@ -78,7 +76,6 @@ const ProductDetail = () => {
     });
   }
 
-
   useEffect(() => {
     axios.get(`/api/items/${itemNum}`)
     .then(res => {
@@ -86,7 +83,20 @@ const ProductDetail = () => {
       setItemDetail(res.data);
     })
     .catch(e => console.log(e));
-  }, []);
+  };
+
+  useEffect(()=>{
+    fetchItem();
+    const reviewAvgUpdate = () =>{
+      fetchItem();
+    };
+
+    window.addEventListener('reviewUpdated', reviewAvgUpdate);
+
+    return() => {
+      window.removeEventListener('reviewUpdated', reviewAvgUpdate);}
+  }, [itemNum])
+
 
   const [reviewList, setReviewList] = useState([]) 
 
