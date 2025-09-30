@@ -63,6 +63,7 @@
             , CART_CNT
             , TOTAL_PRICE
             , CART_DATE
+            , PRICE
         FROM shop_cart C
         INNER JOIN item I
         ON C.ITEM_NUM = I.ITEM_NUM
@@ -70,4 +71,23 @@
         ON M.MEM_ID = C.MEM_ID
         WHERE M.MEM_ID = #{memId}
     </select>
+
+    <!--장바구니에 담은 상품의 수량 변경-->
+    <update id="updateCartCnt">
+        UPDATE shop_cart
+        SET
+            CART_CNT = CART_CNT + #{cartCnt}
+            , TOTAL_PRICE = (SELECT PRICE
+                            FROM ITEM
+                            WHERE ITEM_NUM = #{itemNum}
+                            ) * CART_CNT
+        WHERE MEM_ID = #{memId}
+        AND ITEM_NUM = #{itemNum}
+    </update>
+
+    <!--장바구니 삭제-->
+    <delete id="deleteCart">
+        DELETE FROM SHOP_CART
+        WHERE CART_NUM = #{cartNum}
+    </delete>
 </mapper>
