@@ -105,6 +105,16 @@
  	,	CONTENT VARCHAR(300)
  ); 
  
+ #답변 테이블
+ CREATE TABLE reply(
+ 	REPLY_NUM INT PRIMARY KEY AUTO_INCREMENT
+ 	,	MEM_ID VARCHAR(20) REFERENCES SHOP_MEMBER(MEM_ID)
+ 	,	QNA_NUM INT REFERENCES qna(QNA_NUM)
+ 	,	REPLY_DATE DATETIME DEFAULT SYSDATE()
+ 	,	CONTENT VARCHAR(300)
+ ); 
+ 
+ 
  #################################################
  ### 이 워크시트에 CREATE 문을 다 작성해주세요 ###
  

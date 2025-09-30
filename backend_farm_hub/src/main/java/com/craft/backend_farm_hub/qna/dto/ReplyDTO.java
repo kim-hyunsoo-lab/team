@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public class ReplyDTO {
   private int replyNum;
   private String memId;
+  private int qnaNum;
   private LocalDateTime replyDate;
   private String content;
 }
