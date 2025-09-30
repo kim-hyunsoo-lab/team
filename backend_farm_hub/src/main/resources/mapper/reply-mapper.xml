@@ -7,9 +7,23 @@
 	<resultMap id="reply" type="com.craft.backend_farm_hub.qna.dto.ReplyDTO">
       <id column="REPLY_NUM" property="replyNum" />
       <result column="MEM_ID" property="memId" />
+      <result column="QNA_NUM" property="qnaNum" />
       <result column="REPLY_DATE" property="replyDate" />
       <result column="CONTENT" property="content" />
   </resultMap>
+
+    <!--답변 등록-->
+    <insert id="regReply">
+        INSERT INTO REPLY (
+            MEM_ID
+            , QNA_NUM
+            , CONTENT
+        ) VALUES (
+            #{memId}
+            , #{qnaNum}
+            , #{content}
+        )
+    </insert>
 </mapper>
 
 
