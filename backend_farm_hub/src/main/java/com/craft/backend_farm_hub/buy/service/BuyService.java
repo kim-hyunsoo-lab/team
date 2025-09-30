@@ -14,4 +14,9 @@ public class BuyService {
   public void buyItem(BuyDTO buyDTO) {
     buyMapper.buyItem(buyDTO);
   }
+
+  public List<BuyDTO> selectBuyforMember(String memId){
+    return buyMapper.selectBuyforMember(memId);
+  }
+
 }

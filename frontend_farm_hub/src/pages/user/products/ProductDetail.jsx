@@ -202,6 +202,7 @@ useEffect(()=>{
           <Outlet context={{itemDetail}} />
         </div>
       </div>
+      
       {/* 로그인 Modal */}
       <Login isOpenLogin={isOpenLogin}
         onClose={()=>setIsOpenLogin(false)}
