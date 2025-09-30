@@ -23,16 +23,20 @@ const ProductDetail = () => {
   //로그인 데이터
   const loginData = sessionStorage.getItem('loginInfo');
 
+  //로그인 체크 공통 함수
+  const checkLogin = (message = '로그인이 필요한 서비스입니다.') => {
+    if (JSON.parse(loginData) === null) {
+      alert(message);
+      setIsOpenLogin(true);
+      return false;
+    }
+    return true;
+  };
 
   //장바구니 버튼 클릭했을 때 실행되는 함수
   const insertCart = () => {
-    JSON.parse(loginData) === null
-    ?
-    //로그인 안 되어 있을 때 alert 띄우고 로그인 모달창 열림
-    (
-      alert('장바구니는 로그인이 필요한 서비스입니다.'),setIsOpenLogin(true)
-    )
-    :
+    if (!checkLogin('장바구니는 로그인이 필요한 서비스입니다.')) return;
+
     axios.post('/api/carts', {
       itemNum,
       cartCnt : cnt,
@@ -51,15 +55,11 @@ const ProductDetail = () => {
 
   //구매버튼 클릭했을 시 구매가 실행되는 함수
   const buyItem = () => {
-    const confirmBuy = confirm('상품을 구매하시겠습니까?')
-    JSON.parse(loginData) === null
-    ?
-    //로그인 안 되어 있을 때 alert 띄우고 로그인 모달창 열림
-    (
-      alert('로그인해 주세요.'),setIsOpenLogin(true)
-    )
-    :
-    confirmBuy &&
+    if (!checkLogin('로그인해 주세요.')) return;
+
+    const confirmBuy = confirm('상품을 구매하시겠습니까?');
+    if (!confirmBuy) return;
+
     axios.post('/api/buy', {
       itemNum,
       memId : JSON.parse(loginData).memId,
