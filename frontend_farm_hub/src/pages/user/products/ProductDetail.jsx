@@ -76,27 +76,24 @@ const ProductDetail = () => {
     });
   }
 
-  useEffect(() => {
-    axios.get(`/api/items/${itemNum}`)
-    .then(res => {
-      console.log(res.data);
-      setItemDetail(res.data);
-    })
-    .catch(e => console.log(e));
-  };
+const fetchItem = () =>{
+  axios.get(`/api/items/${itemNum}`)
+  .then(res => {
+    console.log(res.data);
+    setItemDetail(res.data);
+  })
+  .catch(e => console.log(e));};
 
-  useEffect(()=>{
-    fetchItem();
-    const reviewAvgUpdate = () =>{
-      fetchItem();
-    };
+useEffect(()=>{
+  fetchItem();
+  const reviewAvgUpdate = () =>{
+    fetchItem();};
 
-    window.addEventListener('reviewUpdated', reviewAvgUpdate);
+  window.addEventListener('reviewUpdated', reviewAvgUpdate);
 
-    return() => {
-      window.removeEventListener('reviewUpdated', reviewAvgUpdate);}
-  }, [itemNum])
-
+  return() => {
+    window.removeEventListener('reviewUpdated', reviewAvgUpdate);}
+}, [itemNum])
 
   const [reviewList, setReviewList] = useState([]) 
 
