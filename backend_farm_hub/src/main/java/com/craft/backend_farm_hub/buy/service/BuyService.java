@@ -3,10 +3,7 @@ package com.craft.backend_farm_hub.buy.service;
 import com.craft.backend_farm_hub.buy.dto.BuyDTO;
 import com.craft.backend_farm_hub.buy.mapper.BuyMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

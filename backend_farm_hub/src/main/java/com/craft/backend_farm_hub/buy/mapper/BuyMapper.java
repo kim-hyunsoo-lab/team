@@ -7,6 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface BuyMapper {
+  // 상품 구매
   public void buyItem(BuyDTO buyDTO);
 
   public List<BuyDTO> selectBuyforMember(String memId);

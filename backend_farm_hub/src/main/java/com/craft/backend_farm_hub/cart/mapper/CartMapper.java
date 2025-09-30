@@ -18,4 +18,10 @@ public interface CartMapper {
 
   //장바구니 목록 조회
   public List<CartDTO> getCartList(String memId);
+
+  //장바구니 수량 변경
+  public void updateCartCnt(CartDTO cartDTO);
+  
+  //장바구니 삭제
+  public void deleteCart(int cartNum);
 }

@@ -51,4 +51,42 @@ public class CartController {
               .body("장바구니 목록을 불러오지 못했습니다.\n관리자에게 문의해 주세요.");
     }
   }
+
+  //장바구니 수량 변경 api
+  @PutMapping("/{cartCnt}")
+  public ResponseEntity<?> updateCartCnt(
+          @RequestBody CartDTO cartDTO,
+          @PathVariable("cartCnt") int cartCnt
+  ) {
+    try {
+      cartDTO.setCartCnt(cartCnt);
+      cartService.updateCartCnt(cartDTO);
+      return ResponseEntity
+              .status(HttpStatus.OK)
+              .build();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("장바구니 수량을 변경하는 중 오류가 발생하였습니다.\n관리자에게 문의주세요.");
+    }
+  }
+
+  //장바구니 삭제 api
+  @DeleteMapping("/{cartNum}")
+  public ResponseEntity<?> deleteCart(
+          @PathVariable("cartNum") int cartNum
+  ) {
+    try {
+      cartService.deleteCart(cartNum);
+      return ResponseEntity
+              .status(HttpStatus.OK)
+              .build();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("장바구니 삭제 중 오류가 발생하였습니다.\n관리자에게 문의해 주세요.");
+    }
+  }
 }
