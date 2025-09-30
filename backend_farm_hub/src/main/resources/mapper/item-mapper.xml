@@ -17,7 +17,6 @@
         <result column="SELLER" property="seller" />
         <!--상품 하나에 이미지는 여러개-->
         <collection property="imgList" resultMap="itemImg" />
-
     </resultMap>
 
     <resultMap id="itemImg" type="com.craft.backend_farm_hub.item.dto.ItemImgDTO">

@@ -1,10 +1,32 @@
 .container{
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 3px;
+}
+
+.memberListTable{
+  table-layout: fixed;
+  text-align: center;
+  border-top: 2px solid #888888;
   width: 650px;
 }
 
-.container table{
-  width: 100%;
+.memberListTable tr {
+  border-bottom: 1px solid #bbbbbb;
+}
+
+.memberListTable td {
+  padding: 7px;
+}
+
+.memberListTable > thead > tr {
+  background-color: #eeeeee;
+}
+
+.memberListTable tbody td {
+  cursor: pointer;
+}
+
+.memberListTable tbody tr:hover{
+  background-color: rgb(230, 230, 230);
 }

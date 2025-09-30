@@ -1,0 +1,40 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.memberDetailTable{
+  table-layout: fixed;
+  text-align: center;
+  border-top: 2px solid #888888;
+  width: 100%;
+}
+
+.memberDetailTable tr {
+  border-bottom: 1px solid #bbbbbb;
+}
+
+.memberDetailTable td {
+  padding: 7px; 
+}
+
+.memberDetailTable > thead > tr {
+  background-color: #eeeeee;
+}
+
+.memberDetailTable tbody td{
+  vertical-align: middle;
+}
+
+.memberDetailTable tbody td div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.95rem;
+  overflow: hidden;  
+}
+
+.main_img {
+  height: 100px;
+}

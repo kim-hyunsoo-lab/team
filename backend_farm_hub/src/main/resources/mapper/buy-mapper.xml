@@ -31,5 +31,14 @@
         )
     </insert>
 
+    <select id="selectBuyforMember" resultMap="buy">
+        SELECT MEM_ID, BUY_NUM, SHOP_BUY.ITEM_NUM, BUY_CNT, ITEM_NAME, PRICE, BUY_CNT*PRICE AS TOTAL_PRICE, ATTACHED_IMG_NAME, BUY_DATE
+        FROM SHOP_BUY LEFT OUTER JOIN ITEM
+        ON SHOP_BUY.ITEM_NUM = ITEM.ITEM_NUM
+        INNER JOIN ITEM_IMG
+        ON SHOP_BUY.ITEM_NUM = ITEM_IMG.ITEM_NUM
+        WHERE IS_MAIN = 'Y' AND MEM_ID = #{memId}
+        ORDER BY BUY_DATE DESC;
+    </select>
 
 </mapper>

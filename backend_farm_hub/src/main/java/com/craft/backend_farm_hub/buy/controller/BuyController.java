@@ -29,5 +29,17 @@ public class BuyController {
               .body("구매 중 오류 발생!");
     }
   }
-}
 
+  @GetMapping("/{memId}")
+  public ResponseEntity<?> selectBuyforMember(@PathVariable("memId") String memId){
+    try{
+      List<BuyDTO> list = buyService.selectBuyforMember(memId);
+      return ResponseEntity.status(HttpStatus.OK).body(list);
+    } catch (Exception e){
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .build();
+    }
+  }
+}
