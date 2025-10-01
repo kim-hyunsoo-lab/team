@@ -68,7 +68,7 @@ const ProductDetail = () => {
     .then(res => {
       alert('구매 완료');
       //추후 구매목록 페이지로 이동 예정
-      nav('/');
+      nav('/mypage/buy-list');
     })
     .catch(e => {
       console.log(e);

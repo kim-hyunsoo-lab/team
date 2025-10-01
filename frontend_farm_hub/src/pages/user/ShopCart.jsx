@@ -16,8 +16,12 @@ const ShopCart = () => {
   //변경된 수량을 저장할 state 변수
   const [cnt, setCnt] = useState(0);
 
+  const memId = JSON.parse(sessionStorage.getItem('loginInfo')).memId;
+
+  const [reloading, setReloading] = useState(0);
+
   useEffect(() => {
-    axios.get(`/api/carts/${JSON.parse(sessionStorage.getItem('loginInfo')).memId}`)
+    axios.get(`/api/carts/${memId}`)
     .then(res => {
       console.log(res.data);
       setCartList(res.data);
@@ -26,7 +30,7 @@ const ShopCart = () => {
       console.log(e);
       alert(e.response.data);
     });
-  }, []);
+  }, [reloading]);
 
   // 수량 변경 함수 - 숫자 검증 추가
 const handleCntChange = (i, value) => {
@@ -42,18 +46,23 @@ const handleCntChange = (i, value) => {
 };
 
 // 수량 변경 버튼 클릭 함수 - 유효성 검증 추가
-const updateCartCnt = (cartNum, cartCnt) => {
+const updateCartCnt = (cart) => {
   // cartCnt가 유효한 숫자인지 확인
-  if (!cartCnt || isNaN(cartCnt) || cartCnt < 1) {
+  if (!cart.cartCnt || isNaN(cart.cartCnt) || cart.cartCnt < 1) {
     alert('유효한 수량을 입력해주세요.');
     return;
   }
 
   // URL에는 cartNum(장바구니 번호)을 사용하고, body에는 숫자로 변환된 cartCnt를 전송
-  axios.put(`/api/carts/${cartNum}`, { cartCnt: Number(cartCnt) })
+  axios.put(`/api/carts/${cart.cartNum}`, {
+    cartCnt: Number(cart.cartCnt),
+    memId,
+    itemNum : cart.itemNum
+  })
   .then(res => {
     console.log(res.data);
     alert('수량이 변경되었습니다.');
+    setReloading(reloading + 1);
   })
   .catch(e => {
     console.log(e);
@@ -158,6 +167,12 @@ const updateCartCnt = (cartNum, cartCnt) => {
         </thead>
         <tbody>
           {
+            cartList.length === 0
+            ?
+            <tr>
+              <td colSpan={8}>장바구니에 담긴 상품이 없습니다.</td>
+            </tr>
+            :
             cartList.map((cart, i) => {
               return (
                 <tr key={i}>
@@ -182,7 +197,7 @@ const updateCartCnt = (cartNum, cartCnt) => {
                     <Button
                       title='수량변경'
                       size='70px'
-                      onClick={() => updateCartCnt(cart.cartNum, cart.cartCnt)}
+                      onClick={() => updateCartCnt(cart)}
                     />
                   </td>
                   <td>{cart.totalPrice.toLocaleString()}원</td>

@@ -25,6 +25,7 @@ import Memberdel from "./pages/user/products/Memberdel";
 import ShopCart from "./pages/user/ShopCart";
 import Reply from "./pages/admin/Reply";
 import ReplyList from "./pages/admin/ReplyList";
+import BuyList from "./pages/user/BuyList";
 
 function App() {
 
@@ -61,6 +62,7 @@ function App() {
           <Route path="/mypage/update" element={<UserInfoUpdate />} />
           <Route path="/mypage/memdel" element={<Memberdel />} />
           <Route path="shop-cart" element={ <ShopCart /> } />
+          <Route path="buy-list" element={ <BuyList /> } />
         </Route>
 
         {/* 관리자 페이지 */}

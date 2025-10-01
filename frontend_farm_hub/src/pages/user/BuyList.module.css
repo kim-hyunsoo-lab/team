@@ -1,0 +1,77 @@
+.container {
+  width: 100%;
+  padding: 20px;
+}
+
+.buy_table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.buy_table thead tr {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.buy_table thead td {
+  padding: 16px;
+  text-align: center;
+  font-weight: 600;
+  color: #495057;
+  font-size: 14px;
+}
+
+.buy_table tbody tr {
+  border-bottom: 1px solid #dee2e6;
+  transition: background-color 0.2s;
+}
+
+.buy_table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.buy_table tbody td {
+  padding: 16px;
+  text-align: center;
+  color: #212529;
+  vertical-align: middle;
+}
+
+.empty_message {
+  padding: 60px 20px !important;
+  text-align: center !important;
+  color: #6c757d;
+  font-size: 16px;
+}
+
+.total_summary {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.total_box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.total_label {
+  font-size: 14px;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.total_amount {
+  font-size: 24px;
+  font-weight: 700;
+  color: #198754;
+}

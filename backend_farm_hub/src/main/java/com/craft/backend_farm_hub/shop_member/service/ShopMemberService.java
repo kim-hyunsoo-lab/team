@@ -49,5 +49,11 @@ public class ShopMemberService {
     return shopMemberMapper.selectMembers();
   }
 
+  //관리자인지 여부 조회해서, 관리자이면 관리자 페이지 접근 가능
+  public boolean isAdmin(String memId) {
+    shopMemberMapper.getMemRole(memId);
+    return memId.equals("ADMIN");
+  }
+
 
 }
