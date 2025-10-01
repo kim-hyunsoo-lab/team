@@ -71,7 +71,6 @@ function App() {
           <Route path="reg-product" element={<RegProduct />} />
           <Route path="member-list" element={<MemberList />} />
           <Route path="qna-reply" element={<Reply />}/>
-          <Route path="reply-list" element={<ReplyList />}/>
         </Route>
       </Routes>
     </>

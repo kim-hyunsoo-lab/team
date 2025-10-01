@@ -12,5 +12,6 @@ public class QnaDTO {
   private String memId;
   private LocalDateTime qnaDate;
   private String content;
+  private String status;
   private ItemDTO itemDTO;
 }

@@ -279,7 +279,7 @@ const Join = ({isOpenJoin, onClose}) => {
             value={newShopMember.secondEmail}
             name='secondEmail'
             size='100%'>
-  {/* 이메일 추가 가능 */}
+            {/* 이메일 추가 가능 */}
               <option value=''>선택</option>
               <option value='@gmail.com'>gmail.com</option>
               <option value='@naver.com'>naver.com</option>

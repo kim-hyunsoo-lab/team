@@ -10,6 +10,7 @@
         <result column="MEM_ID"     property="memId"/>
         <result column="QNA_DATE"   property="qnaDate"/>
         <result column="CONTENT"    property="content"/>
+        <result column="STATUS"    property="status"/>
         <association property="itemDTO" resultMap="ItemDTO"/>
     </resultMap>
 
@@ -53,6 +54,12 @@
             , MEM_ID
             , QNA_DATE
             , ITEM_NAME
+            , CASE WHEN (SELECT count(REPLY_NUM)
+                         FROM reply
+                         WHERE QNA_NUM = Q.QNA_NUM) = 0
+                         THEN '답변대기'
+                         ELSE '답변완료'
+            END AS STATUS
         FROM QNA Q INNER JOIN ITEM I
         ON Q.ITEM_NUM = I.ITEM_NUM
         ORDER BY QNA_NUM

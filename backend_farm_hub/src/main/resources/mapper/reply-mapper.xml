@@ -24,6 +24,18 @@
             , #{content}
         )
     </insert>
+
+    <!--답변 내용 조회-->
+    <select id="getReply">
+        SELECT
+            REPLY_NUM
+            , CONTENT
+        FROM REPLY
+        WHERE QNA_NUM = #{qnaNum}
+
+    </select>
+
+
 </mapper>
 
 
