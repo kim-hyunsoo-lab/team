@@ -105,10 +105,11 @@
     GROUP BY MEM_ID
     ORDER BY JOIN_DATE DESC
   </select>
-
-  <select id="">
-
-
+  <!--관리자 페이지 접근 시 관리자인지 확인-->
+  <select id="getMemRole" resultType="String">
+    SELECT MEM_ROLE
+    FROM shop_member
+    WHERE MEM_ID = #{memId}
   </select>
 
 

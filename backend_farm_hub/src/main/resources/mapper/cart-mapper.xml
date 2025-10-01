@@ -76,7 +76,7 @@
     <update id="updateCartCnt">
         UPDATE shop_cart
         SET
-            CART_CNT = CART_CNT + #{cartCnt}
+            CART_CNT = #{cartCnt}
             , TOTAL_PRICE = (SELECT PRICE
                             FROM ITEM
                             WHERE ITEM_NUM = #{itemNum}

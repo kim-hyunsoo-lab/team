@@ -4,6 +4,8 @@ import com.craft.backend_farm_hub.shop_member.dto.ForgotPwDTO;
 import com.craft.backend_farm_hub.shop_member.dto.ShopMemberDTO;
 import com.craft.backend_farm_hub.shop_member.service.ShopMemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,7 +58,20 @@ public class ShopMemberController {
   public List<ShopMemberDTO> selectMembers(){
     return shopMemberService.selectMembers();
   }
+  //관리자인지 여부 조회해서, 관리자이면 관리자 페이지 접근 가능
+  @GetMapping("/is-admin/{memId}")
+  public ResponseEntity<?> isAdmin(@PathVariable("memId") String memId) {
 
+    try {
+      return ResponseEntity
+              .status(HttpStatus.OK)
+              .body(shopMemberService.isAdmin(memId ));
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .build();
+    }
   //<!--회원정보 수정 시 1명의 회원정보를 조회-->
   @GetMapping("/select/{memId}")
   public ShopMemberDTO selectId(@PathVariable("memId") String memId){

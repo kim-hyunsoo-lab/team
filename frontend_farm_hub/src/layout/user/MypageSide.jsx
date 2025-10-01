@@ -10,11 +10,13 @@ const MypageSide = () => {
       <div className={styles.category}>
         <p>쇼핑정보</p>
         <ul>
-          <li>
-            <span>
-              <i className="bi bi-file-earmark-text-fill"></i>
-            </span>
+          <li onClick={e => {nav('/mypage/buy-list')}}>
+            <p>
+              <span>
+                <i className="bi bi-file-earmark-text-fill"></i>
+              </span>
             주문목록/배송조회
+            </p>
           </li>
           <li>
             <span>

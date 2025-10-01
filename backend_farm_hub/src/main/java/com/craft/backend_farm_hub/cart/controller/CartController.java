@@ -53,17 +53,17 @@ public class CartController {
   }
 
   //장바구니 수량 변경 api
-  @PutMapping("/{cartCnt}")
+  @PutMapping("/{cartNum}")
   public ResponseEntity<?> updateCartCnt(
-          @RequestBody CartDTO cartDTO,
-          @PathVariable("cartCnt") int cartCnt
+          @PathVariable("cartNum") int cartNum,
+          @RequestBody CartDTO cartDTO
   ) {
     try {
-      cartDTO.setCartCnt(cartCnt);
+      cartDTO.setCartNum(cartNum);
       cartService.updateCartCnt(cartDTO);
       return ResponseEntity
               .status(HttpStatus.OK)
-              .build();
+              .body("수량이 변경되었습니다.");
     } catch (Exception e) {
       e.printStackTrace();
       return ResponseEntity
