@@ -113,5 +113,21 @@
   </select>
 
 
+  <!--회원정보 수정 시 1명의 회원정보를 조회-->
+  <select id="selectId" resultMap="member">
+    SELECT
+      MEM_ID
+      , MEM_PW
+      , MEM_NAME
+      , MEM_TEL
+      , MEM_EMAIL
+      , MEM_ADDR
+      , ADDR_DETAIL
+    FROM SHOP_MEMBER
+    WHERE MEM_ID = #{MEM_ID}
+
+  </select>
+
+
 
 </mapper>

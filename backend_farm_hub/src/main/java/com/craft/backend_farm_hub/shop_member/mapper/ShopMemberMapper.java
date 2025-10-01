@@ -32,4 +32,7 @@ public interface ShopMemberMapper {
   //관리자인지 여부 조회
   public String getMemRole(String memId);
 
+  //<!--회원정보 수정 시 1명의 회원정보를 조회-->
+  public ShopMemberDTO selectId(String memId);
+
 }

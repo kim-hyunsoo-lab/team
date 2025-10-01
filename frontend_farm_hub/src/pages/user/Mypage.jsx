@@ -28,7 +28,6 @@ const Mypage = () => {
         <MypageSide />
         <Outlet />
       </div>
-
     </div>
   );
 };
