@@ -65,13 +65,14 @@ public class ShopMemberController {
     try {
       return ResponseEntity
               .status(HttpStatus.OK)
-              .body(shopMemberService.isAdmin(memId ));
+              .body(shopMemberService.isAdmin(memId));
     } catch (Exception e) {
       e.printStackTrace();
       return ResponseEntity
               .status(HttpStatus.INTERNAL_SERVER_ERROR)
               .build();
     }
+  }
   //<!--회원정보 수정 시 1명의 회원정보를 조회-->
   @GetMapping("/select/{memId}")
   public ShopMemberDTO selectId(@PathVariable("memId") String memId){

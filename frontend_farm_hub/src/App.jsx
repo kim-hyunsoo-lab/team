@@ -24,7 +24,7 @@ import UserInfoUpdate from "./pages/user/products/UserInfoUpdate";
 import Memberdel from "./pages/user/products/Memberdel";
 import ShopCart from "./pages/user/ShopCart";
 import Reply from "./pages/admin/Reply";
-import ReplyList from "./pages/admin/ReplyList";
+//import ReplyList from "./pages/admin/ReplyList";
 import BuyList from "./pages/user/BuyList";
 
 function App() {
