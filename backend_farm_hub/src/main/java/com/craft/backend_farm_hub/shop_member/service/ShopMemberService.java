@@ -49,5 +49,10 @@ public class ShopMemberService {
     return shopMemberMapper.selectMembers();
   }
 
+  //<!--회원정보 수정 시 1명의 회원정보를 조회-->
+  public ShopMemberDTO selectId(String memId){
+    return shopMemberMapper.selectId(memId);
+  }
+
 
 }

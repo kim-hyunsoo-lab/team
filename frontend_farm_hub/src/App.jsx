@@ -26,27 +26,19 @@ import ShopCart from "./pages/user/ShopCart";
 import Reply from "./pages/admin/Reply";
 
 function App() {
-
-
   return (
     <>
       <Routes>
         {/* 일반 사용자 페이지 */}
 
-        <Route path='/' element={ <UserLayout /> }>
-          <Route
-            path=''
-            element={ <Home /> }
-          />
-          <Route
-            path='new-product-list'
-            element={ <NewProductList /> }
-          />
+        <Route path="/" element={<UserLayout />}>
+          <Route path="" element={<Home />} />
+          <Route path="new-product-list" element={<NewProductList />} />
 
           <Route path="product-detail/:itemNum" element={<ProductDetail />}>
             <Route path="intro" element={<ProductIntro />} />
-            <Route path='review/:itemNum' element={ <Review /> } />
-            <Route path='qna/:itemNum' element={ <QnA /> } />
+            <Route path="review/:itemNum" element={<Review />} />
+            <Route path="qna/:itemNum" element={<QnA />} />
           </Route>
           <Route path="popular-product-list" element={<PopularProductList />} />
           <Route
@@ -59,7 +51,7 @@ function App() {
         <Route path="/mypage" element={<Mypage />}>
           <Route path="/mypage/update" element={<UserInfoUpdate />} />
           <Route path="/mypage/memdel" element={<Memberdel />} />
-          <Route path="shop-cart" element={ <ShopCart /> } />
+          <Route path="shop-cart" element={<ShopCart />} />
         </Route>
 
         {/* 관리자 페이지 */}
@@ -68,6 +60,7 @@ function App() {
           <Route path="reg-product" element={<RegProduct />} />
           <Route path="member-list" element={<MemberList />} />
           <Route path="qna-reply" element={<Reply />}/>
+
         </Route>
       </Routes>
     </>

@@ -1,9 +1,8 @@
-.container{
+.container {
   width: 1500px;
   margin: auto;
 }
 
-.mybody{
+.mybody {
   display: flex;
-  
 }
