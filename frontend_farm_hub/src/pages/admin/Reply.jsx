@@ -8,12 +8,15 @@ import Textarea from '../../common/Textarea';
 import Button from '../../common/Button';
 
 const Reply = () => {
+
   //답변 모달창 숨김/보이기 여부
   const [isOpenReply, setIsOpenReply] = useState(false);
+
+  //글 등록 후 리렌더링 할 state 변수
+  const [reload, setReload] = useState(0);
   
   //조회한 데이터를 받을 state 변수
   const [qnaList, setQnaList] = useState([]);
-  console.log(qnaList)
   
   //모달 내부에서 조회하는 내용을 받는 state 변수
   const [qnaDetail, setQnaDetail] = useState({
@@ -22,12 +25,12 @@ const Reply = () => {
     'itemNum':'',
     'memId':''
   })
+  console.log(qnaList)
 
   //로그인 정보에서 id만 가져오기
   const loginInfo = sessionStorage.getItem('loginInfo')
   const loginData = JSON.parse(loginInfo)
   const memId = loginData.memId
-  console.log(memId);
 
   //답변 내용을 저장할 state 변수
   const [replyData, setReplyData] = useState({
@@ -55,6 +58,7 @@ const Reply = () => {
         'content' : '',
       })
       setIsOpenReply(false)
+      setReload(reload + 1)
     })
     .catch(e => console.log(e))
   }
@@ -66,15 +70,18 @@ const Reply = () => {
       setQnaList(res.data)
     })
     .catch(e => console.log(e))
-  }, []); 
+  }, [reload]); 
 
   //모달 클릭 시 모달에 데이터 조회
-  const getDetail = (qnaNum) => {
-    axios.get(`/api/qna/detail/${qnaNum}`)
-    .then(res => setQnaDetail(res.data))
+  const getDetail = (qna) => {
+    axios.get(`/api/qna/detail/${qna.qnaNum}`)
+    .then(res => {
+      setQnaDetail({
+      ...res.data,
+      status : qna.status
+    })})
     .catch(e => console.log(e))
   }
-  console.log(qnaDetail)
 
   return (
     <div className={styles.container}>
@@ -127,7 +134,7 @@ const Reply = () => {
           qnaList.map((qna, i) => {
             return(
               <div onClick={() => {
-                  getDetail(qna.qnaNum)
+                  getDetail(qna)
                   setIsOpenReply(true)
                 }} className={styles.qna_item}  key={i}>
                 <div className={styles.qna_header}>
@@ -139,7 +146,13 @@ const Reply = () => {
                         <span>🕐{dayjs(qna.qnaDate).format('YYYY/MM/DD HH:mm:ss')}</span>
                     </div>
                   </div>
-                    <span>답변 대기</span>
+                    <span className={
+                      qna.status === '답변완료'
+                        ? styles.status_completed
+                        : styles.status_pending
+                    }>
+                      {qna.status}
+                    </span>
                 </div>
             </div>
             )
@@ -148,7 +161,10 @@ const Reply = () => {
       </div>
       <Modal
         isOpen={isOpenReply}        
-        onClose={() => setIsOpenReply(false)}
+        onClose={() => {
+            setIsOpenReply(false)
+            setReplyData({content : ''})
+          }} 
       >
         <div className={styles.reply_div}>
           <div className={styles.question_explain}>
@@ -169,11 +185,16 @@ const Reply = () => {
               name='content'
               value={replyData.content}
               onChange={e => {handleReplyData(e)}}
+              disabled={qnaDetail.status === "답변완료"}
             />
             <Button 
               title='답 변 하 기'
               size='100%'
               onClick={e => regReply()}
+              disabled={
+                qnaDetail.status === "답변완료" ||
+                !replyData.content.trim()
+              }
             />
           </div>
         </div>
