@@ -57,6 +57,27 @@ const AdminSide = () => {
           </li>
         </ul>
       </div>
+      <div className={styles.category}>
+        <p>상품문의정보</p>
+        <ul>
+          <li>
+            <NavLink to={'qna-reply'}>
+              <p>
+                <span></span>
+                문의답변
+              </p>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to={'reply-list'}>
+              <p>
+                <span></span>
+                답변조회
+              </p>
+            </NavLink>
+          </li>
+        </ul>
+      </div>
     </div>
   )
 }

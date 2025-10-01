@@ -28,6 +28,14 @@ const MypageSide = () => {
             </span>
             찜 리스트
           </li>
+          <li onClick={e => {nav('/mypage/shop-cart')}}>
+            <p>
+              <span>
+                <i className="bi bi-file-earmark-text-fill"></i>
+              </span>
+            장바구니
+            </p>
+          </li>
         </ul>
       </div>
       <div className={styles.category}>

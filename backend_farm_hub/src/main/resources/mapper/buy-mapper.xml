@@ -16,6 +16,29 @@
         <association property="itemDTO" resultMap="com.craft.backend_farm_hub.item.mapper.ItemMapper.items" />
     </resultMap>
 
+    <!--상품 구매(item insert)-->
+    <insert id="buyItem">
+        INSERT INTO SHOP_BUY (
+            ITEM_NUM
+            , MEM_ID
+            , BUY_CNT
+            , ORDER_NUM
+        ) VALUES (
+            #{itemNum}
+            , #{memId}
+            , #{buyCnt}
+            , (SELECT IFNULL(MAX(ORDER_NUM), 0) + 1 FROM SHOP_BUY)
+        )
+    </insert>
 
+    <select id="selectBuyforMember" resultMap="buy">
+        SELECT MEM_ID, BUY_NUM, SHOP_BUY.ITEM_NUM, BUY_CNT, ITEM_NAME, PRICE, BUY_CNT*PRICE AS TOTAL_PRICE, ATTACHED_IMG_NAME, BUY_DATE
+        FROM SHOP_BUY LEFT OUTER JOIN ITEM
+        ON SHOP_BUY.ITEM_NUM = ITEM.ITEM_NUM
+        INNER JOIN ITEM_IMG
+        ON SHOP_BUY.ITEM_NUM = ITEM_IMG.ITEM_NUM
+        WHERE IS_MAIN = 'Y' AND MEM_ID = #{memId}
+        ORDER BY BUY_DATE DESC;
+    </select>
 
 </mapper>

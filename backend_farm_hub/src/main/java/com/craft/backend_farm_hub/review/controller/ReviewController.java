@@ -35,4 +35,10 @@ public class ReviewController {
   public void regReviewNoImg(@RequestBody ReviewDTO reviewDTO){
     reviewService.regReviewNoImg(reviewDTO);
   }
+
+  // 상품별 리뷰 목록 조회
+  @GetMapping("/getList/{itemNum}")
+  public List<ReviewDTO> getReviewListforItem(@PathVariable("itemNum") int itemNum){
+    return reviewService.getReviewListforItem(itemNum);
+  }
 }

@@ -23,10 +23,23 @@ public class ReviewService {
     }
     reviewMapper.regReview(reviewDTO);
     reviewMapper.insertReviewImgs(reviewImgList);
+
+    int itemNum = reviewDTO.getItemNum();
+    reviewMapper.updateRating(itemNum);
   }
 
   // 이미지 없는 리뷰 등록
   public void regReviewNoImg (ReviewDTO reviewDTO){
     reviewMapper.regReview(reviewDTO);
+
+    int itemNum = reviewDTO.getItemNum();
+    reviewMapper.updateRating(itemNum);
   }
+
+  // 상품별 리뷰 목록 조회
+  public List<ReviewDTO> getReviewListforItem(int itemNum){
+    return reviewMapper.getReviewListforItem(itemNum);
+  }
+
+
 }

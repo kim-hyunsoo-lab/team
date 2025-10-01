@@ -3,23 +3,44 @@ import styles from './MemberList.module.css'
 import axios from 'axios'
 import PageTitle from '../../common/PageTitle'
 import dayjs from 'dayjs'
+import MemberBuyDetail from './MemberBuyDetail'
 
 const MemberList = () => {
+  // 상세보기 Modal
+  const [modalOpen, setModalOpen] = useState(false);
+
   const [memberList, setMemberList] = useState([]);  
   
   useEffect(()=>{axios.get('/api/members/selectmembers')
-    .then((res)=>{
+    .then(res=>{
       console.log(res.data);      
       setMemberList(res.data);})
     .catch(error=>console.log(error));
     }, []);
+
+  const [detailData, setDetailData] = useState([]);
+
+  // 행 클릭시 구매 상세 내역 조회하는 함수
+  const getDetail = (memId) =>{
+    axios.get(`/api/buy/${memId}`)
+    .then(res=>{
+      console.log(res.data);
+      setDetailData(res.data);
+    })
+    .catch(e=>console.log(e))
+  } 
+
+  const handleRowClick = (memId) => {
+    getDetail(memId);
+    setModalOpen(true);
+  };
   
   return (
     <div className={styles.container}>
       <PageTitle title='회원 목록' />
 
       <div>
-        <table>
+        <table className={styles.memberListTable}>
           <colgroup>
             <col width="10%" />
             <col width="17%" />
@@ -46,7 +67,7 @@ const MemberList = () => {
             :
             memberList.map((e, i)=>{
               return(
-                <tr data-details="test" key={i}>
+                <tr onClick={() => handleRowClick(e.memId)} key={i}>
                   <td>{memberList.length-i}</td>
                   <td>{e.memId}</td>
                   <td>{e.memName}</td>
@@ -59,11 +80,9 @@ const MemberList = () => {
           </tbody>
         </table>
       </div>
-      
-      
 
-
-
+      {/* 구매 상세 내역 모달 */}
+      <MemberBuyDetail onClose={()=>setModalOpen(false)} detailData={detailData} modalOpen={modalOpen} />
 
     </div>
   )

@@ -5,21 +5,29 @@ import Input from '../../common/Input'
 import Textarea from '../../common/Textarea'
 import Button from '../../common/Button'
 import axios from 'axios'
+import { useOutletContext } from 'react-router'
 
-const RegReview = ({isOpenRegReview, onClose}) => {    
+const RegReview = ({reload, itemNum, isOpenRegReview, onClose}) => { 
+  //JSON 형태로 저장된 로그인 정보 가져오기
   const loginInfo = sessionStorage.getItem('loginInfo')
-  // JSON 객체 변환
-  const memId = JSON.parse(loginInfo).memId;  
+  let memId = null
+
+  if(loginInfo){
+    try{
+      const loginData = JSON.parse(loginInfo)
+      memId = loginData.memId
+    } catch (error) {
+      console.error('로그인 정보 파싱 에러:', error);
+    }
+  }
 
   //입력한 리뷰 내용을 저장할 state변수
   const [reviewData, setReviewData] = useState({
     'title' : '',
     'rating' : '',
     'content' : '',
-    'memId': memId,
-    'itemNum': ''
   });
-
+  
   const [errorMsg, setErrorMsg] = useState({
     'title' : '',
     'rating' : '',
@@ -40,7 +48,6 @@ const RegReview = ({isOpenRegReview, onClose}) => {
 
   const handleErrorMsg = (e) => {
     let errorStr = '';
-
     switch(e.target.name){
       case 'title':
         if(!e.target.value)
@@ -60,8 +67,6 @@ const RegReview = ({isOpenRegReview, onClose}) => {
     return errorStr;
   }
 
-  console.log(reviewData)
-
   const regNewReview = (e) =>{
     const fileConfig = {'Content-Type': 'multipart/form-data'};
     const formData = new FormData();
@@ -71,8 +76,8 @@ const RegReview = ({isOpenRegReview, onClose}) => {
     formData.append('title', reviewData.title);
     formData.append('rating', reviewData.rating);
     formData.append('content', reviewData.content);
-    formData.append('memId', reviewData.memId);
-    formData.append('itemNum', reviewData.itemNum);
+    formData.append('memId', memId);
+    formData.append('itemNum', itemNum);
 
     if (!reviewData.title)
       {alert('리뷰 제목은 비워들 수 없습니다')}
@@ -84,6 +89,7 @@ const RegReview = ({isOpenRegReview, onClose}) => {
       axios.post('/api/reviews', formData, fileConfig)
       .then(res=>{
       alert('리뷰를 등록했습니다')
+      window.dispatchEvent(new Event('reviewUpdated'));
       setReviewData({
         'title' : '',
         'rating' : '',
@@ -94,7 +100,7 @@ const RegReview = ({isOpenRegReview, onClose}) => {
         'title' : '',
         'rating' : '',
         'content' : ''
-      })            
+      })  
       onClose();})
       .catch(e=>console.log(e))
     )
@@ -108,9 +114,13 @@ const RegReview = ({isOpenRegReview, onClose}) => {
     else if (!reviewData.content)
       {alert('리뷰 내용은 비워둘 수 없습니다')}
     else(
-      axios.post('/api/reviews/noimg', reviewData)
+      axios.post('/api/reviews/noimg', {
+        ...reviewData, 
+        'memId': memId,
+        'itemNum': itemNum})
       .then(res=>{
-      alert('리뷰를 등록했습니다')
+      alert('리뷰가 등록되었습니다')
+      window.dispatchEvent(new Event('reviewUpdated'));
       setReviewData({
         'title' : '',
         'rating' : '',
@@ -121,18 +131,16 @@ const RegReview = ({isOpenRegReview, onClose}) => {
         'title' : '',
         'rating' : '',
         'content' : ''
-      })            
+      })      
       onClose();})
       .catch(e=>console.log(e))
     )
   }
 
-
   return (
     <Modal
       isOpen={isOpenRegReview}
-      onClose={() =>{
-        onClose();
+      onClose={() =>{        
         setReviewData({
         'title' : '',
         'rating' : '',
@@ -145,7 +153,10 @@ const RegReview = ({isOpenRegReview, onClose}) => {
         'rating' : '',
         'content' : ''
         })
+
         setIsDisabledBtn(true)
+
+        onClose();
       }}
     >
       <div className={styles.container}>
@@ -243,6 +254,7 @@ const RegReview = ({isOpenRegReview, onClose}) => {
         <div className={styles.btn_div}>
           <Button title='리뷰 등록' 
             disabled={isDisabledBtn}
+            onKeyDown={e=>{ if(e.key==='Enter') {(reviewImgs) ? regNewReview(e) : regNewReviewNoImg(e)} }}
             onClick={e=>(
               (reviewImgs) ? regNewReview(e) : regNewReviewNoImg(e))}
             />

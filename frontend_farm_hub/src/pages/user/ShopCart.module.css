@@ -1,0 +1,91 @@
+.container {
+  width: 100%;
+  padding: 20px;
+}
+
+.cart_table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cart_table thead tr {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.cart_table thead td {
+  padding: 16px;
+  text-align: center;
+  font-weight: 600;
+  color: #495057;
+  font-size: 14px;
+}
+
+.cart_table tbody tr {
+  border-bottom: 1px solid #dee2e6;
+  transition: background-color 0.2s;
+}
+
+.cart_table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.cart_table tbody td {
+  padding: 16px;
+  text-align: center;
+  color: #212529;
+  vertical-align: middle;
+}
+
+.cart_table tbody td:first-child,
+.cart_table thead td:first-child {
+  width: 50px;
+}
+
+.cart_table input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.total_price_container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.total_price_box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.total_label {
+  font-size: 14px;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.total_amount {
+  font-size: 24px;
+  font-weight: 700;
+  color: #198754;
+}
+
+.button_group {
+  display: flex;
+  gap: 10px;
+}
+
+.cart_table input, .cart_table button {
+  margin: 5px;
+}

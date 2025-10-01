@@ -4,7 +4,7 @@ import { useOutletContext } from 'react-router';
 import dayjs from 'dayjs';
 
 const ProductIntro = () => {
-  const { itemDetail } = useOutletContext(); // 부모에서 보낸 context 받기
+  const { itemDetail } = useOutletContext(); // 부모에서 보낸 context 받기  
 
   return (
     <div className={styles.container}>
@@ -16,7 +16,7 @@ const ProductIntro = () => {
               return (
                 <img
                   src={`http://localhost:8080/upload/${img.attachedImgName}`}
-                  className={styles.sub_img}
+                  className={styles.subImg}
                   key={i}
                 />
               )

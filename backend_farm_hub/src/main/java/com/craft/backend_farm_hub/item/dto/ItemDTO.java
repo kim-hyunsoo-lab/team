@@ -15,6 +15,7 @@ public class ItemDTO {
   private double reviewAvg;
   private String origin;
   private LocalDateTime regDate;
+  private String seller;
 
 //  상품 하나에 이미지는 여러개
   private List<ItemImgDTO> imgList;

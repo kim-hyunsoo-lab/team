@@ -17,7 +17,7 @@
       <result column="PW_ANSWER" property="pwAnswer" />
       <result column="MEM_ROLE" property="memRole" />
       <result column="JOIN_DATE" property="joinDate" />
-<!--      구매내역-->
+<!--      구매내역 요약-->
       <result column="PURCHASE" property="purchase" />
     </resultMap>
 
@@ -104,6 +104,11 @@
     ON SHOP_MEMBER.MEM_ID = SHOP_BUY.MEM_ID
     GROUP BY MEM_ID
     ORDER BY JOIN_DATE DESC
+  </select>
+
+  <select id="">
+
+
   </select>
 
 

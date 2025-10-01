@@ -13,7 +13,9 @@
         <result column="REVIEW_AVG" property="reviewAvg" />
         <result column="ORIGIN" property="origin" />
         <result column="REG_DATE" property="regDate" />
-<!--상품 하나에 이미지는 여러개-->
+        <!--판매자(임시)-->
+        <result column="SELLER" property="seller" />
+        <!--상품 하나에 이미지는 여러개-->
         <collection property="imgList" resultMap="itemImg" />
     </resultMap>
 
@@ -54,6 +56,13 @@
             , ITEM_NAME
             , PRICE
             , ATTACHED_IMG_NAME
+            <!--판매자이름(임시로 관리자 이름으로 지정해 놓음)-->
+            , (
+                SELECT MEM_NAME
+                FROM SHOP_MEMBER
+                WHERE MEM_ROLE = 'ADMIN'
+                AND MEM_ID = 'admin'
+            ) SELLER
         FROM item INNER JOIN item_img IMG
         ON item.ITEM_NUM = IMG.ITEM_NUM
         WHERE IS_MAIN = 'Y'
@@ -73,6 +82,13 @@
             , ITEM_INTRO
             , REG_DATE
             , REVIEW_AVG
+        <!--판매자이름(임시로 관리자 이름으로 지정해 놓음)-->
+            , (
+                SELECT MEM_NAME
+                FROM SHOP_MEMBER
+                WHERE MEM_ROLE = 'ADMIN'
+                AND MEM_ID = 'admin'
+            ) SELLER
         FROM item INNER JOIN item_img IMG
         ON item.ITEM_NUM = IMG.ITEM_NUM
         WHERE item.ITEM_NUM = #{itemNum}

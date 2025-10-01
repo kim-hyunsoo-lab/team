@@ -19,7 +19,7 @@ const NewProducts = () => {
   useEffect(() => {
     axios.get('/api/items')
     .then(res => {
-      //console.log(res.data);
+      console.log(res.data);
       setNewProducts(res.data);
     })
     .catch(e => console.log(e));
@@ -52,6 +52,7 @@ const NewProducts = () => {
                 <div className={styles.grid_info}>
                   <h3>{newProduct.itemName}</h3>
                   <p>{newProduct.price.toLocaleString()}원</p>
+                  <p>판매자:{newProduct.seller}</p>
                 </div>
               </div>
             )
