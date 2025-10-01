@@ -33,31 +33,34 @@ const QnA = () => {
   // console.log(memId)
 
   //조회한 데이터를 저장할 state 변수
-  const [QnaList, setQnaList] = useState([]);
+  const [qnaList, setQnaList] = useState([]);
 
   //문의 모달창 숨김/보이기 여부
   const [isOpenQnA, setIsOpenQnA] = useState(false)
  
   //QNA 내용을 저장할 state 변수
-  const [QnaData, setQnaData] = useState({
+  const [qnaData, setQnaData] = useState({
     'content' : '',
     'itemNum' : itemNum,
     'memId' : memId
   })
 
   //값 입력 시 실행하는 함수
-  const handleQnaData = (e) => {
+  const handleqnaData = (e) => {
     setQnaData({
-      ...QnaData,
+      ...qnaData,
       [e.target.name] : e.target.value
     })
   }
 
-  console.log(QnaData)
+  //문의 글 작성 버튼 활성화 여부
+  const [isDisabledBtn, setIsDisabledBtn] = useState(true)
+
+  console.log(qnaData)
 
   //버튼 클릭 시 문의내용을 등록할 함수
   const regQnA = () => {
-    axios.post('/api/qna', QnaData)
+    axios.post('/api/qna', qnaData)
     .then(res => {
       alert('상품 문의가 등록되었습니다.')
       setQnaData({
@@ -80,6 +83,16 @@ const QnA = () => {
     })
     .catch(e => console.log(e))
   }, [reload])
+
+  //문의 내용에 따른 버튼 활성화 여부
+  useEffect(() => {
+    if(qnaData.content.trim().length > 0){
+      setIsDisabledBtn(false)
+    } 
+    else{
+      setIsDisabledBtn(true)
+    }
+  }, [qnaData.content]);
 
   return (
     <div className={styles.container}>
@@ -105,7 +118,7 @@ const QnA = () => {
       
       <div className={styles.qna_div}>
         {
-          QnaList.map((qna, i) => {
+          qnaList.map((qna, i) => {
             return(
               <div key={i} className={styles.qna_item}>
                 {/* 문의 번호/상품 이름 */}
@@ -147,10 +160,11 @@ const QnA = () => {
             width='100%'
             placeholder='문의사항을 작성해주세요.'
             name='content'
-            value={QnaData.content}
-            onChange={(e) => {handleQnaData(e)}}
+            value={qnaData.content}
+            onChange={(e) => {handleqnaData(e)}}
           />
           <Button 
+            disabled={isDisabledBtn}
             size='100%'
             title='등 록 하 기'
             onClick={e => {regQnA()}}
