@@ -68,14 +68,6 @@ const AdminSide = () => {
               </p>
             </NavLink>
           </li>
-          <li>
-            <NavLink to={'reply-list'}>
-              <p>
-                <span></span>
-                답변조회
-              </p>
-            </NavLink>
-          </li>
         </ul>
       </div>
     </div>
