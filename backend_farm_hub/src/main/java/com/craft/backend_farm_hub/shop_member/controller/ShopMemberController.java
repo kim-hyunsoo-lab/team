@@ -43,7 +43,7 @@ public class ShopMemberController {
 
   //비밀번호 찾기
   @GetMapping("/forgotPw/{memId}")
-  public ShopMemberDTO forgotPw(@PathVariable("memId") String memId){
+  public ShopMemberDTO forgotPw(@PathVariable("memId") String memId) {
     return shopMemberService.forgotPw(memId);
   }
 
@@ -55,27 +55,37 @@ public class ShopMemberController {
 
   //멤버 목록 조회
   @GetMapping("/selectmembers")
-  public List<ShopMemberDTO> selectMembers(){
+  public List<ShopMemberDTO> selectMembers() {
     return shopMemberService.selectMembers();
   }
+
   //관리자인지 여부 조회해서, 관리자이면 관리자 페이지 접근 가능
   @GetMapping("/is-admin/{memId}")
   public ResponseEntity<?> isAdmin(@PathVariable("memId") String memId) {
-
     try {
       return ResponseEntity
               .status(HttpStatus.OK)
-              .body(shopMemberService.isAdmin(memId ));
+              .body(shopMemberService.isAdmin(memId));
     } catch (Exception e) {
       e.printStackTrace();
       return ResponseEntity
               .status(HttpStatus.INTERNAL_SERVER_ERROR)
               .build();
     }
+  }
+
   //<!--회원정보 수정 시 1명의 회원정보를 조회-->
   @GetMapping("/select/{memId}")
-  public ShopMemberDTO selectId(@PathVariable("memId") String memId){
+  public ShopMemberDTO selectId(@PathVariable("memId") String memId) {
     return shopMemberService.selectId(memId);
   }
 
+  //회원정보 변경 시 1명의 회원정보 수정
+  @PutMapping("/update/{memId}")
+  public void updateId(@PathVariable("memId") String memId,
+                       @RequestBody ShopMemberDTO shopMemberDTO) {
+    shopMemberDTO.setMemId(memId);
+    shopMemberService.updateId(shopMemberDTO);
+  }
 }
+

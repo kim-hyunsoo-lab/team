@@ -27,7 +27,7 @@ td {
   gap: 10px;
   justify-content: center;
 }
-span {
+.container span {
   font-size: 0.7rem;
   color: darkgray;
   margin-top: 5px;
