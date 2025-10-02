@@ -49,5 +49,23 @@
         INNER JOIN ITEM ON SHOP_BUY.ITEM_NUM = ITEM.ITEM_NUM
         ORDER BY BUY_DATE DESC
     </select>
+    <!--장바구니 페이지 - 구매하기-->
+    <insert id="buyCartItem">
+        INSERT INTO shop_buy (
+            ITEM_NUM
+            , MEM_ID
+            , BUY_CNT
+            , ORDER_NUM
+        )
+        VALUES
+        <foreach collection="cartNumList" item="cartNum" separator=",">
+            (
+                (SELECT ITEM_NUM FROM shop_cart WHERE CART_NUM = #{cartNum})
+                , #{memId}
+                , (SELECT CART_CNT FROM shop_cart WHERE CART_NUM = #{cartNum})
+                , (SELECT IFNULL(MAX(ORDER_NUM), 0) + 1 FROM SHOP_BUY)
+            )
+        </foreach>
+    </insert>
 
 </mapper>

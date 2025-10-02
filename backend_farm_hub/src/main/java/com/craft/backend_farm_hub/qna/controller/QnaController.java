@@ -31,10 +31,6 @@ public class QnaController {
     return qnaService.getQnaListInAdmin();
   }
 
-  //관리자 페이지 상품 문의 내용 조회 api
-  @GetMapping("detail/{qnaNum}")
-  public QnaDTO getContent(@PathVariable int qnaNum){
-    return qnaService.getContent(qnaNum);
-  }
+
 
 }

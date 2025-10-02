@@ -118,6 +118,7 @@
     SELECT MEM_ROLE
     FROM shop_member
     WHERE MEM_ID = #{memId}
+    AND MEM_ROLE = #{memRole}
   </select>
 
   <!--회원정보 수정 시 1명의 회원정보를 조회-->

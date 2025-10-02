@@ -1,5 +1,6 @@
 package com.craft.backend_farm_hub.cart.mapper;
 
+import com.craft.backend_farm_hub.buy.dto.BuyDTO;
 import com.craft.backend_farm_hub.cart.dto.CartDTO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -24,4 +25,7 @@ public interface CartMapper {
   
   //장바구니 삭제
   public void deleteCart(int cartNum);
+
+  //장바구니에서 선택한 상품 구매시 해당 목록 삭제
+  public void deleteBoughtItem(BuyDTO buyDTO);
 }
