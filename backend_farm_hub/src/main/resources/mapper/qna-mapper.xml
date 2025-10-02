@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<!-- namespace에는 xml파일과 연결할 Mapper interface 파일명을 패키지를 포함하여 적어주세요 -->
+<mapper namespace="com.craft.backend_farm_hub.qna.mapper.QnaMapper">
+	<resultMap id="qna" type="com.craft.backend_farm_hub.qna.dto.QnaDTO">
+        <id column="QNA_NUM"        property="qnaNum"/>
+        <result column="ITEM_NUM"   property="itemNum"/>
+        <result column="MEM_ID"     property="memId"/>
+        <result column="QNA_DATE"   property="qnaDate"/>
+        <result column="CONTENT"    property="content"/>
+        <result column="STATUS"    property="status"/>
+        <association property="itemDTO" resultMap="ItemDTO"/>
+    </resultMap>
+
+    <resultMap id="ItemDTO" type="com.craft.backend_farm_hub.item.dto.ItemDTO">
+        <result column="ITEM_NUM" property="itemNum" />
+        <result column="ITEM_NAME" property="itemName" />
+    </resultMap>
+
+    <!--상품 문의 내용 등록-->
+    <insert id="regQna">
+        INSERT INTO QNA(
+            CONTENT
+            , ITEM_NUM
+            , MEM_ID
+        ) VALUES (
+            #{content}
+            , #{itemNum}
+            , #{memId}
+        )
+    </insert>
+
+    <!--상품 문의 내용 조회-->
+    <select id="getQnaList" resultMap="qna">
+        SELECT
+            QNA_NUM
+            , QNA_DATE
+            , CONTENT
+            , Q.ITEM_NUM
+            , ITEM_NAME
+        FROM QNA Q INNER JOIN ITEM I
+        ON Q.ITEM_NUM = I.ITEM_NUM
+        WHERE I.ITEM_NUM = #{itemNum}
+        ORDER BY QNA_NUM DESC
+    </select>
+
+    <!--관리자 페이지 상품 문의 정보 조회-->
+    <select id="getQnaListInAdmin" resultMap="qna">
+        SELECT
+            QNA_NUM
+            , Q.ITEM_NUM
+            , MEM_ID
+            , QNA_DATE
+            , ITEM_NAME
+            , CASE WHEN (SELECT count(REPLY_NUM)
+                         FROM reply
+                         WHERE QNA_NUM = Q.QNA_NUM) = 0
+                         THEN '답변대기'
+                         ELSE '답변완료'
+            END AS STATUS
+        FROM QNA Q INNER JOIN ITEM I
+        ON Q.ITEM_NUM = I.ITEM_NUM
+        ORDER BY QNA_NUM
+    </select>
+
+    <!--관리자 페이지 상품 문의 내용 조회-->
+    <select id="getContent" resultMap="qna">
+        SELECT
+            QNA_NUM
+            , CONTENT
+            , ITEM_NUM
+            , MEM_ID
+        FROM QNA
+        WHERE QNA_NUM = #{qnaNum}
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

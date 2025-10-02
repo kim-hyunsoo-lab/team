@@ -17,7 +17,9 @@ const Join = ({isOpenJoin, onClose}) => {
   const [errorMsg, setErrorMsg] = useState({
     'memId': '',
     'memPw': '',
-    'confirmPw': ''
+    'confirmPw': '',
+    'pwKey':'',
+    'pwAnswer':''
   });
 
   // 회원가입 버튼 활성화 여부
@@ -57,24 +59,19 @@ const Join = ({isOpenJoin, onClose}) => {
         'memEmail': 
           e.target.name === 'firstEmail' 
           ? e.target.value + newShopMember.secondEmail
-          : newShopMember.firstEmail + e.target.value
-      })         
+          : newShopMember.firstEmail + e.target.value})         
     }
     // 이메일 이외의 항목 변경 시
     else (setNewShopMember({
       ...newShopMember,
-      [e.target.name]: e.target.value
-    }))
-  };
-
+      [e.target.name]: e.target.value}))
+    };
 
   // 회원가입 
-  const regNewShopMember = () =>{  
-
-// ※회원가입 api 주소 나중에 만들면 확인     
+  const regNewShopMember = () =>{     
     axios.post('/api/members', newShopMember)
     .then(res => {
-      console.log('회원으로 등록되었습니다');
+      alert('회원으로 등록되었습니다');
 
       // 페이지 닫기  
       onClose();
@@ -98,13 +95,9 @@ const Join = ({isOpenJoin, onClose}) => {
     })
     .catch(error=>console.log(error));    
   }
-
-  console.log(newShopMember);
-
   
   // 아이디 중복여부 확인
-  const checkId = () => {
-// ※아이디 중복화인 api 주소 나중에 만들면 확인   
+  const checkId = () => {   
     axios.get(`/api/members/${newShopMember.memId}`)
     .then(res => 
       {if (res.data){
@@ -128,16 +121,13 @@ const Join = ({isOpenJoin, onClose}) => {
   }
 
   // 비밀번호 찾기 질문목록 호출
-  //※비밀번호 찾기 질문 api 주소 나중에 만들면 확인  
   useEffect(()=>{axios.get('/api/members/pw-question ')
     .then((res)=>{
-      console.log(res.data);
+      //console.log(res.data);
       setPwQ(res.data);})
     .catch(error=>console.log(error));
   }, []);
   
-  //console.log(newShopMember);
-
   return (
     <Modal
       isOpen={isOpenJoin}
@@ -151,7 +141,9 @@ const Join = ({isOpenJoin, onClose}) => {
         setErrorMsg({
           'memId': '',
           'memPw': '',
-          'confirmPw': ''
+          'confirmPw': '',
+          'pwKey':'',
+          'pwAnswer':''
         })
 
         // 값 초기화
@@ -287,7 +279,7 @@ const Join = ({isOpenJoin, onClose}) => {
             value={newShopMember.secondEmail}
             name='secondEmail'
             size='100%'>
-  {/* 이메일 추가 가능 */}
+            {/* 이메일 추가 가능 */}
               <option value=''>선택</option>
               <option value='@gmail.com'>gmail.com</option>
               <option value='@naver.com'>naver.com</option>
@@ -321,7 +313,15 @@ const Join = ({isOpenJoin, onClose}) => {
       <div>
         <h5>비밀번호 찾기 질문</h5>
           <div>
-            <Select size='100%' name='pwKey' onChange={e=>shopMemberReg(e)}>
+            <Select size='100%' name='pwKey' 
+            onChange={e=>{
+              shopMemberReg(e);
+              setIsDisabledBtn(true);              
+              setErrorMsg({
+                ...errorMsg,
+                'pwKey': handleErrorMsg(e)
+              });
+            }} >
               <option key='-5' value="">선택</option>
                 {pwQ.map((e, i)=>{
                   return(
@@ -330,14 +330,26 @@ const Join = ({isOpenJoin, onClose}) => {
                 })} 
             </Select>
           </div>
+          <p className={styles.errorMsg}>{errorMsg.pwKey}</p>
+
           <div>
             <Input 
-              onChange={e=>shopMemberReg(e)}
+              onChange={e=>{
+              shopMemberReg(e);
+              setIsDisabledBtn(true);              
+              setErrorMsg({
+                ...errorMsg,
+                'pwAnswer': handleErrorMsg(e)
+              });
+            }}
               value={newShopMember.pwAnswer} 
               name='pwAnswer' 
               size='100%'
-            />    
+            />            
           </div> 
+          <div>
+            <p className={styles.errorMsg}>{errorMsg.pwAnswer}</p>
+          </div>
 
       </div>
 

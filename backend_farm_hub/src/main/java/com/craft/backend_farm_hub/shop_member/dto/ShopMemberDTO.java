@@ -1,8 +1,10 @@
 package com.craft.backend_farm_hub.shop_member.dto;
 
+import com.craft.backend_farm_hub.buy.dto.BuyDTO;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class ShopMemberDTO {
@@ -20,4 +22,8 @@ public class ShopMemberDTO {
 
   //React에서 받아온 전화번호 배열
   private String[] memTelArr;
+
+  //구매 내역 요약
+  private String purchase;
+
 }

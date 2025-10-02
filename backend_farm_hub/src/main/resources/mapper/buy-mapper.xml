@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<!-- namespace에는 xml파일과 연결할 Mapper interface 파일명을 패키지를 포함하여 적어주세요 -->
+<mapper namespace="com.craft.backend_farm_hub.buy.mapper.BuyMapper">
+    <resultMap id="buy" type="com.craft.backend_farm_hub.buy.dto.BuyDTO">
+        <id column="BUY_NUM" property="buyNum" />
+        <result column="ITEM_NUM" property="itemNum" />
+        <result column="MEM_ID" property="memId" />
+        <result column="BUY_DATE" property="buyDate" />
+        <result column="BUY_CNT" property="buyCnt" />
+        <result column="ORDER_NUM" property="orderNum" />
+
+        <result column="TOTAL_PRICE" property="totalPrice" />
+        <association property="itemDTO" resultMap="com.craft.backend_farm_hub.item.mapper.ItemMapper.items" />
+    </resultMap>
+
+    <!--상품 구매(item insert)-->
+    <insert id="buyItem">
+        INSERT INTO SHOP_BUY (
+            ITEM_NUM
+            , MEM_ID
+            , BUY_CNT
+            , ORDER_NUM
+        ) VALUES (
+            #{itemNum}
+            , #{memId}
+            , #{buyCnt}
+            , (SELECT IFNULL(MAX(ORDER_NUM), 0) + 1 FROM SHOP_BUY)
+        )
+    </insert>
+
+    <select id="selectBuyforMember" resultMap="buy">
+        SELECT MEM_ID, BUY_NUM, SHOP_BUY.ITEM_NUM, BUY_CNT, ITEM_NAME, PRICE, BUY_CNT*PRICE AS TOTAL_PRICE, ATTACHED_IMG_NAME, BUY_DATE
+        FROM SHOP_BUY LEFT OUTER JOIN ITEM
+        ON SHOP_BUY.ITEM_NUM = ITEM.ITEM_NUM
+        INNER JOIN ITEM_IMG
+        ON SHOP_BUY.ITEM_NUM = ITEM_IMG.ITEM_NUM
+        WHERE IS_MAIN = 'Y' AND MEM_ID = #{memId}
+        ORDER BY BUY_DATE DESC;
+    </select>
+
+</mapper>

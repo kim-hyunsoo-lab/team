@@ -1,14 +1,3 @@
-.grid_div {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.grid_div > div {
-  border: 1px solid red;
-  height: 350px;
-  margin: 10px;
-}
-
 .more {
   text-align: right;
   font-size: 1.2rem;

@@ -1,0 +1,92 @@
+package com.craft.backend_farm_hub.cart.controller;
+
+import com.craft.backend_farm_hub.cart.dto.CartDTO;
+import com.craft.backend_farm_hub.cart.service.CartService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Slf4j
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/carts")
+public class CartController {
+  private final CartService cartService;
+
+  //장바구니에 상품 담기 api
+  @PostMapping("")
+  public ResponseEntity<?> insertCart(@RequestBody CartDTO cartDTO) {
+    log.info(cartDTO.toString());
+    try {
+      cartService.insertCart(cartDTO);
+      return ResponseEntity
+              .status(HttpStatus.CREATED)
+              .build();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("장바구니에 상품을 담는 중에 오류가 발생하였습니다.\n관리자에게 문의해 주세요.");
+    }
+  }
+
+  //장바구니 목록 조회
+  @GetMapping("/{memId}")
+  public ResponseEntity<?> getCartList(
+          @PathVariable("memId") String memId
+  ) {
+    try {
+      List<CartDTO> cartList = cartService.getCartList(memId);
+      return ResponseEntity
+              .status(HttpStatus.OK)
+              .body(cartList);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("장바구니 목록을 불러오지 못했습니다.\n관리자에게 문의해 주세요.");
+    }
+  }
+
+  //장바구니 수량 변경 api
+  @PutMapping("/{cartNum}")
+  public ResponseEntity<?> updateCartCnt(
+          @PathVariable("cartNum") int cartNum,
+          @RequestBody CartDTO cartDTO
+  ) {
+    try {
+      cartDTO.setCartNum(cartNum);
+      cartService.updateCartCnt(cartDTO);
+      return ResponseEntity
+              .status(HttpStatus.OK)
+              .body("수량이 변경되었습니다.");
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("장바구니 수량을 변경하는 중 오류가 발생하였습니다.\n관리자에게 문의주세요.");
+    }
+  }
+
+  //장바구니 삭제 api
+  @DeleteMapping("/{cartNum}")
+  public ResponseEntity<?> deleteCart(
+          @PathVariable("cartNum") int cartNum
+  ) {
+    try {
+      cartService.deleteCart(cartNum);
+      return ResponseEntity
+              .status(HttpStatus.OK)
+              .build();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("장바구니 삭제 중 오류가 발생하였습니다.\n관리자에게 문의해 주세요.");
+    }
+  }
+}

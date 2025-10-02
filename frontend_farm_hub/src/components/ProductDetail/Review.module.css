@@ -1,4 +1,5 @@
 .review_table {
+  table-layout: fixed;
   width: 100%;
   font-size: 1.1rem;
   text-align: center;
@@ -15,4 +16,15 @@
 
 .review_table > thead > tr {
   background-color: #eeeeee;
+}
+
+.img{
+  display: flex;  
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.img img{
+  width: 50%;
 }

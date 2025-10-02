@@ -43,7 +43,7 @@
 
     <!--    리뷰 이미지 등록-->
     <insert id="insertReviewImgs">
-        INSERT INTO ITEM_IMG(REVIEW_ORIGIN_IMG_NAME, REVIEW_ATTACHED_IMG_NAME, REVIEW_NUM)
+        INSERT INTO REVIEW_IMG(REVIEW_ORIGIN_IMG_NAME, REVIEW_ATTACHED_IMG_NAME, REVIEW_NUM)
         VALUES
         <foreach collection="reviewImgList" item="reviewImg" separator=",">
             (#{reviewImg.reviewOriginImgName}, #{reviewImg.reviewAttachedImgName}, #{reviewImg.reviewNum})
@@ -55,41 +55,20 @@
         SELECT IFNULL(MAX(REVIEW_NUM), 0) +1 FROM REVIEW
     </select>
 
+    <!--    리뷰 등록시 상품 평균 평점 반영 -->
+    <update id="updateRating">
+        UPDATE ITEM
+        SET REVIEW_AVG = (SELECT ROUND(AVG(RATING), 1) FROM REVIEW WHERE ITEM_NUM = #{itemNum})
+        WHERE ITEM_NUM = #{itemNum}
+    </update>
 
-
-
-
-
+<!--    상품별 리뷰 목록 조회-->
+    <select id="getReviewListforItem" resultMap="review">
+        SELECT REVIEW.REVIEW_NUM, RATING, TITLE, MEM_ID, ITEM_NUM, CONTENT, READ_CNT, CREATE_DATE, REVIEW_IMG_NUM, REVIEW_ATTACHED_IMG_NAME
+        FROM review LEFT OUTER JOIN REVIEW_IMG
+        ON REVIEW.REVIEW_NUM = REVIEW_IMG.REVIEW_NUM
+        WHERE ITEM_NUM = #{itemNum}
+        ORDER BY CREATE_DATE DESC
+    </select>
 
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

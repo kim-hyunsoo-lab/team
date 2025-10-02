@@ -1,29 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '../../common/Button'
 import PageTitle from '../../common/PageTitle'
 import styles from './Home.module.css'
 import Select from '../../common/Select'
-import { useNavigate } from 'react-router'
+import { NavLink, useNavigate } from 'react-router'
+import axios from 'axios'
+import NewProductList from './products/NewProductList'
+import Menu from '../../components/Menu'
+import NewProducts from '../../components/ProductList/NewProducts'
 
 const Home = () => {
-  const [itemList, setItemList] = useState([1,2,3,4,5,6,7,8]);
+  const nav = useNavigate();  
 
-  const nav = useNavigate();
 
   return (
     <div className={styles.container}>
+      <Menu />
       <div className={styles.new_product}>
-        <PageTitle title='신상품' />
-        <div className={`${styles.grid_div}`}>
-          {
-            itemList.map((e, i) => {
-              console.log(e);
-              return (
-                <div key={i} onClick={e => nav(`/product-detail/${e}/intro`)}>{e}</div>
-              )
-            })
-          }
-        </div>
+        <NewProducts />
         <p className={`${styles.more}`}>
           <span onClick={e => nav('/new-product-list')}>더보기</span>
         </p>
@@ -32,11 +26,7 @@ const Home = () => {
         <PageTitle title='인기상품' />
         <div className={`${styles.grid_div}`}>
           {
-            itemList.map((e, i) => {
-              return (
-                <div key={i}>{e}</div>
-              )
-            })
+            
           }
         </div>
         <p className={`${styles.more}`}>
@@ -46,13 +36,7 @@ const Home = () => {
       <div className={styles.discount_product}>
         <PageTitle title='할인상품' />
         <div className={`${styles.grid_div}`}>
-          {
-            itemList.map((e, i) => {
-              return (
-                <div key={i}>{e}</div>
-              )
-            })
-          }
+          
         </div>
         <p className={`${styles.more}`}>
           <span onClick={e => nav('/discount-product-list')}>더보기</span>

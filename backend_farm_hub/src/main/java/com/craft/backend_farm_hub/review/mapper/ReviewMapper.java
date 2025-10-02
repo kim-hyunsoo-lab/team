@@ -1,7 +1,5 @@
 package com.craft.backend_farm_hub.review.mapper;
 
-import com.craft.backend_farm_hub.item.dto.ItemDTO;
-import com.craft.backend_farm_hub.item.dto.ItemImgDTO;
 import com.craft.backend_farm_hub.review.dto.ReviewDTO;
 import com.craft.backend_farm_hub.review.dto.ReviewImgDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,5 +16,12 @@ public interface ReviewMapper {
 
   //  reviewNum 조회
   public int getNextReviewNum();
+
+  // 리뷰 등록시 상품 평점 변경
+  public void updateRating(int itemNum);
+
+  // 상품별 리뷰 목록 조회
+  public List<ReviewDTO> getReviewListforItem(int itemNum);
+
 
 }

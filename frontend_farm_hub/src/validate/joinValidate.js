@@ -39,6 +39,21 @@ const handleErrorMsg = (e, newShopMember) => {
         errorStr = '비밀번호가 일치하지 않습니다';
       }
       break;
+    
+    case 'pwKey':
+      if(!e.target.value)
+        errorStr='비밀번호 찾기 질문을 선택해주세요'
+      else 
+        errorStr = '';  
+      break; 
+    
+    case 'pwAnswer':
+      if(!e.target.value)
+        errorStr='비밀번호 찾기 답변을 입력해주세요'
+      else 
+        errorStr = '';  
+      break; 
+
   }
   
   return errorStr;
