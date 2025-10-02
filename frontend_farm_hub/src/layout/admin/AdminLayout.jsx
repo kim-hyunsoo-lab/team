@@ -8,10 +8,10 @@ import axios from 'axios'
 const AdminLayout = () => {
   const nav = useNavigate();
 
-  const isNotAdmin = () => {
-    alert('접근권한이 없습니다.');
-    nav('/');
-  }
+  // const isNotAdmin = () => {
+  //   alert('접근권한이 없습니다.');
+  //   nav('/');
+  // }
 
   //로그인한 회원 ID
   const loginInfo = sessionStorage.getItem('loginInfo');
