@@ -17,7 +17,6 @@ public interface QnaMapper {
   //관리자 페이지 상품 문의 정보 조회
   public List<QnaDTO> getQnaListInAdmin();
 
-  //관리자 페이지 상품 문의 내용 조회
-  public QnaDTO getContent(int qnaNum);
+
 
 }

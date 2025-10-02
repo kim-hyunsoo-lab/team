@@ -26,10 +26,4 @@ public class QnaService {
   public List<QnaDTO> getQnaListInAdmin(){
     return qnaMapper.getQnaListInAdmin();
   }
-
-  //관리자 페이지 상품 문의 내용 조회
-  public QnaDTO getContent(int qnaNum){
-    return qnaMapper.getContent(qnaNum);
-  }
-
 }

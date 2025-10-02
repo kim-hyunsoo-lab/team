@@ -15,4 +15,9 @@ public class ReplyService {
     replyMapper.regReply(replyDTO);
   }
 
+  //답변 모달 내부 내용 조회
+  public ReplyDTO getModalContent(int qnaNum){
+    return replyMapper.getModalContent(qnaNum);
+  }
+
 }
