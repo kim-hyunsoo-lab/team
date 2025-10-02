@@ -143,6 +143,18 @@ const updateCartCnt = (cart) => {
     });
   };
 
+  //각 행의 상품 구매 버튼
+  const buyItem = cart => {
+    axios.post('/api/buy/cart', cart)
+    .then(res => {
+      alert('상품을 구매했습니다.')
+    })
+    .catch(e => {
+      console.log(e);
+      alert(e.response.data)
+    })
+  }
+
   return (
     <div className={styles.container}>
       <PageTitle title='장바구니' />
@@ -203,7 +215,11 @@ const updateCartCnt = (cart) => {
                   <td>{cart.totalPrice.toLocaleString()}원</td>
                   <td>{dayjs(cart.cartDate).format('YYYY년 MM월 DD일')}</td>
                   <td>
-                    <Button title='구매하기' size='70px' />
+                    <Button
+                      title='구매하기'
+                      size='70px'
+                      onClick={() => buyItem(cart)}
+                    />
                     <Button
                       title='삭제'
                       color='gray'

@@ -8,25 +8,29 @@ import axios from 'axios'
 const AdminLayout = () => {
   const nav = useNavigate();
 
-  // const isNotAdmin = () => {
-  //   alert('접근권한이 없습니다.');
-  //   nav('/');
-  // }
+  
 
   //로그인한 회원 ID
   const loginInfo = sessionStorage.getItem('loginInfo');
 
-  //console.log(JSON.parse(loginInfo).memId)
+  console.log(JSON.parse(loginInfo))
 
   useEffect(() => {
-    JSON.parse(loginInfo) === null
-    ?
-    isNotAdmin()
-    :
-    axios.get(`/members/api/is-admin/${JSON.parse(loginInfo).memId}`)
+    if(loginInfo === null) {
+      alert('접근권한이 없습니다.');
+      nav('/');
+      return;
+    }
+
+    axios.get('api/members/is-admin', {params:{
+      memId : JSON.parse(loginInfo).memId,
+      memRole : JSON.parse(loginInfo).memRole
+    }})
     .then(res => {
-      if (res.data) {
-        isNotAdmin();
+      console.log(res.data)
+      if (!res.data) {
+        alert('접근권한이 없습니다.');
+        nav('/');
       }
     })
   }, []);

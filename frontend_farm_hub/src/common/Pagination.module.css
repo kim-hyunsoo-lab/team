@@ -1,0 +1,149 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.pagination li a {
+  padding: 8px 12px;
+  min-width: 40px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.pagination li a:hover {
+  border-color: #bbb;
+  background-color: #f8f9fa;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+/* Disabled 상태 */
+.pagination li.disabled a {
+  color: #ccc !important;
+  border-color: #eee !important;
+  background-color: #f9f9f9 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* 기본 활성화 스타일 (기존에 있던 것들 삭제하고 이것만) */
+.pagination li a[aria-current="page"],
+.pagination .selected a,
+.pagination li.selected a,
+ul.pagination li.selected a,
+.pagination li a.selected {
+  background-color: #007bff !important;
+  color: white !important;
+  border-color: #007bff !important;
+}
+
+.pagination li a[aria-current="page"]:hover,
+.pagination .selected a:hover,
+.pagination li.selected a:hover {
+  background-color: #0056b3 !important;
+  color: white !important;
+}
+
+/* 🎨 색상 테마들 - 여기서부터 새로 추가! */
+
+/* Blue 테마 */
+.pagination.blue li a[aria-current="page"],
+.pagination.blue .selected a,
+.pagination.blue li.selected a {
+  background-color: #007bff !important;
+  border-color: #007bff !important;
+}
+
+.pagination.blue li a[aria-current="page"]:hover,
+.pagination.blue .selected a:hover,
+.pagination.blue li.selected a:hover {
+  background-color: #0056b3 !important;
+}
+
+/* Green 테마 */
+.pagination.green li a[aria-current="page"],
+.pagination.green .selected a,
+.pagination.green li.selected a {
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+}
+
+.pagination.green li a[aria-current="page"]:hover,
+.pagination.green .selected a:hover,
+.pagination.green li.selected a:hover {
+  background-color: #1e7e34 !important;
+}
+
+/* Brown 테마 */
+.pagination.brown li a[aria-current="page"],
+.pagination.brown .selected a,
+.pagination.brown li.selected a {
+  background-color: #8B4513 !important;
+  border-color: #8B4513 !important;
+}
+
+.pagination.brown li a[aria-current="page"]:hover,
+.pagination.brown .selected a:hover,
+.pagination.brown li.selected a:hover {
+  background-color: #6B3410 !important;
+}
+
+/* Red 테마 */
+.pagination.red li a[aria-current="page"],
+.pagination.red .selected a,
+.pagination.red li.selected a {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+}
+
+.pagination.red li a[aria-current="page"]:hover,
+.pagination.red .selected a:hover,
+.pagination.red li.selected a:hover {
+  background-color: #c82333 !important;
+}
+
+/* Orange 테마 */
+.pagination.orange li a[aria-current="page"],
+.pagination.orange .selected a,
+.pagination.orange li.selected a {
+  background-color: #fd7e14 !important;
+  border-color: #fd7e14 !important;
+}
+
+.pagination.orange li a[aria-current="page"]:hover,
+.pagination.orange .selected a:hover,
+.pagination.orange li.selected a:hover {
+  background-color: #e55a00 !important;
+}
+
+/* Gray 테마 */
+.pagination.gray li a[aria-current="page"],
+.pagination.gray .selected a,
+.pagination.gray li.selected a {
+  background-color: #6c757d !important;
+  border-color: #6c757d !important;
+}
+
+.pagination.gray li a[aria-current="page"]:hover,
+.pagination.gray .selected a:hover,
+.pagination.gray li.selected a:hover {
+  background-color: #545b62 !important;
+}

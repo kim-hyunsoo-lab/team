@@ -3,6 +3,7 @@ import styles from './NewProducts.module.css'
 import axios from 'axios';
 import PageTitle from '../../common/PageTitle';
 import { useLocation, useNavigate } from 'react-router';
+import Pagination from '../../common/Pagination';
 
 const NewProducts = () => {
   const nav = useNavigate();
@@ -26,6 +27,29 @@ const NewProducts = () => {
   }, []);
   console.log(newProducts);
 
+  // 활성 페이지 세팅
+  const [currentPage, setCurrentPage] = useState(0);
+
+  // 보여줄 페이지
+  const itemsPerPage = 8;
+
+  // 현재 페이지 보여줄 데이터 계산
+  const startIndex = currentPage * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const viewNewProducts = newProducts.slice(startIndex, endIndex);
+
+  // 페이지를 변경시켜줄 함수
+  const handlePageChange = selectedPage => {
+    setCurrentPage(selectedPage);
+  };
+
+  // 보여줄 목록을 화면에 띄우는 방법
+  // viewNewProducts.map((qst, i) => {
+  //   return(
+  //     html 내용
+  //   )
+  // })
+
   return (
     <div>
       <PageTitle title='신상품' />
@@ -37,7 +61,7 @@ const NewProducts = () => {
             ?
             newProducts.slice(0,8)
             :
-            newProducts
+            viewNewProducts
           ).map((newProduct, i) => {
             
             return (
@@ -59,6 +83,19 @@ const NewProducts = () => {
           })
         }
       </div>
+      {
+        urlInfo.pathname !== '/'
+        &&
+        <Pagination
+          totalItems={newProducts.length}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+          currentPage={currentPage}
+          nextLabel={<i className="bi bi-arrow-right"></i>}
+          previousLabel={<i className="bi bi-arrow-left"></i>}
+          color='brown'
+        />
+      }
     </div>
   )
 }
