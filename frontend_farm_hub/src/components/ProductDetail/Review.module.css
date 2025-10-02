@@ -1,3 +1,7 @@
+.container > div:first-child > p{
+  margin-bottom: 5px;
+}
+
 .review_table {
   table-layout: fixed;
   width: 100%;

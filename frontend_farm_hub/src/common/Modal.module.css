@@ -17,6 +17,9 @@
   padding: 20px;
   margin-top: 50px;
   position: relative;
+  max-height: 85vh; 
+  display: flex; 
+  flex-direction: column; 
 }
 
 .close_btn {
@@ -35,6 +38,8 @@
 
 .content_div {
   margin-top: 12px;
+  overflow-y: auto; 
+  flex: 1; 
 }
 
 .modal_title {

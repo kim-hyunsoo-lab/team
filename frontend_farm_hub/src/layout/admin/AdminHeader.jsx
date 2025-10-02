@@ -13,7 +13,9 @@ const AdminHeader = () => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <div className={styles.img_div}>헤더이미지</div>
+        <div className={styles.img_div} onClick={(e) => nav("/admin")}>
+          <img className={styles.banner_img} src="/headertestadmin.png"/>
+        </div>
         <div className={styles.body}>
           <ul>
             <li>관리자님, 안녕하세요.</li>

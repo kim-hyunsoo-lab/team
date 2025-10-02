@@ -67,7 +67,7 @@ const Review = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <div>
         <p>이용후기 총 {reviewList.length}건</p>
         <p>
@@ -81,9 +81,7 @@ const Review = () => {
             <tr>
               <td>No</td>
               <td>제목</td>
-              <td>
-                <span>평점</span>
-              </td>
+              <td>평점</td>
               <td>작성자</td>
               <td>작성일</td>
             </tr>

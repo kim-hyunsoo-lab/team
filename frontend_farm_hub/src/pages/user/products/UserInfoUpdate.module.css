@@ -4,21 +4,20 @@
 .hearder {
   margin-bottom: 15px;
 }
-p {
+.container p {
   margin-bottom: 10px;
 }
-h1 {
+.container h1 {
   margin-bottom: 30px;
 }
-h3 {
+.container h3 {
   margin-top: 30px;
 }
-table,
-tr {
+.container tr {
   border-collapse: collapse;
   margin-bottom: 30px;
 }
-td {
+.container td {
   border: 1px solid #ddd;
   padding: 8px;
 }
@@ -27,8 +26,10 @@ td {
   gap: 10px;
   justify-content: center;
 }
-span {
+.container span {
   font-size: 0.7rem;
   color: darkgray;
   margin-top: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
 }

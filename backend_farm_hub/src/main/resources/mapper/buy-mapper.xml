@@ -13,6 +13,7 @@
         <result column="ORDER_NUM" property="orderNum" />
 
         <result column="TOTAL_PRICE" property="totalPrice" />
+        <result column="DAILY_TOTAL" property="dailyTotal" />
         <association property="itemDTO" resultMap="com.craft.backend_farm_hub.item.mapper.ItemMapper.items" />
     </resultMap>
 
@@ -38,7 +39,15 @@
         INNER JOIN ITEM_IMG
         ON SHOP_BUY.ITEM_NUM = ITEM_IMG.ITEM_NUM
         WHERE IS_MAIN = 'Y' AND MEM_ID = #{memId}
-        ORDER BY BUY_DATE DESC;
+        ORDER BY BUY_DATE DESC
+    </select>
+
+    <select id="selectSales" resultMap="buy">
+        SELECT BUY_NUM, SHOP_BUY.ITEM_NUM, MEM_ID, BUY_DATE, BUY_CNT, ORDER_NUM, ITEM_NAME, BUY_CNT*PRICE AS TOTAL_PRICE,
+        SUM(BUY_CNT*PRICE) OVER (PARTITION BY DATE(BUY_DATE)) AS DAILY_TOTAL
+        FROM SHOP_BUY
+        INNER JOIN ITEM ON SHOP_BUY.ITEM_NUM = ITEM.ITEM_NUM
+        ORDER BY BUY_DATE DESC
     </select>
     <!--장바구니 페이지 - 구매하기-->
     <insert id="buyCartItem">
