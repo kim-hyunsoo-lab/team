@@ -20,12 +20,16 @@ const Reply = () => {
   
   //모달 내부에서 조회하는 내용을 받는 state 변수
   const [qnaDetail, setQnaDetail] = useState({
-    'qnaNum':'',
+    'qnaNum' : '',
+    'memId':'',
+    'itemNum' : '',
+    'qnaDate':'',
     'content':'',
-    'itemNum':'',
-    'memId':''
+    'replyMemId':'',
+    'replyDate' : '',
+    'replyContent' : ''
   })
-  console.log(qnaList)
+  console.log(qnaDetail)
 
   //로그인 정보에서 id만 가져오기
   const loginInfo = sessionStorage.getItem('loginInfo')
@@ -34,7 +38,7 @@ const Reply = () => {
 
   //답변 내용을 저장할 state 변수
   const [replyData, setReplyData] = useState({
-    'content' : '',
+    'replyContent' : '',
   })
 
   //값 입력 시 실행하는 함수
@@ -48,14 +52,14 @@ const Reply = () => {
   //버튼 클릭 시 답변을 등록할 함수
     const regReply = () => {
     axios.post('/api/reply', {
-      content: replyData.content,
+      replyContent: replyData.replyContent,
       qnaNum: qnaDetail.qnaNum,
-      memId: memId
+      replyMemId: memId
     })
     .then(res => {
       alert('답변이 등록되었습니다.')
       setReplyData({
-        'content' : '',
+        'replyContent' : '',
       })
       setIsOpenReply(false)
       setReload(reload + 1)
@@ -65,7 +69,7 @@ const Reply = () => {
 
   //마운트 시 데이터를 조회
   useEffect(() => {
-    axios.get('/api/qna')
+    axios.get(`/api/qna`)
     .then(res => {
       setQnaList(res.data)
     })
@@ -74,12 +78,9 @@ const Reply = () => {
 
   //모달 클릭 시 모달에 데이터 조회
   const getDetail = (qna) => {
-    axios.get(`/api/qna/detail/${qna.qnaNum}`)
+    axios.get(`/api/reply/${qna.qnaNum}`)
     .then(res => {
-      setQnaDetail({
-      ...res.data,
-      status : qna.status
-    })})
+      setQnaDetail(res.data)})
     .catch(e => console.log(e))
   }
 
@@ -157,23 +158,23 @@ const Reply = () => {
             </div>
             )
           })
-        }
+        }    
       </div>
       <Modal
         isOpen={isOpenReply}        
         onClose={() => {
             setIsOpenReply(false)
-            setReplyData({content : ''})
+            setReplyData({replyContent : ''})
           }} 
       >
         <div className={styles.reply_div}>
           <div className={styles.question_explain}>
             <p>상품문의 내용</p>
-            <div className={styles.content}>{qnaDetail.content}</div>
+            <div className={styles.content}>{qnaDetail.qnaDTO?.content}</div>
             <div className={styles.member_info}>
-              <p>아이디 : {qnaDetail.memId}</p>
+              <p>아이디 : {qnaDetail.qnaDTO?.memId}</p>
               <span>/</span>
-              <p>상품번호 : {qnaDetail.itemNum}</p>
+              <p>상품번호 : {qnaDetail.qnaDTO?.itemNum}</p>
             </div>
           </div>
           <hr />
@@ -182,8 +183,8 @@ const Reply = () => {
             <Textarea
               width='100%'
               placeholder='답변을 작성해주세요.'
-              name='content'
-              value={replyData.content}
+              name='replyContent'
+              value={replyData.replyContent || qnaDetail.replyContent || ''}
               onChange={e => {handleReplyData(e)}}
               disabled={qnaDetail.status === "답변완료"}
             />
@@ -193,7 +194,7 @@ const Reply = () => {
               onClick={e => regReply()}
               disabled={
                 qnaDetail.status === "답변완료" ||
-                !replyData.content.trim()
+                !replyData.replyContent.trim()
               }
             />
           </div>

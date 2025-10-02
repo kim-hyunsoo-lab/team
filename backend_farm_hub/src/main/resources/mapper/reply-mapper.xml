@@ -6,35 +6,55 @@
 <mapper namespace="com.craft.backend_farm_hub.qna.mapper.ReplyMapper">
 	<resultMap id="reply" type="com.craft.backend_farm_hub.qna.dto.ReplyDTO">
       <id column="REPLY_NUM" property="replyNum" />
-      <result column="MEM_ID" property="memId" />
+      <result column="REPLY_MEM_ID" property="replyMemId" />
       <result column="QNA_NUM" property="qnaNum" />
       <result column="REPLY_DATE" property="replyDate" />
-      <result column="CONTENT" property="content" />
+      <result column="REPLY_CONTENT" property="replyContent" />
+      <result column="STATUS"    property="status"/>
+      <association property="qnaDTO" resultMap="QnaDTO"/>
+  </resultMap>
+
+  <resultMap id="QnaDTO" type="com.craft.backend_farm_hub.qna.dto.QnaDTO">
+      <id column="QNA_NUM" property="qnaNum"/>
+      <result column="MEM_ID" property="memId"/>
+      <result column="ITEM_NUM" property="itemNum"/>
+      <result column="QNA_DATE" property="qnaDate"/>
+      <result column="CONTENT" property="content"/>
   </resultMap>
 
     <!--답변 등록-->
     <insert id="regReply">
         INSERT INTO REPLY (
-            MEM_ID
+        REPLY_MEM_ID
             , QNA_NUM
-            , CONTENT
+            , REPLY_CONTENT
         ) VALUES (
-            #{memId}
+            #{replyMemId}
             , #{qnaNum}
-            , #{content}
+            , #{replyContent}
         )
     </insert>
 
-    <!--답변 내용 조회-->
-    <select id="getReply">
-        SELECT
-            REPLY_NUM
-            , CONTENT
-        FROM REPLY
-        WHERE QNA_NUM = #{qnaNum}
-
+    <!--답변 모달 내부 내용 조회-->
+    <select id="getModalContent" resultMap="reply">
+        SELECT Q.QNA_NUM
+        , MEM_ID
+        , ITEM_NUM
+        , QNA_DATE
+        , CONTENT
+        , REPLY_MEM_ID
+        , REPLY_DATE
+        , REPLY_CONTENT
+        , CASE WHEN (SELECT count(REPLY_NUM)
+                     FROM reply
+                     WHERE QNA_NUM = Q.QNA_NUM) = 0
+                     THEN '답변대기'
+                     ELSE '답변완료'
+        END AS STATUS
+        FROM qna Q LEFT OUTER JOIN reply R
+        ON Q.QNA_NUM = R.QNA_NUM
+        WHERE Q.QNA_NUM = #{qnaNum}
     </select>
-
 
 </mapper>
 

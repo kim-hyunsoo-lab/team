@@ -8,4 +8,6 @@ public interface ReplyMapper {
   //답변 등록
   public void regReply(ReplyDTO replyDTO);
 
+  //답변 모달 내부 내용 조회
+  public ReplyDTO getModalContent(int qnaNum);
 }
