@@ -110,6 +110,7 @@
     SELECT MEM_ROLE
     FROM shop_member
     WHERE MEM_ID = #{memId}
+    AND MEM_ROLE = #{memRole}
   </select>
 
 

@@ -42,4 +42,19 @@ public class BuyController {
               .build();
     }
   }
+
+  @PostMapping("/cart")
+  public ResponseEntity<?> buyCartItem(@RequestBody BuyDTO buyDTO) {
+    try {
+      buyService.buyCartItem(buyDTO);
+      return ResponseEntity
+              .status(HttpStatus.CREATED)
+              .build();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("선택상품 구매 중 오류가 발생하였습니다. 관리자에게 문의해 주세요.");
+    }
+  }
 }

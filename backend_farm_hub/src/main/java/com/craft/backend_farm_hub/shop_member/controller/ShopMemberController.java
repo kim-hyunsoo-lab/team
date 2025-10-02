@@ -59,13 +59,13 @@ public class ShopMemberController {
     return shopMemberService.selectMembers();
   }
   //관리자인지 여부 조회해서, 관리자이면 관리자 페이지 접근 가능
-  @GetMapping("/is-admin/{memId}")
-  public ResponseEntity<?> isAdmin(@PathVariable("memId") String memId) {
+  @GetMapping("/is-admin")
+  public ResponseEntity<?> isAdmin(ShopMemberDTO shopMemberDTO) {
 
     try {
       return ResponseEntity
               .status(HttpStatus.OK)
-              .body(shopMemberService.isAdmin(memId));
+              .body(shopMemberService.isAdmin(shopMemberDTO));
     } catch (Exception e) {
       e.printStackTrace();
       return ResponseEntity
