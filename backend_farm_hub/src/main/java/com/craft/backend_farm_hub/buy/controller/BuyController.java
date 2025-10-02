@@ -42,4 +42,17 @@ public class BuyController {
               .build();
     }
   }
+
+  @GetMapping("/sales")
+  public ResponseEntity<?> selectSales(){
+    try{
+      List<BuyDTO> list = buyService.selectSales();
+      return ResponseEntity.status(HttpStatus.OK).body(list);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .build();
+    }
+  }
 }

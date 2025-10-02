@@ -11,4 +11,6 @@ public interface BuyMapper {
   public void buyItem(BuyDTO buyDTO);
 
   public List<BuyDTO> selectBuyforMember(String memId);
+
+  public List<BuyDTO> selectSales();
 }

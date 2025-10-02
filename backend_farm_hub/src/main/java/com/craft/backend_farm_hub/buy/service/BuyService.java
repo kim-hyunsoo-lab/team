@@ -21,4 +21,8 @@ public class BuyService {
     return buyMapper.selectBuyforMember(memId);
   }
 
+  public List<BuyDTO> selectSales(){
+    return buyMapper.selectSales();
+  }
+
 }

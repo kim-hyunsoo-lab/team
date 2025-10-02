@@ -23,4 +23,7 @@ public class BuyDTO {
 
   //  구매상세내역 조회 시 데이터를 받아올 정수
   private int totalPrice;
+
+  //  판매목록 조회시 일일 총 매출
+  private int dailyTotal;
 }

@@ -8,18 +8,22 @@ const AdminSide = () => {
       <div className={styles.category}>
         <p>판매목록조회</p>
         <ul>
-          <li>
-            <span><i className="bi bi-file-earmark-text-fill"></i></span>
-            판매목록
+          <li>          
+            <NavLink to={`sales-list`}>
+              <p>
+              <span><i className="bi bi-file-earmark-text-fill"></i></span>
+              판매 목록
+              </p>
+            </NavLink>
           </li>
         </ul>
       </div>
       <div className={styles.category}>
-        <p>매출조회</p>
+        <p>매출 조회</p>
         <ul>
           <li>
             <span><i className="bi bi-bar-chart-line-fill"></i></span>
-            매출조회
+            매출 조회
           </li>
         </ul>
       </div>
@@ -30,13 +34,13 @@ const AdminSide = () => {
             <NavLink to={`member-list`}>
               <p>
               <span><i className="bi bi-person-lines-fill"></i></span>
-              회원정보
+              회원 목록
               </p>
             </NavLink>
           </li>
           <li>
             <span><i className="bi bi-person-fill-gear"></i></span>
-            회원관리
+            회원 관리
           </li>
         </ul>
       </div>
@@ -47,7 +51,7 @@ const AdminSide = () => {
             <NavLink to={'reg-product'}>
               <p>
                 <span><i className="bi bi-bag-plus-fill"></i></span>
-                상품등록
+                상품 등록
               </p>
             </NavLink>
           </li>
