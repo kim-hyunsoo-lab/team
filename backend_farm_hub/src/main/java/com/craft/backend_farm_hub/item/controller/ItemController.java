@@ -22,17 +22,28 @@ import java.util.List;
 public class ItemController {
   private final ItemService itemService;
 
+  // 상품 등록
   @PostMapping("")
-  public void insertItem(
+  public ResponseEntity<?> insertItem(
           @RequestParam("mainImg") MultipartFile mainImg,
           @RequestParam(name = "subImgs", required = false) MultipartFile[] subImgs,
           ItemDTO itemDTO) {
+    try {
+      ItemImgDTO imgDTO = FileUploadUtil.fileUpload(mainImg);
+      List<ItemImgDTO> imgList = FileUploadUtil.multipleFileUpload(subImgs);
+      imgList.add(imgDTO);
 
-    ItemImgDTO imgDTO = FileUploadUtil.fileUpload(mainImg);
-    List<ItemImgDTO> imgList = FileUploadUtil.multipleFileUpload(subImgs);
-    imgList.add(imgDTO);
+      itemService.insertItem(itemDTO, imgList);
 
-    itemService.insertItem(itemDTO, imgList);
+      return ResponseEntity
+              .status(HttpStatus.CREATED)
+              .body("상품이 등록되었습니다.");
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("상품 등록 중 오류가 발생했습니다.");
+    }
   }
 
   //신상품 목록 조회 api
@@ -51,11 +62,22 @@ public class ItemController {
 
   //상품 상세 조회 api
   @GetMapping("/{itemNum}")
-  public ItemDTO getItemDetail(@PathVariable("itemNum") int itemNum) {
-    return itemService.getItemDetail(itemNum);
+  public ResponseEntity<?> getItemDetail(@PathVariable("itemNum") int itemNum) {
+    try{
+      ItemDTO itemDTO = itemService.getItemDetail(itemNum);
+      if (itemDTO == null) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body("상품을 찾을 수 없습니다.");
+      }
+      return ResponseEntity.ok(itemDTO);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("조회 중 오류가 발생했습니다.");
+    }
   }
-
-
 
 
 }

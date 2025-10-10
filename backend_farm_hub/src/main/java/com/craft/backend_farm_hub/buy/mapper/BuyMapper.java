@@ -13,6 +13,8 @@ public interface BuyMapper {
   public List<BuyDTO> selectBuyforMember(String memId);
 
   public List<BuyDTO> selectSales();
+
+  public BuyDTO selectSalesOne(int buyNum);
   
   //체크된 장바구니 구매
   public void buyCartItem(BuyDTO buyDTO);

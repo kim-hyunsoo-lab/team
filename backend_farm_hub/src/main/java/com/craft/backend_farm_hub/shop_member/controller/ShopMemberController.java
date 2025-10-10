@@ -1,5 +1,6 @@
 package com.craft.backend_farm_hub.shop_member.controller;
 
+import com.craft.backend_farm_hub.buy.dto.BuyDTO;
 import com.craft.backend_farm_hub.shop_member.dto.ForgotPwDTO;
 import com.craft.backend_farm_hub.shop_member.dto.ShopMemberDTO;
 import com.craft.backend_farm_hub.shop_member.service.ShopMemberService;
@@ -18,45 +19,114 @@ public class ShopMemberController {
 
   //회원 등록 api
   @PostMapping("")
-  public void regMember(@RequestBody ShopMemberDTO shopMemberDTO) {
-    shopMemberService.regMember(shopMemberDTO);
+  public ResponseEntity<?> regMember(@RequestBody ShopMemberDTO shopMemberDTO) {
+    try{
+      shopMemberService.regMember(shopMemberDTO);
+      return ResponseEntity
+              .status(HttpStatus.CREATED)
+              .build();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("등록 중 오류 발생");
+    }
   }
 
   //로그인 기능 api
   @GetMapping("/login")
-  public ShopMemberDTO login(ShopMemberDTO shopMemberDTO) {
-    return shopMemberService.login(shopMemberDTO);
+  public ResponseEntity<?> login(ShopMemberDTO shopMemberDTO) {
+    try {
+      ShopMemberDTO loginMember = shopMemberService.login(shopMemberDTO);
+      if (loginMember == null) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body("아이디 또는 비밀번호가 일치하지 않습니다.");
+      }
+      return ResponseEntity.ok(loginMember);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("로그인 처리 중 오류가 발생했습니다.");
+    }
   }
 
   //id 사용 가능 여부 판단 api
   @GetMapping("/{memId}")
-  public boolean checkId(@PathVariable("memId") String memId) {
-    //사용가능 : return true;
-    return shopMemberService.isUsableId(memId);
+  public ResponseEntity<?> checkId(@PathVariable("memId") String memId) {
+    try {
+      boolean isUsable = shopMemberService.isUsableId(memId);
+      return ResponseEntity.ok(isUsable);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("ID 확인 중 오류가 발생했습니다.");
+    }
   }
 
   //비밀번호 찾기 질문 목록 조회 api
   @GetMapping("/pw-question")
-  public List<ForgotPwDTO> getQuestion() {
-    return shopMemberService.getQuestion();
+  public ResponseEntity<?> getQuestion() {
+    try{
+      List<ForgotPwDTO> list = shopMemberService.getQuestion();
+      return ResponseEntity.status(HttpStatus.OK).body(list);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .build();
+    }
   }
 
   //비밀번호 찾기
   @GetMapping("/forgotPw/{memId}")
-  public ShopMemberDTO forgotPw(@PathVariable("memId") String memId) {
-    return shopMemberService.forgotPw(memId);
+  public ResponseEntity<?> forgotPw(@PathVariable("memId") String memId){
+    try{
+      ShopMemberDTO shopMemberDTO = shopMemberService.forgotPw(memId);
+      if (shopMemberDTO == null) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body("회원 정보를 찾을 수 없습니다.");
+      }
+      return ResponseEntity.ok(shopMemberDTO);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .build();
+    }
   }
 
   //비밀번호 변경
   @PutMapping("/renewalPw")
-  public void renewalPw(@RequestBody ShopMemberDTO shopMemberDTO) {
-    shopMemberService.renewalPw(shopMemberDTO);
+  public ResponseEntity<?> renewalPw(@RequestBody ShopMemberDTO shopMemberDTO) {
+    try{
+      shopMemberService.renewalPw(shopMemberDTO);
+      return ResponseEntity
+              .status(HttpStatus.OK)
+              .build();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("비밀번호 변경 중 오류가 발생했습니다");
+    }
   }
 
   //멤버 목록 조회
   @GetMapping("/selectmembers")
-  public List<ShopMemberDTO> selectMembers() {
-    return shopMemberService.selectMembers();
+  public ResponseEntity<?> selectMembers(){
+    try{
+      List<ShopMemberDTO> list = shopMemberService.selectMembers();
+      return ResponseEntity.status(HttpStatus.OK).body(list);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .build();
+    }
   }
 
   //관리자인지 여부 조회해서, 관리자이면 관리자 페이지 접근 가능

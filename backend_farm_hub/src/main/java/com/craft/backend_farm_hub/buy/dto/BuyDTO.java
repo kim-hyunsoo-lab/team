@@ -1,6 +1,7 @@
 package com.craft.backend_farm_hub.buy.dto;
 
 import com.craft.backend_farm_hub.item.dto.ItemDTO;
+import com.craft.backend_farm_hub.shop_member.dto.ShopMemberDTO;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,9 @@ public class BuyDTO {
 
   //  물건과 1대 1
   private ItemDTO itemDTO;
+
+  //  멤버와 1대 1
+  private ShopMemberDTO shopMemberDTO;
 
   //  구매상세내역 조회 시 데이터를 받아올 정수
   private int totalPrice;

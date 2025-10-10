@@ -39,7 +39,7 @@ const MemberList = () => {
     <div className={styles.container}>
       <PageTitle title='회원 목록' />
 
-      <div>
+      <div className={styles.dateSection}>
         <table className={styles.memberListTable}>
           <colgroup>
             <col width="10%" />

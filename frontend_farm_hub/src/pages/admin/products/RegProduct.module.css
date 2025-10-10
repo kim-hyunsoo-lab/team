@@ -1,6 +1,10 @@
-.container{
+.container {
   display: flex;
   flex-direction: column;
   gap: 5px;
   width: 300px;
   }
+
+.container > div {
+  margin-left: 8px;
+}  

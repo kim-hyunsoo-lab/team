@@ -1,0 +1,36 @@
+.salesListDetailData{
+  display: flex;
+  gap: 3px;  
+}
+
+.salesListDetailData > div:first-child{
+  width: 70%;
+  margin-right: 10px;
+}
+
+.salesListDetailData > div:last-child{
+  width: 30%;
+}
+
+.detailTable{
+  padding: 4px;  
+  width: 100%;
+  table-layout: fixed; /* 이게 핵심! */
+}
+
+.detailTable td {
+  padding: 4px;
+  border-bottom: 2px solid rgb(207, 207, 207);
+}
+
+.main_img{
+  height: 220px;
+}
+
+.detailTable tbody > tr > td:first-child{
+  font-size: 0.9rem;
+}
+
+.detailTable tbody > tr > td:last-child{
+  font-size: 1rem;  
+}

@@ -3,13 +3,14 @@ import styles from "./SalesList.module.css"
 import axios from 'axios';
 import dayjs from 'dayjs';
 import PageTitle from '../../common/PageTitle';
+import SalesListDetail from './SalesListDetail';
 
 const SalesList = () => {
   const [salesList, setSalesList] = useState([]);
 
-
   useEffect(()=>{
-    axios.get('/api/buy/sales').then(res=>{
+    axios.get('/api/buy/sales')
+    .then(res=>{
       console.log(res.data);
       setSalesList(res.data);
     }).catch(e=>{
@@ -35,6 +36,32 @@ const SalesList = () => {
     const groupedSalesList = groupByDate(salesList);   
     
     console.log(groupedSalesList);
+
+    const [salesDetailData, setSalesDetailData] = useState();
+
+    // 상세보기 Modal
+    const [modalOpen, setModalOpen] = useState(false);
+
+    // 행 클릭시 상세 내역 조회하는 함수
+    const getSalesDetail = (buyNum) => {
+      axios.get(`/api/buy/salesOne/${buyNum}`)
+      .then(res=>{
+        console.log(res.data);
+        setSalesDetailData(res.data);
+      })
+      .catch(e=>{
+      // 오류 상태코드
+      const errorCode = e.status;
+      if(errorCode == 400 || errorCode == 500){
+        alert(`오류코드: ${errorCode}\n오류 메세지: ${e.response.data}`)}
+      // 괴상망측한 오류 - 전체 내용 보기 
+      else(console.log(e))});
+    }
+
+    const gettingSalesDetail = (buyNum) => {
+      getSalesDetail(buyNum);
+      setModalOpen(true);
+    };
 
 
   return (
@@ -67,12 +94,12 @@ const SalesList = () => {
               {
                 items.map((e, i) => {
                   return(
-                    <tr key={i}>
+                    <tr onClick={()=>gettingSalesDetail(e.buyNum)} key={i}>
                       <td>{items.length-i}</td>
                       <td>{e.memId}</td>
                       <td>{e.itemDTO.itemName}</td>
                       <td>{e.buyCnt}</td>
-                      <td>{e.totalPrice}</td>
+                      <td>{e.totalPrice?.toLocaleString()}원</td>
                     </tr>
                   )
                 })
@@ -84,6 +111,14 @@ const SalesList = () => {
           </div>   
         </div>
       ))}
+
+      {/* 데이터 상세 모달 */}     
+
+      <SalesListDetail 
+      onClose={()=>setModalOpen(false)} 
+      modalOpen={modalOpen && salesDetailData !== null} // 데이터 있을 때만 열림
+      salesDetailData={salesDetailData}/>
+
     </div>
   )
 }
