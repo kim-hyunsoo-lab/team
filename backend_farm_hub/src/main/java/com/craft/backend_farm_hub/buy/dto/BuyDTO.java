@@ -15,6 +15,7 @@ public class BuyDTO {
   private LocalDateTime buyDate;
   private int buyCnt;
   private int orderNum;
+  private int cartNum;
 
   //  react에서 전달되는 cartNum 목록 데이터(cartNumList)를 받기 위해 선언한 변수
   private List<Integer> cartNumList;

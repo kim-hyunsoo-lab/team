@@ -3,7 +3,11 @@ package com.craft.backend_farm_hub.qna.controller;
 import com.craft.backend_farm_hub.qna.dto.ReplyDTO;
 import com.craft.backend_farm_hub.qna.service.ReplyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/reply")
@@ -13,14 +17,35 @@ public class ReplyController {
 
   //답변 등록
   @PostMapping("")
-  public void regReply(@RequestBody ReplyDTO replyDTO){
-    replyService.regReply(replyDTO);
+  public ResponseEntity<?> regReply(@RequestBody ReplyDTO replyDTO){
+    try {
+      replyService.regReply(replyDTO);
+      return ResponseEntity
+              .status(HttpStatus.CREATED)
+              .build();
+    } catch (Exception e){
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("답변 등록 도중 오류가 발생했습니다");
+    }
   }
 
   //답변 모달 내부 내용 조회
   @GetMapping("/{qnaNum}")
-  public ReplyDTO getModalContent(@PathVariable int qnaNum){
-    return replyService.getModalContent(qnaNum);
+  public ResponseEntity<?> getModalContent(@PathVariable int qnaNum){
+    try {
+      ReplyDTO replyDTO = replyService.getModalContent(qnaNum);
+      return ResponseEntity
+              .status(HttpStatus.OK)
+              .body(replyDTO);
+    } catch (Exception e){
+      e.printStackTrace();
+
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("답변 내용 조회 도중 오류가 발생했습니다.");
+    }
   }
 
 }

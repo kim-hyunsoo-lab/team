@@ -19,14 +19,19 @@ import RegReview from "./components/ProductDetail/RegReview";
 import axios from "axios";
 import MemberList from "./pages/admin/MemberList";
 import Mypage from "./pages/user/Mypage";
-import MemberInfo from "./pages/user/products/Memberdel";
 import UserInfoUpdate from "./pages/user/products/UserInfoUpdate";
 import Memberdel from "./pages/user/products/Memberdel";
 import ShopCart from "./pages/user/ShopCart";
 import Reply from "./pages/admin/Reply";
 //import ReplyList from "./pages/admin/ReplyList";
 import BuyList from "./pages/user/BuyList";
+import Deliverypage from "./pages/user/products/Deliverypage";
 import SalesList from "./pages/admin/SalesList";
+import Temperature from "./pages/admin/Temperature";
+import Humidity from "./pages/admin/Humidity";
+import AirQuality from "./pages/admin/AirQuality";
+import Illuminance from "./pages/admin/Illuminance";
+
 
 function App() {
   return (
@@ -54,8 +59,9 @@ function App() {
         <Route path="/mypage" element={<Mypage />}>
           <Route path="/mypage/update" element={<UserInfoUpdate />} />
           <Route path="/mypage/memdel" element={<Memberdel />} />
-          <Route path="shop-cart" element={ <ShopCart /> } />
-          <Route path="buy-list" element={ <BuyList /> } />
+          <Route path="shop-cart" element={<ShopCart />} />
+          <Route path="buy-list" element={<BuyList />} />
+          <Route path="/mypage/delivery" element={<Deliverypage/>}/>
         </Route>
 
         {/* 관리자 페이지 */}
@@ -64,8 +70,12 @@ function App() {
           <Route path="sales-list" element={<SalesList />} />
           <Route path="reg-product" element={<RegProduct />} />
           <Route path="member-list" element={<MemberList />} />
-          <Route path="qna-reply" element={<Reply />}/>
 
+          <Route path="qna-reply" element={<Reply />}/>
+          <Route path="temperature" element={ <Temperature /> }/>
+          <Route path="humidity" element={ <Humidity /> }/>
+          <Route path="air-quality" element={ <AirQuality /> }/>
+          <Route path="illuminance" element={ <Illuminance /> }/>
         </Route>
       </Routes>
     </>

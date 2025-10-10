@@ -115,6 +115,14 @@
  	,	REPLY_DATE DATETIME DEFAULT SYSDATE()
  	,	REPLY_CONTENT VARCHAR(300)
  ); 
+ 
+ #회원탈퇴시 설문조사 테이블
+ CREATE TABLE SURVEY(
+ 	NUM INT PRIMARY KEY AUTO_INCREMENT
+ 	MEM_ID VARCHAR(20) REFERENCES SHOP_MEMBER(MEM_ID)
+ 	WITHDRAWAL VARCHAR(20) 
+ )
+
 
  #################################################
  ### 이 워크시트에 CREATE 문을 다 작성해주세요 ###

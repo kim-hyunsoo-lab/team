@@ -18,6 +18,13 @@ const ShopCart = () => {
 
   const memId = JSON.parse(sessionStorage.getItem('loginInfo')).memId;
 
+  //각 행의 구매 데이터를 담을 state 변수
+  const [eachItem, setEachItem] = useState({
+    itemNum : '',
+    memId,
+    buyCnt : cnt
+  });
+
   const [reloading, setReloading] = useState(0);
 
   useEffect(() => {
@@ -75,14 +82,19 @@ const updateCartCnt = (cart) => {
     return cartList.reduce((sum, cart) => sum + cart.totalPrice, 0);
   };
 
-  //체크박스 개별 선택
-  const handleCheckbox = (cartNum) => {
-    setSelectedItems(prev =>
-      prev.includes(cartNum)
-        ? prev.filter(num => num !== cartNum)
-        : [...prev, cartNum]
-    );
-  };
+  //체크박스 값 변경 시 실행 함수
+  const handleCheckbox = (e) => {
+    //체크가 됐다면...
+    //cartNum을 숫자로 변환해서 저장  parseInt(문자열)
+    if (e.target.checked) {
+      setSelectedItems([...selectedItems, parseInt(e.target.value)]);
+    }
+    //체크가 해제 됐다면...
+    else {
+      const result = selectedItems.filter((cartNum) => {return cartNum != e.target.value});
+      setSelectedItems(result);
+    }
+  }
 
   //전체 선택/해제
   const handleSelectAll = (e) => {
@@ -144,8 +156,8 @@ const updateCartCnt = (cart) => {
   };
 
   //각 행의 상품 구매 버튼
-  const buyItem = cart => {
-    axios.post('/api/buy/cart', cart)
+  const buyItem = () => {
+    axios.post('/api/buy/each-cart', eachItem)
     .then(res => {
       alert('상품을 구매했습니다.')
     })
@@ -153,6 +165,12 @@ const updateCartCnt = (cart) => {
       console.log(e);
       alert(e.response.data)
     })
+  }
+
+  //내용 줄의 체크박스가 변할 때, 총 구매 가격을 변경하는 함수
+  const handleFinalPrice = (price, e) => {
+    e.target.checked ? setFinalPrice(finalPrice + price) : setFinalPrice(finalPrice - price);
+
   }
 
   return (
@@ -192,7 +210,8 @@ const updateCartCnt = (cart) => {
                     <input
                       type="checkbox"
                       checked={selectedItems.includes(cart.cartNum)}
-                      onChange={() => handleCheckbox(cart.cartNum)}
+                      onChange={e => handleCheckbox(e)}
+                      value={cart.cartNum}
                     />
                   </td>
                   <td>{cart.itemNum}</td>
@@ -209,7 +228,13 @@ const updateCartCnt = (cart) => {
                     <Button
                       title='수량변경'
                       size='70px'
-                      onClick={() => updateCartCnt(cart)}
+                      onClick={() => {
+                        updateCartCnt(cart);
+                        setEachItem({
+                          ...eachItem,
+                          
+                        })
+                      }}
                     />
                   </td>
                   <td>{cart.totalPrice.toLocaleString()}원</td>
@@ -218,7 +243,7 @@ const updateCartCnt = (cart) => {
                     <Button
                       title='구매하기'
                       size='70px'
-                      onClick={() => buyItem(cart)}
+                      onClick={() => buyItem()}
                     />
                     <Button
                       title='삭제'
@@ -240,7 +265,7 @@ const updateCartCnt = (cart) => {
         </div>
         <div className={styles.button_group}>
           <Button title='선택 삭제' color='gray' size='150px' onClick={deleteSelectedItems} />
-          <Button title='선택 상품 구매' color='green' size='200px' />
+          <Button title='선택 상품 구매' color='green' size='200px' onClick={() => {}} />
         </div>
       </div>
     </div>

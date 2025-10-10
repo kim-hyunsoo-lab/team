@@ -28,4 +28,7 @@ public interface CartMapper {
 
   //장바구니에서 선택한 상품 구매시 해당 목록 삭제
   public void deleteBoughtItem(BuyDTO buyDTO);
+
+  //장바구니 구매 시 각 행의 장바구니 삭제
+  public void deleteBoughtEach(int cartNum);
 }
