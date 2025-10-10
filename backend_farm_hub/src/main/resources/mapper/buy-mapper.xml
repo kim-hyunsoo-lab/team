@@ -14,7 +14,9 @@
 
         <result column="TOTAL_PRICE" property="totalPrice" />
         <result column="DAILY_TOTAL" property="dailyTotal" />
+
         <association property="itemDTO" resultMap="com.craft.backend_farm_hub.item.mapper.ItemMapper.items" />
+        <association property="shopMemberDTO" resultMap="com.craft.backend_farm_hub.shop_member.mapper.ShopMemberMapper.member" />
     </resultMap>
 
     <!--상품 구매(item insert)-->
@@ -49,6 +51,18 @@
         INNER JOIN ITEM ON SHOP_BUY.ITEM_NUM = ITEM.ITEM_NUM
         ORDER BY BUY_DATE DESC
     </select>
+
+    <select id="selectSalesOne" resultMap="buy">
+        SELECT SHOP_BUY.MEM_ID, BUY_NUM, SHOP_BUY.ITEM_NUM, BUY_CNT, ITEM_NAME, PRICE,
+        BUY_CNT*PRICE AS TOTAL_PRICE, ATTACHED_IMG_NAME, BUY_DATE,
+        MEM_NAME, MEM_TEL, MEM_EMAIL, MEM_ADDR, ADDR_DETAIL
+        FROM SHOP_BUY
+        INNER JOIN ITEM ON SHOP_BUY.ITEM_NUM = ITEM.ITEM_NUM
+        INNER JOIN ITEM_IMG ON SHOP_BUY.ITEM_NUM = ITEM_IMG.ITEM_NUM AND IS_MAIN = 'Y'
+        INNER JOIN SHOP_MEMBER ON shop_buy.MEM_ID = shop_member.MEM_ID
+        WHERE SHOP_BUY.BUY_NUM = #{buyNum}
+    </select>
+
     <!--장바구니 페이지 - 구매하기-->
     <insert id="buyCartItem">
         INSERT INTO shop_buy (

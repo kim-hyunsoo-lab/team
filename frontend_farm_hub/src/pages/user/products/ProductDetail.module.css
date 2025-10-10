@@ -85,6 +85,10 @@
   font-size: 1.2rem;
 }
 
+.main_info_table i {
+  color: #ffc107;
+}
+
 .main_info_table tr {
   border-top: 1px solid #cccccc;
 }

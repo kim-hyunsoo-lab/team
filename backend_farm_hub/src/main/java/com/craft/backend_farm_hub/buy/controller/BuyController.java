@@ -57,6 +57,19 @@ public class BuyController {
     }
   }
 
+  @GetMapping("/salesOne/{buyNum}")
+  public ResponseEntity<?> selectSalesOne(@PathVariable("buyNum") int buyNum){
+    try{
+      BuyDTO buyDTO = buyService.selectSalesOne(buyNum);
+      return ResponseEntity.status(HttpStatus.OK).body(buyDTO);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .build();
+    }
+  }
+
   @PostMapping("/cart")
   public ResponseEntity<?> buyCartItem(@RequestBody BuyDTO buyDTO) {
     try {

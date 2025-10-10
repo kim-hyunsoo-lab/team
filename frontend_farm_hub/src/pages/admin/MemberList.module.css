@@ -4,29 +4,42 @@
   gap: 3px;
 }
 
+.dateSection{
+  padding: 3px 15px;
+}
+
 .memberListTable{
-  table-layout: fixed;
+  width: 65%;
   text-align: center;
-  border-top: 2px solid #888888;
-  width: 650px;
+  background-color: #fff;
+  border-collapse: collapse;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.memberListTable tr {
-  border-bottom: 1px solid #bbbbbb;
+.memberListTable thead tr {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
 }
 
-.memberListTable td {
-  padding: 7px;
+.memberListTable thead td {
+  padding: 4px 0px;
+  font-weight: 600;
+  color: #495057;
+  font-size: 15px;
 }
 
-.memberListTable > thead > tr {
-  background-color: #eeeeee;
-}
-
-.memberListTable tbody td {
+.memberListTable tbody tr {
+  border-bottom: 1px solid #dee2e6;
+  transition: 0.2s;
+  font-size: 15px;
   cursor: pointer;
 }
 
-.memberListTable tbody tr:hover{
-  background-color: rgb(230, 230, 230);
+.memberListTable tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.memberListTable tbody td {
+  padding: 4px 0px;
+  vertical-align: middle;
 }
