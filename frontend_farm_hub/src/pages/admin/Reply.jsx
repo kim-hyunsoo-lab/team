@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styles from './Reply.module.css'
 import Input from '../../common/Input'
 import axios from 'axios';
@@ -6,9 +6,9 @@ import dayjs from 'dayjs';
 import Modal from '../../common/Modal';
 import Textarea from '../../common/Textarea';
 import Button from '../../common/Button';
+import Pagination from '../../common/Pagination';
 
 const Reply = () => {
-
   //답변 모달창 숨김/보이기 여부
   const [isOpenReply, setIsOpenReply] = useState(false);
 
@@ -17,7 +17,26 @@ const Reply = () => {
   
   //조회한 데이터를 받을 state 변수
   const [qnaList, setQnaList] = useState([]);
-  
+
+  //통계 카드 state 변수
+  const [stats, setStats] = useState({});
+
+  // 활성 페이지 세팅
+  const [currentPage, setCurrentPage] = useState(0);
+
+  // 보여줄 페이지
+  const itemsPerPage = 7;
+
+  // 현재 페이지 보여줄 데이터 계산
+  const startIndex = currentPage * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentQnaList = qnaList.slice(startIndex, endIndex);
+
+  // 페이지를 변경시켜줄 함수
+  const handlePageChange = selectedPage => {
+    setCurrentPage(selectedPage);
+  };
+
   //모달 내부에서 조회하는 내용을 받는 state 변수
   const [qnaDetail, setQnaDetail] = useState({
     'qnaNum' : '',
@@ -72,6 +91,15 @@ const Reply = () => {
     axios.get(`/api/qna`)
     .then(res => {
       setQnaList(res.data)
+      const today = dayjs().format('YYYY-MM-DD');
+      setStats({
+        total: res.data.length,
+        pending: res.data.filter(qna => qna.status === '답변대기').length,
+        completed: res.data.filter(qna => qna.status === '답변완료').length,
+        today: res.data.filter(qna => 
+          dayjs(qna.qnaDate).format('YYYY-MM-DD') === today
+      ).length
+      })
     })
     .catch(e => console.log(e))
   }, [reload]); 
@@ -83,6 +111,9 @@ const Reply = () => {
       setQnaDetail(res.data)})
     .catch(e => console.log(e))
   }
+  console.log(qnaList)
+
+  
 
   return (
     <div className={styles.container}>
@@ -96,43 +127,28 @@ const Reply = () => {
       <div className={styles.stats}>
           <div className={styles.stat_card}>
               <p>전체 문의</p>
-              <p>127</p>
+              <p>{stats.total}</p>
           </div>
           <div className={styles.stat_card}>
               <p>답변 대기</p>
-              <p>23</p>
+              <p>{stats.pending}</p>
           </div>
           <div className={styles.stat_card}>
               <p>답변 완료</p>
-              <p>104</p>
+              <p>{stats.completed}</p>
           </div>
           <div className={styles.stat_card}>
               <p>오늘 문의</p>
-              <p>8</p>
+              <p>{stats.today}</p>
           </div>
-      </div>
-
-      {/* <!-- 필터 --> */}
-      <div className={styles.filters}>
-          <select id="statusFilter">
-            <option value="all">전체 상태</option>
-            <option value="pending">답변 대기</option>
-            <option value="answered">답변 완료</option>
-          </select>
-          <select id="sortFilter">
-            <option value="latest">최신순</option>
-            <option value="oldest">오래된순</option>
-          </select>
-          <Input />
       </div>
 
       {/* <!-- QnA 목록 --> */}
       <div 
         className={styles.qna_list}
-        
       >
         {
-          qnaList.map((qna, i) => {
+          currentQnaList.map((qna, i) => {
             return(
               <div onClick={() => {
                   getDetail(qna)
@@ -140,7 +156,7 @@ const Reply = () => {
                 }} className={styles.qna_item}  key={i}>
                 <div className={styles.qna_header}>
                   <div>
-                    <div className={styles.qna_title}>{qna.itemDTO.itemName} / {qna.qnaNum}</div>
+                    <div className={styles.qna_title}>{qna.itemDTO.itemName}</div>
                     <div className={styles.qna_meta}>
                         <span>👤{qna.memId}</span>
                         <span>📋{qna.itemNum}</span>
@@ -172,7 +188,7 @@ const Reply = () => {
             <p>상품문의 내용</p>
             <div className={styles.content}>{qnaDetail.qnaDTO?.content}</div>
             <div className={styles.member_info}>
-              <p>아이디 : {qnaDetail.qnaDTO?.memId}</p>
+              <p>질문자 아이디 : {qnaDetail.qnaDTO?.memId}</p>
               <span>/</span>
               <p>상품번호 : {qnaDetail.qnaDTO?.itemNum}</p>
             </div>
@@ -200,6 +216,16 @@ const Reply = () => {
           </div>
         </div>
       </Modal>
+      {/* 컴포넌트 렌더링 */}
+      <Pagination 
+        totalItems={qnaList.length}
+        itemsPerPage={itemsPerPage}
+        onPageChange={handlePageChange}
+        currentPage={currentPage}
+        nextLabel='>>'
+        previousLabel='<<'
+        color='gray'
+      />
     </div>
   )
 }
