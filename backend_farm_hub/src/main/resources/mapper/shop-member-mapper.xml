@@ -52,6 +52,7 @@
     )
   </insert>
 
+
 <!--로그인 기능 쿼리-->
   <select id="login" resultMap="member">
     SELECT
@@ -63,12 +64,14 @@
     AND MEM_PW = #{memPw}
   </select>
 
+
 <!--ID 중복검사-->
   <select id="checkIdDup" resultType="String">
     SELECT MEM_ID
     FROM SHOP_MEMBER
     WHERE MEM_ID = #{memId}
   </select>
+
 
 <!--비밀번호 찾기 질문 목록 조회-->
   <select id="getQuestion" resultMap="question">
@@ -78,6 +81,7 @@
     FROM FORGOTPW
   </select>
 
+
 <!--  비밀번호 찾기 쿼리-->
   <select id="forgotPw" resultMap="member">
     SELECT MEM_ID, MEM_NAME, MEM_EMAIL, PW_KEY, PW_ANSWER
@@ -85,12 +89,14 @@
     WHERE MEM_ID = #{memId}
   </select>
 
+
 <!--  비밀번호 변경-->
   <update id="renewalPw">
     UPDATE SHOP_MEMBER
     SET MEM_PW = #{memPw}
     WHERE MEM_ID = #{memId}
   </update>
+
 
 <!--  멤버 및 구매 목록 조회-->
   <select id="selectMembers" resultMap="member">
@@ -105,13 +111,15 @@
     GROUP BY MEM_ID
     ORDER BY JOIN_DATE DESC
   </select>
+
+
   <!--관리자 페이지 접근 시 관리자인지 확인-->
   <select id="getMemRole" resultType="String">
     SELECT MEM_ROLE
     FROM shop_member
     WHERE MEM_ID = #{memId}
+    AND MEM_ROLE = #{memRole}
   </select>
-
 
   <!--회원정보 수정 시 1명의 회원정보를 조회-->
   <select id="selectId" resultMap="member">
@@ -125,7 +133,6 @@
       , ADDR_DETAIL
     FROM SHOP_MEMBER
     WHERE MEM_ID = #{MEM_ID}
-
   </select>
 
   <!--회원정보 변경 시 1명의 회원정보 수정-->
@@ -139,5 +146,8 @@
     , ADDR_DETAIL = #{addrDetail}
     WHERE MEM_ID = #{memId}
   </update>
+
+
+
 
 </mapper>

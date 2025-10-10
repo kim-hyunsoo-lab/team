@@ -60,12 +60,13 @@ public class ShopMemberController {
   }
 
   //관리자인지 여부 조회해서, 관리자이면 관리자 페이지 접근 가능
-  @GetMapping("/is-admin/{memId}")
-  public ResponseEntity<?> isAdmin(@PathVariable("memId") String memId) {
+
+  @GetMapping("/is-admin")
+  public ResponseEntity<?> isAdmin(ShopMemberDTO shopMemberDTO) {
     try {
       return ResponseEntity
               .status(HttpStatus.OK)
-              .body(shopMemberService.isAdmin(memId));
+              .body(shopMemberService.isAdmin(shopMemberDTO));
     } catch (Exception e) {
       e.printStackTrace();
       return ResponseEntity
@@ -73,10 +74,7 @@ public class ShopMemberController {
               .build();
     }
   }
-<<<<<<< HEAD
 
-=======
->>>>>>> 3467a00fba648b8dde2f0bad1607ce519e9392be
   //<!--회원정보 수정 시 1명의 회원정보를 조회-->
   @GetMapping("/select/{memId}")
   public ShopMemberDTO selectId(@PathVariable("memId") String memId) {

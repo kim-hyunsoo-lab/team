@@ -64,8 +64,8 @@ const UserHeader = () => {
         </ul>
       </div>
       <div className={styles.search}>
-        <div className={styles.img_div} onClick={(e) => nav("/")}>
-          헤더이미지
+        <div className={styles.img_div} onClick={(e) => nav("/")}>          
+          <img className={styles.banner_img} src="/headertest.png"/>
         </div>
         <Input />
       </div>

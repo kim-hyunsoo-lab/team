@@ -12,6 +12,8 @@
   , MEM_ROLE VARCHAR(14) NOT NULL DEFAULT 'USER'     #관리자는 ADMIN
   , JOIN_DATE DATETIME DEFAULT SYSDATE()
   ); 
+  
+  SELECT * FROM illuminance_function;
  
  #상품정보
  CREATE TABLE ITEM (
@@ -108,10 +110,10 @@
  #답변 테이블
  CREATE TABLE reply(
  	REPLY_NUM INT PRIMARY KEY AUTO_INCREMENT
- 	,	MEM_ID VARCHAR(20) REFERENCES SHOP_MEMBER(MEM_ID)
+ 	,	REPLY_MEM_ID VARCHAR(20) REFERENCES SHOP_MEMBER(MEM_ID)
  	,	QNA_NUM INT REFERENCES qna(QNA_NUM)
  	,	REPLY_DATE DATETIME DEFAULT SYSDATE()
- 	,	CONTENT VARCHAR(300)
+ 	,	REPLY_CONTENT VARCHAR(300)
  ); 
  
  #회원탈퇴시 설문조사 테이블
@@ -121,6 +123,10 @@
  	WITHDRAWAL VARCHAR(20) 
  )
 
+
  #################################################
  ### 이 워크시트에 CREATE 문을 다 작성해주세요 ###
- 
+
+
+SELECT * FROM qna;
+SELECT * FROM REPLY;

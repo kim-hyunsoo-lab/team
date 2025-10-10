@@ -30,7 +30,7 @@ public interface ShopMemberMapper {
   public List<ShopMemberDTO> selectMembers();
 
   //관리자인지 여부 조회
-  public String getMemRole(String memId);
+  public String getMemRole(ShopMemberDTO shopMemberDTO);
 
   //<!--회원정보 수정 시 1명의 회원정보를 조회-->
   public ShopMemberDTO selectId(String memId);

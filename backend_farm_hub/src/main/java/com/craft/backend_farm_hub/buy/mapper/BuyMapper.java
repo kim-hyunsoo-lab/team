@@ -11,4 +11,10 @@ public interface BuyMapper {
   public void buyItem(BuyDTO buyDTO);
 
   public List<BuyDTO> selectBuyforMember(String memId);
+
+  public List<BuyDTO> selectSales();
+  
+  //장바구니 페이지 구매
+  public void buyCartItem(BuyDTO buyDTO);
+
 }

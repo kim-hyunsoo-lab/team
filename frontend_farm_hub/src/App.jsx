@@ -26,6 +26,8 @@ import Reply from "./pages/admin/Reply";
 //import ReplyList from "./pages/admin/ReplyList";
 import BuyList from "./pages/user/BuyList";
 import Deliverypage from "./pages/user/products/Deliverypage";
+import SalesList from "./pages/admin/SalesList";
+
 
 function App() {
   return (
@@ -61,6 +63,7 @@ function App() {
         {/* 관리자 페이지 */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="" element={<AdminHome />} />
+          <Route path="sales-list" element={<SalesList />} />
           <Route path="reg-product" element={<RegProduct />} />
           <Route path="member-list" element={<MemberList />} />
           <Route path="qna-reply" element={<Reply />} />

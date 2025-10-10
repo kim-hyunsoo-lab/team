@@ -7,8 +7,10 @@ import java.time.LocalDateTime;
 @Data
 public class ReplyDTO {
   private int replyNum;
-  private String memId;
+  private String replyMemId;
   private int qnaNum;
   private LocalDateTime replyDate;
-  private String content;
+  private String replyContent;
+  private String status;
+  private QnaDTO qnaDTO;
 }
