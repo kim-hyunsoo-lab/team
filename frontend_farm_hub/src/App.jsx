@@ -27,6 +27,10 @@ import Reply from "./pages/admin/Reply";
 import BuyList from "./pages/user/BuyList";
 import Deliverypage from "./pages/user/products/Deliverypage";
 import SalesList from "./pages/admin/SalesList";
+import Temperature from "./pages/admin/Temperature";
+import Humidity from "./pages/admin/Humidity";
+import AirQuality from "./pages/admin/AirQuality";
+import Illuminance from "./pages/admin/Illuminance";
 
 
 function App() {
@@ -66,7 +70,12 @@ function App() {
           <Route path="sales-list" element={<SalesList />} />
           <Route path="reg-product" element={<RegProduct />} />
           <Route path="member-list" element={<MemberList />} />
-          <Route path="qna-reply" element={<Reply />} />
+
+          <Route path="qna-reply" element={<Reply />}/>
+          <Route path="temperature" element={ <Temperature /> }/>
+          <Route path="humidity" element={ <Humidity /> }/>
+          <Route path="air-quality" element={ <AirQuality /> }/>
+          <Route path="illuminance" element={ <Illuminance /> }/>
         </Route>
       </Routes>
     </>

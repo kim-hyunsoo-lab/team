@@ -74,6 +74,25 @@ const AdminSide = () => {
           </li>
         </ul>
       </div>
+      <div className={styles.category}>
+        <p>축사정보</p>
+        <ul>
+          <li>          
+            <NavLink to={'temperature'}>
+              <p>온도</p>
+            </NavLink>
+            <NavLink to={'humidity'}>
+              <p>습도</p>
+            </NavLink>
+            <NavLink to={'air-quality'}>
+              <p>공기질</p>
+            </NavLink>
+            <NavLink to={'illuminance'}>
+              <p>조도</p>
+            </NavLink>
+          </li>
+        </ul>
+      </div>
     </div>
   )
 }

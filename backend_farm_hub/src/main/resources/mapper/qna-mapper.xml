@@ -46,7 +46,7 @@
         ORDER BY QNA_NUM DESC
     </select>
 
-    <!--관리자 페이지 상품 문의 정보 조회-->
+    <!--관리자 페이지 상품 문의 내용 정보 조회-->
     <select id="getQnaListInAdmin" resultMap="qna">
         SELECT
             QNA_NUM
@@ -62,7 +62,7 @@
             END AS STATUS
         FROM QNA Q INNER JOIN ITEM I
         ON Q.ITEM_NUM = I.ITEM_NUM
-        ORDER BY QNA_NUM
+        ORDER BY QNA_DATE DESC
     </select>
 
 
