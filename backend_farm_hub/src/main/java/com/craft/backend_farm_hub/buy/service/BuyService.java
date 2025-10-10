@@ -23,9 +23,9 @@ public class BuyService {
     return buyMapper.selectBuyforMember(memId);
   }
 
-  public List<BuyDTO> selectSales(){
+  public List<BuyDTO> selectSales() {
     return buyMapper.selectSales();
-
+  }
   //장바구니 상품 구매 기능(선택 상품 구매, 구매하면 삭제)
   public void buyCartItem(BuyDTO buyDTO) {
     buyMapper.buyCartItem(buyDTO);
