@@ -68,7 +68,22 @@ public class BuyController {
       e.printStackTrace();
       return ResponseEntity
               .status(HttpStatus.INTERNAL_SERVER_ERROR)
-              .body("선택상품 구매 중 오류가 발생하였습니다. 관리자에게 문의해 주세요.");
+              .body("선택상품 구매 중 오류가 발생하였습니다.\n관리자에게 문의해 주세요.");
+    }
+  }
+  //각행의 장바구니 상품 구매하기 api
+  @PostMapping("/each-cart")
+  public ResponseEntity<?> buyEachCartItem(@RequestBody BuyDTO buyDTO) {
+    try {
+      buyService.buyEachCartItem(buyDTO);
+      return ResponseEntity
+              .status(HttpStatus.CREATED)
+              .build();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("상품을 구매하는 중 오류가 발생하였습니다.\n관리자에게 문의해 주세요.");
     }
   }
 }
