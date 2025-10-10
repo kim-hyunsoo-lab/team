@@ -2,6 +2,7 @@ package com.craft.backend_farm_hub.buy.service;
 
 import com.craft.backend_farm_hub.buy.dto.BuyDTO;
 import com.craft.backend_farm_hub.buy.mapper.BuyMapper;
+import com.craft.backend_farm_hub.cart.dto.CartDTO;
 import com.craft.backend_farm_hub.cart.mapper.CartMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,10 @@ public class BuyService {
   public void buyCartItem(BuyDTO buyDTO) {
     buyMapper.buyCartItem(buyDTO);
     cartMapper.deleteBoughtItem(buyDTO);
+  }
+  //각 행의 장바구니 데이터 구매
+  public void buyEachCartItem(BuyDTO buyDTO) {
+    buyMapper.buyEachCartItem(buyDTO);
+    cartMapper.deleteBoughtEach(buyDTO.getCartNum());
   }
 }

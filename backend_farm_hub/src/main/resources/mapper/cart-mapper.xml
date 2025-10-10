@@ -98,4 +98,8 @@
             #{cartNum}
         </foreach>
     </delete>
+    <delete id="deleteBoughtEach">
+        DELETE FROM SHOP_CART
+        WHERE CART_NUM = #{cartNum}
+    </delete>
 </mapper>
