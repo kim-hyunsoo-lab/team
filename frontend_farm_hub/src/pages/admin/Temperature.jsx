@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,6 +10,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import axios from 'axios';
 
 ChartJS.register(
   CategoryScale,
@@ -21,12 +22,21 @@ ChartJS.register(
   Legend
 );
 
-
-
-
-
-
 const Temperature = () => {
+  
+  const [temperatureData, setTemperatureData] = useState([]);
+
+  useEffect(() => {
+    axios.get('/api/farms/test', {params : {each : [0,1,2,3,4,5,6]}})
+    .then(res => {
+      console.log(res.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
+  }, [])
+
+
   const options = {
     responsive: true,
     plugins: {
