@@ -10,12 +10,16 @@ const MypageSide = () => {
       <div className={styles.category}>
         <p>쇼핑정보</p>
         <ul>
-          <li onClick={e => {nav('/mypage/buy-list')}}>
+          <li
+            onClick={(e) => {
+              nav("/mypage/buy-list");
+            }}
+          >
             <p>
               <span>
                 <i className="bi bi-file-earmark-text-fill"></i>
               </span>
-            주문목록/배송조회
+              주문목록/배송조회
             </p>
           </li>
           <li>
@@ -30,12 +34,16 @@ const MypageSide = () => {
             </span>
             찜 리스트
           </li>
-          <li onClick={e => {nav('/mypage/shop-cart')}}>
+          <li
+            onClick={(e) => {
+              nav("/mypage/shop-cart");
+            }}
+          >
             <p>
               <span>
                 <i className="bi bi-file-earmark-text-fill"></i>
               </span>
-            장바구니
+              장바구니
             </p>
           </li>
         </ul>
@@ -84,7 +92,7 @@ const MypageSide = () => {
               회원 탈퇴
             </p>
           </li>
-          <li>
+          <li onClick={() => nav("/mypage/delivery")}>
             <p>
               <span>
                 <i className="bi bi-person-fill-gear"></i>
