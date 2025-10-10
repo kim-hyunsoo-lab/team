@@ -135,7 +135,17 @@
     WHERE MEM_ID = #{MEM_ID}
   </select>
 
-
+  <!--회원정보 변경 시 1명의 회원정보 수정-->
+  <update id="updateId">
+    UPDATE SHOP_MEMBER
+    SET
+    MEM_PW = #{memPw}
+    , MEM_TEL = #{memTel}
+    , MEM_EMAIL = #{memEmail}
+    , MEM_ADDR = #{memAddr}
+    , ADDR_DETAIL = #{addrDetail}
+    WHERE MEM_ID = #{memId}
+  </update>
 
 
 
