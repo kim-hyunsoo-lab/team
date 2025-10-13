@@ -41,5 +41,10 @@ public class ReviewService {
     return reviewMapper.getReviewListforItem(itemNum);
   }
 
+  // 유저별 리뷰 목록 조회
+  public List<ReviewDTO> getReviewListforUser(String memId){
+    return reviewMapper.getReviewListforUser(memId);
+  }
+
 
 }

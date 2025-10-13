@@ -4,7 +4,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import PageTitle from '../../common/PageTitle';
 import SalesListDetail from './SalesListDetail';
-import Pagination from '../../common/Pagination'; // Pagination 컴포넌트 import
+import Pagination from '../../common/Pagination'; 
 
 const SalesList = () => {
   const [salesList, setSalesList] = useState([]);

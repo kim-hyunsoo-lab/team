@@ -27,4 +27,7 @@ public class ReplyService {
     return replyMapper.getQnaList(itemNum);
   }
 
+  // 유저별 문의 내역 조회
+  public List<ReplyDTO> getQnaListforUser(String memId) {return replyMapper.getQnaListforUser(memId);}
+
 }
