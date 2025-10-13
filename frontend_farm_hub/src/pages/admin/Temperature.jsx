@@ -180,21 +180,21 @@ const Temperature = () => {
           />
         </div>
       </div>
-
-    <div>
-      <Select value={dateRange} onChange={e => {
-        setDateRange(e.target.value);
-      }}>
-        <option value={days.slice(0,7)}>1주전</option>
-        <option value={days.slice(0,14)}>2주전</option>
-        <option value={days.slice(0,21)}>3주전</option>
-        <option value={days.slice(0,28)}>4주전</option>
-      </Select>
-      <Line 
-        options={options}
-        data={data}
-      />
-    </div>
+      <div>
+        <Select value={dateRange} onChange={e => {
+          setDateRange(e.target.value);
+        }}>
+          <option value={days.slice(0,7)}>1주전</option>
+          <option value={days.slice(0,14)}>2주전</option>
+          <option value={days.slice(0,21)}>3주전</option>
+          <option value={days.slice(0,28)}>4주전</option>
+        </Select>
+        <Line 
+          options={options}
+          data={data}
+        />
+      </div>
+  </div>
   )
 }
 
