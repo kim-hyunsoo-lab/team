@@ -15,6 +15,7 @@
         <result column="REG_DATE" property="regDate" />
         <!--판매자(임시)-->
         <result column="SELLER" property="seller" />
+        <result column="REVIEW_CNT" property="reviewCnt"/>
         <!--상품 하나에 이미지는 여러개-->
         <collection property="imgList" resultMap="itemImg" />
     </resultMap>
@@ -52,19 +53,28 @@
     <!--신상품 목록 조회-->
     <select id="getItemList" resultMap="items">
         SELECT
-            ITEM.ITEM_NUM
-            , ITEM_NAME
-            , PRICE
-            , ATTACHED_IMG_NAME
-            <!--판매자이름(임시로 관리자 이름으로 지정해 놓음)-->
-            , (
-                SELECT MEM_NAME
-                FROM SHOP_MEMBER
-                WHERE MEM_ROLE = 'ADMIN'
-                AND MEM_ID = 'admin'
-            ) SELLER
+        ITEM.ITEM_NUM
+        , ITEM_NAME
+        , PRICE
+        , ATTACHED_IMG_NAME
+        , REG_DATE
+        , REVIEW_AVG
+        , COALESCE(REVIEW_CNT, 0) AS REVIEW_CNT
+        , (
+        SELECT MEM_NAME
+        FROM SHOP_MEMBER
+        WHERE MEM_ROLE = 'ADMIN'
+        AND MEM_ID = 'admin'
+        ) SELLER
         FROM item INNER JOIN item_img IMG
         ON item.ITEM_NUM = IMG.ITEM_NUM
+        LEFT JOIN (
+        SELECT
+        ITEM_NUM,
+        COUNT(*) AS REVIEW_CNT
+        FROM review
+        GROUP BY ITEM_NUM
+        ) R ON ITEM.ITEM_NUM = R.ITEM_NUM
         WHERE IS_MAIN = 'Y'
         ORDER BY REG_DATE DESC
     </select>

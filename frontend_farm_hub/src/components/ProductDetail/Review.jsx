@@ -6,6 +6,7 @@ import ProductDetail from '../../pages/user/products/ProductDetail'
 import { useOutletContext, useParams } from 'react-router'
 import axios from 'axios'
 import dayjs from 'dayjs'
+import Pagination from '../../common/Pagination'
 
 const Review = () => {
   const {itemNum} = useParams(); 
@@ -66,6 +67,24 @@ const Review = () => {
   setExpandedRowId(prevId => (prevId === reviewNum ? null : reviewNum));
   };
 
+  
+  // 활성 페이지 세팅
+  const [currentPage, setCurrentPage] = useState(0);
+
+  // 보여줄 페이지
+  const itemsPerPage = 5;
+
+  // 현재 페이지 보여줄 데이터 계산
+  const startIndex = currentPage * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentReviewList = reviewList.slice(startIndex, endIndex);
+
+  // 페이지를 변경시켜줄 함수
+  const handlePageChange = selectedPage => {
+    setCurrentPage(selectedPage);
+  };
+
+
   return (
     <div className={styles.container}>
       <div>
@@ -95,7 +114,7 @@ const Review = () => {
                 </td>
               </tr>
               :              
-              reviewList.map((e, i)=>
+              currentReviewList.map((e, i)=>
                 (              
               <React.Fragment key={e.reviewNum}>
                 <tr key={i} onClick={() => handleRowClick(e.reviewNum)}>
@@ -138,6 +157,17 @@ const Review = () => {
         isOpenRegReview={isOpenRegReview}
         onClose={() => handleModalClose(false)}
       />
+
+    <Pagination 
+      totalItems={reviewList.length}
+      itemsPerPage={itemsPerPage}
+      onPageChange={handlePageChange}
+      currentPage={currentPage}
+      nextLabel='>>'
+      previousLabel='<<'
+      color='gray'    
+    />      
+
     </div>
   )
 }
