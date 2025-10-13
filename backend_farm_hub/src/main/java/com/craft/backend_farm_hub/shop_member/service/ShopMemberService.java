@@ -54,7 +54,7 @@ public class ShopMemberService {
     shopMemberMapper.getMemRole(shopMemberDTO);
     return shopMemberDTO.getMemRole().equals("ADMIN");
   }
-  
+
   //<!--회원정보 수정 시 1명의 회원정보를 조회-->
   public ShopMemberDTO selectId(String memId){
     return shopMemberMapper.selectId(memId);

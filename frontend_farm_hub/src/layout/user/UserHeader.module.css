@@ -13,16 +13,18 @@
   gap: 15px;
 }
 
-.members span {
+.members span i {
   color: gold;
+}
+
+.members span {
+  color: brown;
 }
 
 .members > p:hover, .members > ul > li:hover {
   text-decoration: underline;
   cursor: pointer;
 }
-
-
 
 .search {
   display: flex;
@@ -31,7 +33,6 @@
 }
 
 .img_div {
-  border: 1px solid black;
   width: 1000px;
   height: 120px;
   cursor: pointer;

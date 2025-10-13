@@ -90,6 +90,7 @@
         DELETE FROM SHOP_CART
         WHERE CART_NUM = #{cartNum}
     </delete>
+
     <!--장바구니 페이지에서 선택구매 시 장바구니 삭제-->
     <delete id="deleteBoughtItem">
         DELETE FROM SHOP_CART
@@ -97,5 +98,9 @@
         <foreach collection="cartNumList" item="cartNum" separator="," open="(" close=")">
             #{cartNum}
         </foreach>
+    </delete>
+    <delete id="deleteBoughtEach">
+        DELETE FROM SHOP_CART
+        WHERE CART_NUM = #{cartNum}
     </delete>
 </mapper>
