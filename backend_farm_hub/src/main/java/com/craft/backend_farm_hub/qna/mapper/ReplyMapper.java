@@ -15,4 +15,8 @@ public interface ReplyMapper {
 
   //구매자 화면에 띄워줄 질문, 답변 내용 조회
   public List<ReplyDTO> getQnaList(int itemNum);
+
+  // 유저별 문의 내역 조회
+  public List<ReplyDTO> getQnaListforUser(String memId);
+
 }

@@ -72,5 +72,19 @@ public class ReviewController {
     }
   }
 
+  // 유저별 리뷰 목록 조회
+  @GetMapping("/getListforuser/{memId}")
+  public ResponseEntity<?> getReviewListforUser(@PathVariable("memId") String memId){
+    try{
+      List<ReviewDTO> list = reviewService.getReviewListforUser(memId);
+      return ResponseEntity.ok(list);  // 빈 리스트도 OK로 반환
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("조회 중 오류가 발생했습니다.");
+    }
+  }
+
 
 }

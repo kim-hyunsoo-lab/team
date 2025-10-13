@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import Button from '../../common/Button'
-import RegReview from './RegReview'
-import styles from './Review.module.css'
-import ProductDetail from '../../pages/user/products/ProductDetail'
-import { useOutletContext, useParams } from 'react-router'
 import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import Pagination from '../../../common/Pagination'
+import styles from './UserReviewList.module.css'
 import dayjs from 'dayjs'
-import Pagination from '../../common/Pagination'
+import PageTitle from '../../../common/PageTitle'
 
-const Review = () => {
-  const {itemNum} = useParams(); 
+const UserReviewList = () => {    
 
   //JSON 형태로 저장된 로그인 정보 가져오기
   const loginInfo = sessionStorage.getItem('loginInfo')
@@ -23,15 +19,17 @@ const Review = () => {
       console.error('로그인 정보 파싱 에러:', error);
     }
   }
+  const [reviewList, setReviewList] = useState([])
 
-  // 리로드용 
-  const [reload, setReload] = useState(false);
-
-  const handleModalClose = () => {
-    setIsOpenRegReview(false);
-    setReload(prev => !prev); // reload 상태를 토글하여 useEffect 재실행
-  };
-
+  useEffect(()=>{
+    axios.get(`/api/reviews/getListforuser/${memId}`)
+    .then(res=>{
+      console.log(res.data);
+      setReviewList(res.data);
+    })    
+    .catch(e=>console.log(e));
+  }, [])  
+  
   // 별점용
   function StarRating({ rating }) {
     return (
@@ -46,20 +44,6 @@ const Review = () => {
       </div>
     );
   }
-  
-  //후기 모달창 여는지 여부
-  const [isOpenRegReview, setIsOpenRegReview] = useState(false);
-
-  const [reviewList, setReviewList] = useState([])
-
-  useEffect(()=>{
-    axios.get(`/api/reviews/getList/${itemNum}`)
-    .then(res=>{
-      setReviewList(res.data);
-    })    
-    .catch(e=>console.log(e));
-  }, [reload])  
-  
   
   //리뷰 내용을 보이게 하는 여부를 저장할 state 변수
   const [expandedRowId, setExpandedRowId] = useState(null);
@@ -85,24 +69,24 @@ const Review = () => {
     setCurrentPage(selectedPage);
   };
 
-
   return (
     <div className={styles.container}>
-      <div>
-        <p>이용후기 총 {reviewList.length}건</p>
-        <p>
-          {loginInfo ? (<Button title='후기 작성' onClick={() => setIsOpenRegReview(true)}/>)
-          : (<p>리뷰를 쓰려면 먼저 로그인을 해야 합니다</p>)}
-        </p>
-      </div>
-      <div>
+      <PageTitle title="리뷰 목록" />
+    <div>
         <table className={styles.review_table}>
+          <colgroup>
+            <col width="10%" />
+            <col width="*%" />
+            <col width="14%" />
+            <col width="27%" />        
+            <col width="20%" />        
+          </colgroup>
           <thead>
             <tr>
               <td>No</td>
               <td>제목</td>
               <td>평점</td>
-              <td>작성자</td>
+              <td>리뷰 상품명</td>
               <td>작성일</td>
             </tr>
           </thead>
@@ -124,7 +108,7 @@ const Review = () => {
                   <td>                    
                     <span><StarRating rating={e.rating} /></span>                  
                   </td>
-                  <td>{e.memId}</td>
+                  <td>{e.itemName}</td>
                   <td>{dayjs(e.createDate).format('YYYY년 MM월 DD일')}</td>
                 </tr>
 
@@ -152,14 +136,7 @@ const Review = () => {
           </tbody>
         </table>
       </div>
-      {/* 리뷰작성 모달창 */}
-      <RegReview   
-        itemNum={itemNum}    
-        isOpenRegReview={isOpenRegReview}
-        onClose={() => handleModalClose(false)}
-      />
-
-    <Pagination 
+      <Pagination 
       totalItems={reviewList.length}
       itemsPerPage={itemsPerPage}
       onPageChange={handlePageChange}
@@ -167,10 +144,9 @@ const Review = () => {
       nextLabel='>>'
       previousLabel='<<'
       color='gray'    
-    />      
-
+    />   
     </div>
   )
 }
 
-export default Review
+export default UserReviewList
