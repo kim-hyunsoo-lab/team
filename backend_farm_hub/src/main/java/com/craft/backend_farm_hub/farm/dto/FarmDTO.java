@@ -12,13 +12,14 @@ public class FarmDTO {
   private int airQuality;
   private LocalDateTime createDate;
 
-
   private Double avgTemp;
   private Double maxTemp;
   private Double minTemp;
+
   private Double avgHum;
   private Double maxHum;
   private Double minHum;
+
   private Double avgAir;
   private Double maxAir;
   private Double minAir;

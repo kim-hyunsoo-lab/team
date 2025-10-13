@@ -10,6 +10,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import styles from './AirQuality.module.css';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import Select from '../../common/Select';
@@ -89,8 +90,52 @@ const AirQuality = () => {
     ],
   };
 
+  // 더미 데이터 기반 통계
+  const stats = {
+    maxValue: '530.0',
+    avgValue: '420.7',
+    minValue: '350.0'
+  };
 
   return (
+    <div className={styles.container}>
+      <div className={styles.card}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>
+            축사 공기질 데이터
+          </h1>
+        </div>
+
+        <div className={styles.statsGrid}>
+          <div className={`${styles.statCard} ${styles.statCardMax}`}>
+            <p className={styles.statLabel}>최고 공기질</p>
+            <p className={`${styles.statValue} ${styles.statValueMax}`}>
+              {stats.maxValue} ppm
+            </p>
+          </div>
+
+          <div className={`${styles.statCard} ${styles.statCardAvg}`}>
+            <p className={styles.statLabel}>평균 공기질</p>
+            <p className={`${styles.statValue} ${styles.statValueAvg}`}>
+              {stats.avgValue} ppm
+            </p>
+          </div>
+
+          <div className={`${styles.statCard} ${styles.statCardMin}`}>
+            <p className={styles.statLabel}>최저 공기질</p>
+            <p className={`${styles.statValue} ${styles.statValueMin}`}>
+              {stats.minValue} ppm
+            </p>
+          </div>
+        </div>
+
+        <div className={styles.chartContainer}>
+          <Line
+            options={options}
+            data={data}
+          />
+        </div>
+      </div>
     <div>
       <Select value={dateRange} onChange={e => {
         setDateRange(e.target.value);

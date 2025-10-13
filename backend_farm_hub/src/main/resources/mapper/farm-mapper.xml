@@ -23,6 +23,16 @@
         <result column="MAX_AIR" property="maxAir" />
         <result column="MIN_AIR" property="minAir" />
     </resultMap>
+    
+    <resultMap id="light" type="com.craft.backend_farm_hub.farm.dto.IlluminanceDTO">
+        <id column="IM_ID"              property="imId" />
+        <result column="ILLUMINANCE"    property="illuminance" />
+        <result column="CREATE_DATE"    property="createDate" />
+
+        <result column="AVG_ILL" property="avgIll" />
+        <result column="MAX_ILL" property="maxIll" />
+        <result column="MIN_ILL" property="minIll" />
+    </resultMap>
 
     <!--온도 데이터 조회-->
     <select id="getTemperatureData" resultMap="farm">
@@ -52,6 +62,16 @@
         ORDER BY CREATE_DATE ASC
     </select>
 
+    <!--조도 데이터 조회-->
+    <select id="getIlluminanceData" resultMap="light">
+        <foreach collection="dateRange" item="each" separator="UNION ALL">
+            SELECT
+            IFNULL(CREATE_DATE, ADDDATE(CURRENT_DATE(), -#{each})) CREATE_DATE
+            , IFNULL(AVG(ILLUMINANCE), 0) AS AVG_ILL
+            , IFNULL(MAX(ILLUMINANCE), 0) AS MAX_ILL
+            , IFNULL(MIN(ILLUMINANCE), 0) AS MIN_ILL
+            FROM illuminance_function
+          
     <!--공기질 데이터 조회-->
     <select id="getAirQualityData" resultMap="farm">
         <foreach collection="dateRange" item="each" separator="UNION ALL">
