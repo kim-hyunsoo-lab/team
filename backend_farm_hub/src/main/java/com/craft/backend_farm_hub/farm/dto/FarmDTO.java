@@ -16,4 +16,10 @@ public class FarmDTO {
   private Double avgTemp;
   private Double maxTemp;
   private Double minTemp;
+  private Double avgHum;
+  private Double maxHum;
+  private Double minHum;
+  private Double avgAir;
+  private Double maxAir;
+  private Double minAir;
 }

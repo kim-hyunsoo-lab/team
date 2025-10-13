@@ -9,5 +9,6 @@ import java.util.List;
 public interface FarmMapper {
 
   public List<Integer> getTemperatureData(@Param("dateRange") int[] each);   // #[0,1,2....6]
+  public List<Integer> getHumidityData(@Param("dateRange") int[] each);   // #[0,1,2....6]
 
 }

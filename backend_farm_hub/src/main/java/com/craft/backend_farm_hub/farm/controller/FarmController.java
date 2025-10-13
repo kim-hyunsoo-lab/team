@@ -18,10 +18,9 @@ import java.util.List;
 public class FarmController {
   private final FarmService farmService;
 
-  @GetMapping("/test")
+  @GetMapping("/temperature")
   public ResponseEntity<?> getTemperatureData(int[] each) {
     try {
-      System.out.println("1111" + Arrays.toString(each));
       List<Integer> list = farmService.getTemperatureData(each);
       return ResponseEntity.status(HttpStatus.OK).body(list);
     } catch (Exception e){
@@ -29,6 +28,19 @@ public class FarmController {
       return ResponseEntity
               .status(HttpStatus.INTERNAL_SERVER_ERROR)
               .body("온도데이터가 조회되지 않았습니다.");
+    }
+  }
+
+  @GetMapping("/humidity")
+  public ResponseEntity<?> getHumidityData(int[] each) {
+    try {
+      List<Integer> list = farmService.getHumidityData(each);
+      return ResponseEntity.status(HttpStatus.OK).body(list);
+    } catch (Exception e){
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("습도데이터가 조회되지 않았습니다.");
     }
   }
 
