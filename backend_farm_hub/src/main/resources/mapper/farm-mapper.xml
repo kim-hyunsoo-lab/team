@@ -71,6 +71,16 @@
             , IFNULL(MAX(ILLUMINANCE), 0) AS MAX_ILL
             , IFNULL(MIN(ILLUMINANCE), 0) AS MIN_ILL
             FROM illuminance_function
+          
+    <!--공기질 데이터 조회-->
+    <select id="getAirQualityData" resultMap="farm">
+        <foreach collection="dateRange" item="each" separator="UNION ALL">
+            SELECT
+            IFNULL(CREATE_DATE, ADDDATE(CURRENT_DATE(), -#{each})) CREATE_DATE
+            , IFNULL(AVG(AIR_QUALITY), 0) AS AVG_AIR
+            , IFNULL(MAX(AIR_QUALITY), 0) AS MAX_AIR
+            , IFNULL(MIN(AIR_QUALITY), 0) AS MIN_AIR
+            FROM fan_function
             WHERE TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') = ADDDATE(CURRENT_DATE(), -#{each})
         </foreach>
         ORDER BY CREATE_DATE ASC

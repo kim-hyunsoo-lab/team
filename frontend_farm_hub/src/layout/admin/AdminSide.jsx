@@ -9,7 +9,10 @@ const AdminSide = () => {
         <p>판매목록조회</p>
         <ul>
           <li>          
-            <NavLink to={`sales-list`}>
+            <NavLink
+              to={`sales-list`}
+              className={({isActive}) => isActive ? styles.active : undefined}
+            >
               <p>
               <span><i className="bi bi-file-earmark-text-fill"></i></span>
               판매 목록
@@ -19,28 +22,19 @@ const AdminSide = () => {
         </ul>
       </div>
       <div className={styles.category}>
-        <p>매출 조회</p>
-        <ul>
-          <li>
-            <span><i className="bi bi-bar-chart-line-fill"></i></span>
-            매출 조회
-          </li>
-        </ul>
       </div>
       <div className={styles.category}>
         <p>회원정보조회</p>
         <ul>
           <li>
-            <NavLink to={`member-list`}>
+            <NavLink to={`member-list`}
+              className={({isActive}) => isActive ? styles.active : undefined}
+            >
               <p>
               <span><i className="bi bi-person-lines-fill"></i></span>
               회원 목록
               </p>
             </NavLink>
-          </li>
-          <li>
-            <span><i className="bi bi-person-fill-gear"></i></span>
-            회원 관리
           </li>
         </ul>
       </div>
@@ -48,24 +42,28 @@ const AdminSide = () => {
         <p>판매상품등록</p>
         <ul>
           <li>
-            <NavLink to={'reg-product'}>
+            <NavLink to={'reg-product'}
+              className={({isActive}) => isActive ? styles.active : undefined}
+            >
               <p>
                 <span><i className="bi bi-bag-plus-fill"></i></span>
                 상품 등록
               </p>
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <span><i className="bi bi-bag-check-fill"></i></span>
             상품관리
-          </li>
+          </li> */}
         </ul>
       </div>
       <div className={styles.category}>
         <p>상품문의정보</p>
         <ul>
           <li>
-            <NavLink to={'qna-reply'}>
+            <NavLink to={'qna-reply'}
+              className={({isActive}) => isActive ? styles.active : undefined}
+            >
               <p>
                 <span><i className="bi bi-megaphone-fill"></i></span>
                 문의답변
@@ -78,25 +76,39 @@ const AdminSide = () => {
         <p>축사정보</p>
         <ul>
           <li>          
-            <NavLink to={'temperature'}>
+            <NavLink to={'temperature'}
+              className={({isActive}) => isActive ? styles.active : undefined}
+            >
               <p>
                 <span><i className="bi bi-thermometer-half"></i></span>
                 온도
               </p>
             </NavLink>
-            <NavLink to={'humidity'}>
+          </li>
+          <li>
+            <NavLink to={'humidity'}
+              className={({isActive}) => isActive ? styles.active : undefined}
+            >
               <p>
                 <span><i className="bi bi-moisture"></i></span>
                 습도
               </p>
             </NavLink>
-            <NavLink to={'air-quality'}>
+          </li>
+          <li>
+            <NavLink to={'air-quality'}
+              className={({isActive}) => isActive ? styles.active : undefined}
+            >
               <p>
                 <span><i className="bi bi-cloud-fog2-fill"></i></span>
                 공기질
               </p>
             </NavLink>
-            <NavLink to={'illuminance'}>
+          </li>
+          <li>
+            <NavLink to={'illuminance'}
+              className={({isActive}) => isActive ? styles.active : undefined}
+            >
               <p>
                 <span><i className="bi bi-sun-fill"></i></span>
                 조도

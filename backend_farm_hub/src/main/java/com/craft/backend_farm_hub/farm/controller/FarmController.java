@@ -54,11 +54,18 @@ public class FarmController {
       return ResponseEntity
               .status(HttpStatus.OK)
               .body(list);
+
+  @GetMapping("/air-quality")
+  public ResponseEntity<?> getAirQualityData(int[] each) {
+    try {
+      List<Integer> list = farmService.getAirQualityData(each);
+      return ResponseEntity.status(HttpStatus.OK).body(list);
     } catch (Exception e){
       e.printStackTrace();
       return ResponseEntity
               .status(HttpStatus.INTERNAL_SERVER_ERROR)
               .body("조도 데이터가 조회되지 않았습니다.");
+              .body("공기질데이터가 조회되지 않았습니다.");
     }
   }
 

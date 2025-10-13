@@ -2,13 +2,14 @@
   font-size: 1.2rem;
   font-weight: bold;
   padding: 5px 10px;
+  transition: 0.2s;
 }
 
 .category > p:hover {
   cursor: pointer;
 }
 
-.category li {
+.category li p {
   padding: 15px 10px;
 }
 
@@ -29,6 +30,7 @@
 
 .category li {
   color: #000;
+  transition: all 0.2s;
 }
 
 .category a:visited {
@@ -37,6 +39,12 @@
 
 .category a:hover {
   color: #3498db; 
+}
+
+.active > p {
+  color: #3498db;
+  padding: 15px 10px;
+  background-color: #C2A78E;
 }
 
 .category a:active {

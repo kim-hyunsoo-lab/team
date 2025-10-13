@@ -40,7 +40,6 @@ const Temperature = () => {
   //select 된 값에 따라 표시되는 값이 달라짐
   const [dateRange, setDateRange] = useState(days.slice(0,7));
 
-  //마운트 시 데이터를 조회
   useEffect(() => {
     axios.get('/api/farms/temperature', {params : {each : dateRange}})
     .then(res => {
@@ -181,6 +180,20 @@ const Temperature = () => {
           />
         </div>
       </div>
+
+    <div>
+      <Select value={dateRange} onChange={e => {
+        setDateRange(e.target.value);
+      }}>
+        <option value={days.slice(0,7)}>1주전</option>
+        <option value={days.slice(0,14)}>2주전</option>
+        <option value={days.slice(0,21)}>3주전</option>
+        <option value={days.slice(0,28)}>4주전</option>
+      </Select>
+      <Line 
+        options={options}
+        data={data}
+      />
     </div>
   )
 }
