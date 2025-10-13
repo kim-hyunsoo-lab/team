@@ -67,7 +67,7 @@ const AdminSide = () => {
           <li>
             <NavLink to={'qna-reply'}>
               <p>
-                <span><i class="bi bi-megaphone-fill"></i></span>
+                <span><i className="bi bi-megaphone-fill"></i></span>
                 문의답변
               </p>
             </NavLink>
@@ -80,25 +80,25 @@ const AdminSide = () => {
           <li>          
             <NavLink to={'temperature'}>
               <p>
-                <span><i class="bi bi-thermometer-half"></i></span>
+                <span><i className="bi bi-thermometer-half"></i></span>
                 온도
               </p>
             </NavLink>
             <NavLink to={'humidity'}>
               <p>
-                <span><i class="bi bi-moisture"></i></span>
+                <span><i className="bi bi-moisture"></i></span>
                 습도
               </p>
             </NavLink>
             <NavLink to={'air-quality'}>
               <p>
-                <span><i class="bi bi-cloud-fog2-fill"></i></span>
+                <span><i className="bi bi-cloud-fog2-fill"></i></span>
                 공기질
               </p>
             </NavLink>
             <NavLink to={'illuminance'}>
               <p>
-                <span><i class="bi bi-sun-fill"></i></span>
+                <span><i className="bi bi-sun-fill"></i></span>
                 조도
               </p>
             </NavLink>
