@@ -12,6 +12,8 @@ import {
 import { Line } from 'react-chartjs-2';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import Select from '../../common/Select';
+
 
 ChartJS.register(
   CategoryScale,
@@ -47,7 +49,7 @@ const Temperature = () => {
       },
       title: {
         display: true,
-        text: 'Chart.js Line Chart',
+        text: '축사 온도 데이터',
       },
     },
   };
@@ -82,6 +84,12 @@ const Temperature = () => {
 
   return (
     <div>
+      <Select>
+        <option>1주전</option>
+        <option>2주전</option>
+        <option>3주전</option>
+        <option>4주전</option>
+      </Select>
       <Line 
         options={options}
         data={data}
