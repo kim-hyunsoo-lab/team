@@ -20,3 +20,26 @@
   background-color: #C2A78E;
   cursor: pointer;
 }
+
+.category a {
+  color: inherit; 
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.category li {
+  color: #000;
+}
+
+.category a:visited {
+  color: #000;
+}
+
+.category a:hover {
+  color: #3498db; 
+}
+
+.category a:active {
+  color: #000;
+}
+
