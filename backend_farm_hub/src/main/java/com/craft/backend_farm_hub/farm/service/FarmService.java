@@ -18,4 +18,11 @@ public class FarmService {
   public List<Integer> getHumidityData(int[] each) {
     return farmMapper.getHumidityData(each);
   }
+
+
+
+
+  public List<Integer> getAirQualityData(int[] each) {
+    return farmMapper.getAirQualityData(each);
+  }
 }
