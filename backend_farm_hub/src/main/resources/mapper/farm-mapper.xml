@@ -14,15 +14,42 @@
         <result column="AVG_TEMP" property="avgTemp" />
         <result column="MAX_TEMP" property="maxTemp" />
         <result column="MIN_TEMP" property="minTemp" />
+
+        <result column="AVG_HUM" property="avgHum" />
+        <result column="MAX_HUM" property="maxHum" />
+        <result column="MIN_HUM" property="minHum" />
+
+        <result column="AVG_AIR" property="avgAir" />
+        <result column="MAX_AIR" property="maxAir" />
+        <result column="MIN_AIR" property="minAir" />
     </resultMap>
 
     <!--온도 데이터 조회-->
     <select id="getTemperatureData" resultMap="farm">
         <foreach collection="dateRange" item="each" separator="UNION ALL">
-            SELECT AVG(TEMPERATURE) AS AVG_TEMP, MAX(TEMPERATURE) AS MAX_TEMP, MIN(TEMPERATURE) AS MIN_TEMP
+            SELECT
+            IFNULL(CREATE_DATE, ADDDATE(CURRENT_DATE(), -#{each})) CREATE_DATE
+            , IFNULL(AVG(TEMPERATURE), 0) AS AVG_TEMP
+            , IFNULL(MAX(TEMPERATURE), 0) AS MAX_TEMP
+            , IFNULL(MIN(TEMPERATURE), 0) AS MIN_TEMP
             FROM fan_function
             WHERE TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') = ADDDATE(CURRENT_DATE(), -#{each})
         </foreach>
+        ORDER BY CREATE_DATE ASC
+    </select>
+
+    <!--습도 데이터 조회-->
+    <select id="getHumidityData" resultMap="farm">
+        <foreach collection="dateRange" item="each" separator="UNION ALL">
+            SELECT
+            IFNULL(CREATE_DATE, ADDDATE(CURRENT_DATE(), -#{each})) CREATE_DATE
+            , IFNULL(AVG(HUMIDITY), 0) AS AVG_HUM
+            , IFNULL(MAX(HUMIDITY), 0) AS MAX_HUM
+            , IFNULL(MIN(HUMIDITY), 0) AS MIN_HUM
+            FROM fan_function
+            WHERE TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') = ADDDATE(CURRENT_DATE(), -#{each})
+        </foreach>
+        ORDER BY CREATE_DATE ASC
     </select>
 
 </mapper>

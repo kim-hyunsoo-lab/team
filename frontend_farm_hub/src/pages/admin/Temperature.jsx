@@ -11,6 +11,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 ChartJS.register(
   CategoryScale,
@@ -27,9 +28,10 @@ const Temperature = () => {
   const [temperatureData, setTemperatureData] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/farms/test', {params : {each : [0,1,2,3,4,5,6]}})
+    axios.get('/api/farms/temperature', {params : {each : [0,1,2,3,4,5,6]}})
     .then(res => {
       console.log(res.data);
+      setTemperatureData(res.data)
     })
     .catch(e => {
       console.log(e);
@@ -50,28 +52,28 @@ const Temperature = () => {
     },
   };
 
-  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  const labels = temperatureData.map((e, i) => {return(dayjs(e.createDate).format('YY-MM-DD'))})
 
   const data = {
     labels,
     datasets: [
       {
         label: '최고온도',
-        data: [10, 20, 30, 40, 50, 60, 70],
+        data: temperatureData.map((e, i) => {return(e.maxTemp)}),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
 
       {
         label: '평균온도',
-        data: [70, 60, 50, 40, 30, 20, 10],
+        data: temperatureData.map((e, i) => {return(e.avgTemp)}),
         borderColor: 'rgb(53, 162, 235)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
 
       {
         label: '최저온도',
-        data: [77, 90, 63, 42, 31, 30, 16],
+        data: temperatureData.map((e, i) => {return(e.minTemp)}),
         borderColor: 'rgba(235, 53, 226, 1)',
         backgroundColor: 'rgba(114, 14, 109, 0.5)',
       },

@@ -14,4 +14,8 @@ public class FarmService {
   public List<Integer> getTemperatureData(int[] each) {
     return farmMapper.getTemperatureData(each);
   }
+
+  public List<Integer> getHumidityData(int[] each) {
+    return farmMapper.getHumidityData(each);
+  }
 }
