@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./UserHeader.module.css";
 import { NavLink, useNavigate } from "react-router";
 import Input from "../../common/Input";
-import Login from "../../components/login";
+import Login from "../../components/Login";
 import Join from "../../components/Join";
 import ForgotPw from "../../components/ForgotPw";
 

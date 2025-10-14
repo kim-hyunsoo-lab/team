@@ -60,12 +60,32 @@ const Login = ({ isOpenLogin, onClose }) => {
           alert("ID 혹은 비밀번호가 일치하지 않습니다");
         }
       })
-      .catch((e) => console.log(e));
+      .catch((error) => {
+      console.log(error);
+      // 401 에러 또는 다른 에러 처리
+      if (error.response) {
+        // 서버가 응답을 반환한 경우
+        if (error.response.status === 401) {
+          alert(error.response.data || "ID 혹은 비밀번호가 일치하지 않습니다");
+        } else {
+          alert("로그인 중 오류가 발생했습니다");
+        }
+      } else {
+        // 네트워크 오류 등
+        alert("서버와의 연결에 실패했습니다");
+      }
+    });
   };
 
   return (
     <>
-      <Modal isOpen={isOpenLogin} title="Login" size="300px" onClose={onClose}>
+      <Modal isOpen={isOpenLogin} title="Login" size="300px" onClose={() => {
+        onClose();
+        setLoginData({
+          memId: "",
+          memPw: "",
+        });
+      }}>
         <div className={styles.container}>
           {/* 아이디 */}
           <div>
