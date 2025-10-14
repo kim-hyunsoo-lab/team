@@ -13,9 +13,9 @@
 
 .body {
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   align-items: center;
-  width: 650px;
+  width: 300px;
   margin-right: 10px;
 }
 

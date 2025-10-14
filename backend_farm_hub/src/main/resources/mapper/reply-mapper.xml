@@ -11,6 +11,7 @@
       <result column="REPLY_DATE" property="replyDate" />
       <result column="REPLY_CONTENT" property="replyContent" />
       <result column="STATUS"    property="status"/>
+
       <association property="qnaDTO" resultMap="QnaDTO"/>
   </resultMap>
 
@@ -77,37 +78,26 @@
         WHERE ITEM_NUM = #{itemNum}
     </select>
 
-
+<!--    유저별 문의 내용 조회-->
+    <select id="getQnaListforUser" resultMap="reply">
+        SELECT Q.QNA_NUM
+        , MEM_ID
+        , ITEM_NUM
+        , QNA_DATE
+        , CONTENT
+        , REPLY_MEM_ID
+        , REPLY_DATE
+        , REPLY_CONTENT
+        , CASE WHEN (SELECT count(REPLY_NUM)
+        FROM reply
+        WHERE QNA_NUM = Q.QNA_NUM) = 0
+        THEN '답변대기'
+        ELSE '답변완료'
+        END AS STATUS
+        FROM qna Q LEFT OUTER JOIN reply R
+        ON Q.QNA_NUM = R.QNA_NUM
+        WHERE MEM_ID = #{memId}
+        ORDER BY QNA_DATE DESC
+    </select>
 
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

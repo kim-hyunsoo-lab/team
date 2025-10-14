@@ -20,10 +20,12 @@ const ShopCart = () => {
 
   //각 행의 구매 데이터를 담을 state 변수
   const [eachItem, setEachItem] = useState({
-    itemNum : '',
+    itemNum : cartList.itemNum,
     memId,
     buyCnt : cnt
   });
+
+  console.log(cartList);
 
   const [reloading, setReloading] = useState(0);
 

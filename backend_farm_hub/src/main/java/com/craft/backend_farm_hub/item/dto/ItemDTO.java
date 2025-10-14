@@ -19,4 +19,7 @@ public class ItemDTO {
 
 //  상품 하나에 이미지는 여러개
   private List<ItemImgDTO> imgList;
+
+//  리뷰 갯수
+  private Integer reviewCnt;
 }

@@ -127,7 +127,13 @@ const regNewItemOn = (e)=>{
 
         <div>
           <p>부위</p>
-            <Select
+          <Input 
+            name='part'
+            value={newProduct.part}
+            onChange={e => regNewProduct(e)}
+            size='100%'
+          />
+            {/* <Select
               size='100%'
               name='part'
               onChange={e=>regNewProduct(e)}
@@ -145,7 +151,7 @@ const regNewItemOn = (e)=>{
               <option value="설도">설도</option>
               <option value="사태">사태</option>
               <option value="기타부위">기타부위</option>              
-            </Select>          
+            </Select>           */}
         </div>
 
         <div>

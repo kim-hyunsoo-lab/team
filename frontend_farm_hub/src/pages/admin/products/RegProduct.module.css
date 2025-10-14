@@ -1,10 +1,107 @@
 .container {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  width: 300px;
-  }
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 15px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
 
 .container > div {
-  margin-left: 8px;
-}  
+  margin-bottom: 12px;
+}
+
+.container > div > div {
+  background-color: #f8f9fa;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  margin-bottom: 10px;
+  transition: all 0.2s ease;
+}
+
+.container > div > div:hover {
+  border-color: #cbd5e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.container > div > div p:first-child {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+}
+
+.container > div > div p:first-child::before {
+  content: '•';
+  color: #4299e1;
+  font-size: 20px;
+  margin-right: 8px;
+}
+
+/* 에러 메시지 스타일 */
+.container > div > div p:last-child {
+  color: #e53e3e;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-left: 4px;
+  min-height: 16px;
+}
+
+/* 파일 업로드 영역 스타일 */
+.container > div > div input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  border: 2px dashed #cbd5e0;
+  border-radius: 6px;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.container > div > div input[type="file"]:hover {
+  border-color: #4299e1;
+  background-color: #f7fafc;
+}
+
+.container > div > div input[type="file"]:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+}
+
+/* 버튼 영역 */
+.container > div:last-child {
+  text-align: right;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 2px solid #e9ecef;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .container {
+    padding: 12px;
+    margin: 10px;
+  }
+
+  .container > div > div {
+    padding: 10px;
+  }
+}
+
+/* 입력 필드가 비어있을 때 */
+.container > div > div:has(p:last-child:not(:empty)) {
+  border-color: #fc8181;
+  background-color: #fff5f5;
+}
+
+/* 포커스된 입력 필드의 부모 div */
+.container > div > div:focus-within {
+  border-color: #4299e1;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+}

@@ -18,10 +18,10 @@ import java.util.List;
 public class FarmController {
   private final FarmService farmService;
 
-  @GetMapping("/test")
+  //축사 온도 데이터 조회 api
+  @GetMapping("/temperature")
   public ResponseEntity<?> getTemperatureData(int[] each) {
     try {
-      System.out.println("1111" + Arrays.toString(each));
       List<Integer> list = farmService.getTemperatureData(each);
       return ResponseEntity.status(HttpStatus.OK).body(list);
     } catch (Exception e){
@@ -29,6 +29,50 @@ public class FarmController {
       return ResponseEntity
               .status(HttpStatus.INTERNAL_SERVER_ERROR)
               .body("온도데이터가 조회되지 않았습니다.");
+    }
+  }
+
+  //축사 습도 데이터 조회 api
+  @GetMapping("/humidity")
+  public ResponseEntity<?> getHumidityData(int[] each) {
+    try {
+      List<Integer> list = farmService.getHumidityData(each);
+      return ResponseEntity.status(HttpStatus.OK).body(list);
+    } catch (Exception e){
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("습도데이터가 조회되지 않았습니다.");
+    }
+  }
+
+  //축사 조도 데이터 조회 api
+  @GetMapping("/illuminance")
+  public ResponseEntity<?> getIlluminanceData(int[] each) {
+    try {
+      List<Integer> list = farmService.getIlluminanceData(each);
+      return ResponseEntity
+              .status(HttpStatus.OK)
+              .body(list);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("조도 데이터가 조회되지 않았습니다.");
+    }
+  }
+
+  //축사 공기질 데이터 조회 api
+  @GetMapping("/air-quality")
+  public ResponseEntity<?> getAirQualityData(int[] each) {
+    try {
+      List<Integer> list = farmService.getAirQualityData(each);
+      return ResponseEntity.status(HttpStatus.OK).body(list);
+    } catch (Exception e){
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("공기질데이터가 조회되지 않았습니다.");
     }
   }
 

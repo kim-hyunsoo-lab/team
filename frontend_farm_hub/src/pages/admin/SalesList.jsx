@@ -4,21 +4,29 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import PageTitle from '../../common/PageTitle';
 import SalesListDetail from './SalesListDetail';
+import Pagination from '../../common/Pagination'; 
 
 const SalesList = () => {
   const [salesList, setSalesList] = useState([]);
+  const [salesDetailData, setSalesDetailData] = useState();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);  
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 3; 
 
   useEffect(()=>{
+    setLoading(true);
     axios.get('/api/buy/sales')
     .then(res=>{
       console.log(res.data);
       setSalesList(res.data);
+      setLoading(false);
     }).catch(e=>{
-      // 오류 상태코드
+      setLoading(false);
       const errorCode = e.status;
       if(errorCode == 400 || errorCode == 500){
         alert(`오류코드: ${errorCode}\n오류 메세지: ${e.response.data}`)}
-      // 괴상망측한 오류 - 전체 내용 보기 
       else(console.log(e))});
     }, []);
 
@@ -37,12 +45,18 @@ const SalesList = () => {
     
     console.log(groupedSalesList);
 
-    const [salesDetailData, setSalesDetailData] = useState();
+    const sortedSalesEntries = Object.entries(groupedSalesList)
+      .sort(([dateA], [dateB]) => dateB.localeCompare(dateA)); 
 
-    // 상세보기 Modal
-    const [modalOpen, setModalOpen] = useState(false);
+    const startIndex = currentPage * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentSalesData = sortedSalesEntries.slice(startIndex, endIndex);
 
-    // 행 클릭시 상세 내역 조회하는 함수
+    const handlePageChange = (selectedPage) => {
+      setCurrentPage(selectedPage);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     const getSalesDetail = (buyNum) => {
       axios.get(`/api/buy/salesOne/${buyNum}`)
       .then(res=>{
@@ -50,12 +64,10 @@ const SalesList = () => {
         setSalesDetailData(res.data);
       })
       .catch(e=>{
-      // 오류 상태코드
-      const errorCode = e.status;
-      if(errorCode == 400 || errorCode == 500){
-        alert(`오류코드: ${errorCode}\n오류 메세지: ${e.response.data}`)}
-      // 괴상망측한 오류 - 전체 내용 보기 
-      else(console.log(e))});
+        const errorCode = e.status;
+        if(errorCode == 400 || errorCode == 500){
+          alert(`오류코드: ${errorCode}\n오류 메세지: ${e.response.data}`)}
+        else(console.log(e))});
     }
 
     const gettingSalesDetail = (buyNum) => {
@@ -63,15 +75,32 @@ const SalesList = () => {
       setModalOpen(true);
     };
 
+    if (loading) {
+      return (
+        <div className={styles.container}>
+          <PageTitle title='판매 목록' />
+          <div className={styles.loading}>로딩 중...</div>
+        </div>
+      );
+    }
+
+    if (Object.keys(groupedSalesList).length === 0) {
+      return (
+        <div className={styles.container}>
+          <PageTitle title='판매 목록' />
+          <div className={styles.empty}>판매 내역이 없습니다.</div>
+        </div>
+      );
+    }
 
   return (
     <div className={styles.container}>
       <PageTitle title='판매 목록' />
 
-      {Object.entries(groupedSalesList).map(([date, items]) => (
+      {currentSalesData.map(([date, items]) => (
         <div key={date} className={styles.dateSection}>
           <div>
-          {dayjs(date).format('YYYY년 MM월 DD일')}
+            {dayjs(date).format('YYYY년 MM월 DD일')}
           </div>
           <table>
             <colgroup>
@@ -112,12 +141,21 @@ const SalesList = () => {
         </div>
       ))}
 
-      {/* 데이터 상세 모달 */}     
+      <Pagination 
+        totalItems={sortedSalesEntries.length}  
+        itemsPerPage={itemsPerPage}           
+        onPageChange={handlePageChange}     
+        currentPage={currentPage}           
+        nextLabel='>>'                   
+        previousLabel='<<'                     
+        color='gray'                            
+      />
 
       <SalesListDetail 
-      onClose={()=>setModalOpen(false)} 
-      modalOpen={modalOpen && salesDetailData !== null} // 데이터 있을 때만 열림
-      salesDetailData={salesDetailData}/>
+        onClose={()=>setModalOpen(false)} 
+        modalOpen={modalOpen && salesDetailData !== null}
+        salesDetailData={salesDetailData}
+      />
 
     </div>
   )

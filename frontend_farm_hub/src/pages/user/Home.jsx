@@ -8,6 +8,7 @@ import axios from 'axios'
 import NewProductList from './products/NewProductList'
 import Menu from '../../components/Menu'
 import NewProducts from '../../components/ProductList/NewProducts'
+import PopularProducts from '../../components/ProductList/PopularProducts'
 
 const Home = () => {
   const nav = useNavigate();  
@@ -22,15 +23,10 @@ const Home = () => {
           <span onClick={e => nav('/new-product-list')}>더보기</span>
         </p>
       </div>
-      <div className={styles.popular_product}>
-        <PageTitle title='인기상품' />
-        <div className={`${styles.grid_div}`}>
-          {
-            
-          }
-        </div>
+      <div className={styles.new_product}>
+        <PopularProducts />
         <p className={`${styles.more}`}>
-          <span onClick={e => nav('/popular-product-list')}>더보기</span>
+          <span onClick={e => nav('/new-product-list')}>더보기</span>
         </p>
       </div>
       <div className={styles.discount_product}>

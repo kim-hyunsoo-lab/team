@@ -12,5 +12,6 @@ public class ReplyDTO {
   private LocalDateTime replyDate;
   private String replyContent;
   private String status;
+
   private QnaDTO qnaDTO;
 }

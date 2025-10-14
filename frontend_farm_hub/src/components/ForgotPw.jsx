@@ -45,13 +45,24 @@ const ForgotPw = ({isOpenForgotPw, onClose}) => {
     }))
   };
 
-// 비밀번호 찾기 질문목록 호출
-  useEffect(()=>{axios.get('/api/members/pw-question ')
-    .then((res)=>{
-      //console.log(res.data);
-      setPwQ(res.data);})
-    .catch(error=>console.log(error));
-  }, []);
+useEffect(() => {
+  const controller = new AbortController();
+  axios.get('/api/members/pw-question', {
+    signal: controller.signal
+  })
+  .then((res) => {
+    setPwQ(res.data);
+  })
+  .catch(error => {
+    if (error.name !== 'CanceledError') {
+      console.log(error);
+    }
+  });
+  
+  return () => {
+    controller.abort();
+  };
+}, []);
 
   const setNewPw = () => {
     axios.get(`/api/members/forgotPw/${userProfile.memId}`)
