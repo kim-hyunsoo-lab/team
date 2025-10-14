@@ -130,6 +130,14 @@ const QnA = () => {
       
       <div className={styles.qna_div}>
         {
+          currentQnaList.length === 0
+          ?
+          <div className={styles.qna_item} style={{
+            padding : '10px',
+            textAlign : 'center',
+            fontSize : '1.1rem'
+          }}>등록된 문의가 없습니다.</div>
+          :
           currentQnaList.map((qna, i) => {
             return(
               <div key={i} className={styles.qna_item}>

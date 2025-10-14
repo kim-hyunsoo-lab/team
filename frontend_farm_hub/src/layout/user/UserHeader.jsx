@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./UserHeader.module.css";
 import { NavLink, useNavigate } from "react-router";
 import Input from "../../common/Input";
-import Login from "../../components/login";
+import Login from "../../components/Login";
 import Join from "../../components/Join";
 import ForgotPw from "../../components/ForgotPw";
 
@@ -25,12 +25,6 @@ const UserHeader = () => {
   return (
     <div className={styles.container}>
       <div className={styles.members}>
-        <p>
-          <span>
-            <i className="bi bi-star-fill"></i>
-          </span>
-          즐겨찾기
-        </p>
         <ul>
           {loginInfo ? (
             <>
@@ -66,7 +60,6 @@ const UserHeader = () => {
         <div className={styles.img_div} onClick={(e) => nav("/")}>          
           <img className={styles.banner_img} src="/header2.png"/>
         </div>
-        <Input />
       </div>
 
       {/* 로그인 Modal */}
