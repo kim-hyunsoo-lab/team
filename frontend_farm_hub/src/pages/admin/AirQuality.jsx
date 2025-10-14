@@ -98,12 +98,47 @@ const AirQuality = () => {
     ],
   };
 
-  // 더미 데이터 기반 통계
-  const stats = {
-    maxValue: "530.0",
-    avgValue: "420.7",
-    minValue: "350.0",
+  // 실제 데이터 기반 통계 계산 (0인 데이터 제외)
+  const calculateStats = () => {
+    if (airQualityData.length === 0) {
+      return {
+        maxValue: "0.0",
+        avgValue: "0.0",
+        minValue: "0.0",
+      };
+    }
+
+    // 0이 아닌 데이터만 필터링
+    const validMaxData = airQualityData
+      .filter((e) => e.maxAir > 0)
+      .map((e) => e.maxAir);
+    const validAvgData = airQualityData
+      .filter((e) => e.avgAir > 0)
+      .map((e) => e.avgAir);
+    const validMinData = airQualityData
+      .filter((e) => e.minAir > 0)
+      .map((e) => e.minAir);
+
+    // 선택한 기간 내 모든 maxAir 중 최댓값 (소수점 첫째자리)
+    const maxValue =
+      validMaxData.length > 0 ? Math.max(...validMaxData).toFixed(1) : "0.0";
+
+    // 선택한 기간 내 모든 avgAir의 평균값 (소수점 첫째자리)
+    const avgValue =
+      validAvgData.length > 0
+        ? (
+            validAvgData.reduce((acc, e) => acc + e, 0) / validAvgData.length
+          ).toFixed(1)
+        : "0.0";
+
+    // 선택한 기간 내 모든 minAir 중 최솟값 (소수점 첫째자리)
+    const minValue =
+      validMinData.length > 0 ? Math.min(...validMinData).toFixed(1) : "0.0";
+
+    return { maxValue, avgValue, minValue };
   };
+
+  const stats = calculateStats();
 
   return (
     <div className={styles.container}>
