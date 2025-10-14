@@ -89,15 +89,13 @@
             , MEM_ID
             , BUY_CNT
             , ORDER_NUM
-        ) VALUES (
-            #{itemNum}
-            , #{memId}
-            , #{buyCnt}
-            , (
-                SELECT
-                IFNULL(MAX(ORDER_NUM), 0) + 1
-                FROM SHOP_BUY
-            )
         )
+        SELECT 
+            sc.ITEM_NUM
+            , #{memId}
+            , sc.CART_CNT
+            , (SELECT IFNULL(MAX(ORDER_NUM), 0) + 1 FROM SHOP_BUY)
+        FROM SHOP_CART sc
+        WHERE sc.CART_NUM = #{cartNum}
     </insert>
 </mapper>
