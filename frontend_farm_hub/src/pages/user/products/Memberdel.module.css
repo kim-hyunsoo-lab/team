@@ -159,8 +159,53 @@
   font-size: 1rem;
 }
 
-.modal_delete{
-  
+/* 모달 내용 래퍼 */
+.modalWrapper {
+  text-align: center;
+  padding: 20px;
+}
+
+/* 경고 아이콘 */
+.modalIcon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 20px;
+  color: #ff6b6b;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* 모달 제목 */
+.modalTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+/* 모달 설명 */
+.modalDescription {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+/* 모달 버튼 그룹 */
+.modalButtons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* 펄스 애니메이션 */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 /* 반응형 디자인 */
