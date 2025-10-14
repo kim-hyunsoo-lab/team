@@ -1,24 +1,15 @@
-.container > * {
-  margin-bottom: 10px;
-  padding: 15px;
-}
+
 
 .members {
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
+  border: 1px solid red;
 }
 
 .members > ul {
   display: flex;
   gap: 15px;
-}
-
-.members span i {
-  color: gold;
-}
-
-.members span {
-  color: brown;
+  padding: 7px;
 }
 
 .members > p:hover, .members > ul > li:hover {
@@ -33,9 +24,11 @@
 }
 
 .img_div {
-  width: 1000px;
-  height: 120px;
+  width: 100%;
+  height: 180px;
   cursor: pointer;
+  border: 1px solid blue;
+  
 }
 
 .img_div > img {

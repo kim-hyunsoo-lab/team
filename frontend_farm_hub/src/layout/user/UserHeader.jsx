@@ -25,12 +25,6 @@ const UserHeader = () => {
   return (
     <div className={styles.container}>
       <div className={styles.members}>
-        <p>
-          <span>
-            <i className="bi bi-star-fill"></i>
-          </span>
-          즐겨찾기
-        </p>
         <ul>
           {loginInfo ? (
             <>
@@ -67,7 +61,6 @@ const UserHeader = () => {
         <div className={styles.img_div} onClick={(e) => nav("/")}>          
           <img className={styles.banner_img} src="/headertest.png"/>
         </div>
-        <Input />
       </div>
 
       {/* 로그인 Modal */}
