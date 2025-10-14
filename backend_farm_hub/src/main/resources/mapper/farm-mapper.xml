@@ -71,7 +71,11 @@
             , IFNULL(MAX(ILLUMINANCE), 0) AS MAX_ILL
             , IFNULL(MIN(ILLUMINANCE), 0) AS MIN_ILL
             FROM illuminance_function
-          
+            WHERE TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') = ADDDATE(CURRENT_DATE(), -#{each})
+        </foreach>
+        ORDER BY CREATE_DATE ASC
+    </select>
+
     <!--공기질 데이터 조회-->
     <select id="getAirQualityData" resultMap="farm">
         <foreach collection="dateRange" item="each" separator="UNION ALL">
