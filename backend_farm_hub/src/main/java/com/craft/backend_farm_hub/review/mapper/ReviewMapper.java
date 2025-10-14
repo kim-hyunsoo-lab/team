@@ -8,22 +8,22 @@ import java.util.List;
 
 @Mapper
 public interface ReviewMapper {
-  //리뷰 등록
-  public void regReview(ReviewDTO reviewDTO);
 
-  //  리뷰 이미지 등록
-  public void insertReviewImgs(List<ReviewImgDTO> reviewImgList);
+  // 리뷰 등록 (메서드 이름 확인!)
+  void insertReview(ReviewDTO reviewDTO);
 
-  //  reviewNum 조회
-  public int getNextReviewNum();
+  // 리뷰 이미지 등록
+  void insertReviewImgs(List<ReviewImgDTO> reviewImgList);
 
-  // 리뷰 등록시 상품 평점 변경
-  public void updateRating(int itemNum);
+  // 다음 리뷰 번호 조회
+  int getNextReviewNum();
+
+  // 평점 업데이트
+  void updateRating(int itemNum);
 
   // 상품별 리뷰 목록 조회
-  public List<ReviewDTO> getReviewListforItem(int itemNum);
+  List<ReviewDTO> getReviewListforItem(int itemNum);
 
   // 유저별 리뷰 목록 조회
-  public List<ReviewDTO> getReviewListforUser(String memId);
-
+  List<ReviewDTO> getReviewListforUser(String memId);
 }

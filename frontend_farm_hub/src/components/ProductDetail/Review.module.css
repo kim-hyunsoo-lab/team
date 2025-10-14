@@ -1,13 +1,16 @@
-.container > div:first-child > p{
+/* 컨테이너 */
+.container > div:first-child > p {
   margin-bottom: 5px;
 }
 
+/* 리뷰 테이블 */
 .review_table {
   table-layout: fixed;
   width: 100%;
   font-size: 1.1rem;
   text-align: center;
   border-top: 2px solid #888888;
+  margin-bottom: 30px;
 }
 
 .review_table tr {
@@ -18,17 +21,106 @@
   padding: 15px;
 }
 
+/* 테이블 헤더 */
 .review_table > thead > tr {
+  background-color: #eeeeee;
+  cursor: default;
+}
+
+.review_table > thead > tr:hover {
   background-color: #eeeeee;
 }
 
-.img{
+/* 테이블 바디 (클릭 가능한 행) */
+.review_table tbody tr {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.review_table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* 상세 내용 행 - 열리기 애니메이션 */
+.detail_row {
+  animation: slideDown 0.3s ease-out;
+}
+
+/* 상세 내용 행 - 닫히기 애니메이션 */
+.detail_row.closing {
+  animation: slideUp 0.3s ease-in;
+}
+
+/* 아래로 펼쳐지는 애니메이션 */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    max-height: 1000px;
+    transform: translateY(0);
+  }
+}
+
+/* 위로 접히는 애니메이션 */
+@keyframes slideUp {
+  from {
+    opacity: 1;
+    max-height: 1000px;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-10px);
+  }
+}
+
+/* 이미지 컨테이너 */
+.img {
   display: flex;  
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 20px;
+  background-color: #fafafa;
+  overflow: hidden;
 }
 
-.img img{
+.img img {
   width: 50%;
+  max-width: 500px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  animation: fadeIn 0.4s ease-out 0.1s forwards;
+}
+
+/* 리뷰 내용 텍스트 */
+.img > div {
+  width: 100%;
+  max-width: 600px;
+  padding: 15px;
+  line-height: 1.6;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  opacity: 0;
+  animation: fadeIn 0.4s ease-out 0.2s forwards;
+}
+
+/* 페이드인 애니메이션 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
