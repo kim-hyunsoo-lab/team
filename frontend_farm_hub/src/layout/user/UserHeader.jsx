@@ -65,7 +65,7 @@ const UserHeader = () => {
       </div>
       <div className={styles.search}>
         <div className={styles.img_div} onClick={(e) => nav("/")}>          
-          <img className={styles.banner_img} src="/headertest.png"/>
+          <img className={styles.banner_img} src="/header2.png"/>
         </div>
         <Input />
       </div>
