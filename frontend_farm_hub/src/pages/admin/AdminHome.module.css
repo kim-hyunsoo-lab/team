@@ -1,0 +1,51 @@
+.container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 배너 이미지 */
+.banner_img {
+  width: 70%;
+  display: block;          
+  margin: 0 auto; 
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+/* 텍스트 (이미지 후) */
+.container p {
+  color: brown;
+  font-weight: 600;
+  font-size: x-large;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out 0.3s forwards;
+  /* 0.3초 딜레이 */
+}
+
+/* div 요소들 (텍스트 후) */
+.container > div {
+  margin-bottom: 15px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out 0.6s forwards;
+  /* 0.6초 딜레이 */
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
