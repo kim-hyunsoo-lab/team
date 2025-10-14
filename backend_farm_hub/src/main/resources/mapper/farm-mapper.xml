@@ -75,7 +75,7 @@
         </foreach>
         ORDER BY CREATE_DATE ASC
     </select>
-
+  
     <!--공기질 데이터 조회-->
     <select id="getAirQualityData" resultMap="farm">
         <foreach collection="dateRange" item="each" separator="UNION ALL">
