@@ -33,11 +33,13 @@ import AirQuality from "./pages/admin/AirQuality";
 import Illuminance from "./pages/admin/Illuminance";
 import UserReviewList from "./pages/user/products/UserReviewList";
 import UserQna from "./pages/user/products/UserQna";
+import ScrollToTop from "./common/ScrollToTop";
 
 
 function App() {
   return (
     <>
+      <ScrollToTop />
       <Routes>
         {/* 일반 사용자 페이지 */}
 
