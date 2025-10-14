@@ -252,16 +252,37 @@ const delSurvey = () => {
         />
       </div>
       <div>
-        <Modal isOpen={isOpenDel} onClose={() => setIsOpenDel(false)} 
-          className={styles.modal_delete}
-          >
-          <p>이 서비스의 모든 정보를 삭제하시겠습니까?</p>
-          <p>해당 서비스 이용이 제한되오며, 고객에 대한 개인정보를 의무적으로 3년간 보장함을 알려드립니다.</p>
-          <div>
-            <Button title="취소" onClick={() => {setIsOpenDel(false)}}/>
-            <Button title="확인" onClick={() => {delSurvey()}} />
-          </div>
-        </Modal>
+        <Modal isOpen={isOpenDel} onClose={() => setIsOpenDel(false)}>
+  <div className={styles.modalWrapper}>
+    {/* ⭐ 아이콘 추가 */}
+    <svg className={styles.modalIcon} viewBox="0 0 24 24" fill="none">
+      <path 
+        d="M12 9v4m0 4h.01M12 3c4.97 0 9 4.03 9 9s-4.03 9-9 9-9-4.03-9-9 4.03-9 9-9z" 
+        stroke="currentColor" 
+        strokeWidth="2" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+      />
+    </svg>
+    
+    {/* ⭐ 제목 */}
+    <p className={styles.modalTitle}>
+      이 서비스의 모든 정보를 삭제하시겠습니까?
+    </p>
+    
+    {/* ⭐ 설명 */}
+    <p className={styles.modalDescription}>
+      해당 서비스 이용이 제한되오며, 고객에 대한 개인정보를<br />
+      의무적으로 3년간 보장함을 알려드립니다.
+    </p>
+    
+    {/* ⭐ 버튼 그룹 */}
+    <div className={styles.modalButtons}>
+      <Button title="취소" onClick={() => setIsOpenDel(false)} />
+      <Button title="확인" onClick={() => delSurvey()} />
+    </div>
+  </div>
+</Modal>
       </div>
 
       <p className={styles.footer}>
