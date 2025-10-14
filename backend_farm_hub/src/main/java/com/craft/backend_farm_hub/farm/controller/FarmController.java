@@ -48,13 +48,21 @@ public class FarmController {
 
   //축사 조도 데이터 조회 api
   @GetMapping("/illuminance")
-  public ResponseEntity<?> getIlluminanceData(int[] each){
+  public ResponseEntity<?> getIlluminanceData(int[] each) {
     try {
       List<Integer> list = farmService.getIlluminanceData(each);
       return ResponseEntity
               .status(HttpStatus.OK)
               .body(list);
+    } catch (Exception e){
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("조도 데이터가 조회되지 않았습니다.");
+    }
+  }
 
+  //축사 공기질 데이터 조회 api
   @GetMapping("/air-quality")
   public ResponseEntity<?> getAirQualityData(int[] each) {
     try {
@@ -64,7 +72,6 @@ public class FarmController {
       e.printStackTrace();
       return ResponseEntity
               .status(HttpStatus.INTERNAL_SERVER_ERROR)
-              .body("조도 데이터가 조회되지 않았습니다.");
               .body("공기질데이터가 조회되지 않았습니다.");
     }
   }
