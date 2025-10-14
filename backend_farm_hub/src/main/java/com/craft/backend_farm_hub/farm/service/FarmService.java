@@ -22,8 +22,9 @@ public class FarmService {
   }
 
   //축사 조도 데이터 조회
-  public List<Integer> getIlluminanceData(int[] each){
+  public List<Integer> getIlluminanceData(int[] each) {
     return farmMapper.getIlluminanceData(each);
+  }
 
   public List<Integer> getAirQualityData(int[] each) {
     return farmMapper.getAirQualityData(each);

@@ -71,6 +71,8 @@
             , IFNULL(MAX(ILLUMINANCE), 0) AS MAX_ILL
             , IFNULL(MIN(ILLUMINANCE), 0) AS MIN_ILL
             FROM illuminance_function
+        </foreach>
+    </select>
           
     <!--공기질 데이터 조회-->
     <select id="getAirQualityData" resultMap="farm">
