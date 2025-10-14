@@ -105,21 +105,29 @@ const MypageSide = () => {
       <div className={styles.category}>
         <p>나의 게시글</p>
         <ul>
-          <li>
+          {/* <li>
             <p>
               <span>
                 <i className="bi bi-bag-plus-fill"></i>
               </span>
               1:1 문의
             </p>
-          </li>
-          <li>
+          </li> */}
+          <li
+            onClick={(e) => {
+              nav("/mypage/Qna");
+            }}
+          >
             <span>
               <i className="bi bi-bag-check-fill"></i>
             </span>
-            상품문의
+            문의 목록
           </li>
-          <li>
+          <li
+            onClick={(e) => {
+              nav("/mypage/review-list");
+            }}
+          >
             <span>
               <i className="bi bi-bag-check-fill"></i>
             </span>

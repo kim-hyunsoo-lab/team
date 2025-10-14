@@ -31,6 +31,8 @@ import Temperature from "./pages/admin/Temperature";
 import Humidity from "./pages/admin/Humidity";
 import AirQuality from "./pages/admin/AirQuality";
 import Illuminance from "./pages/admin/Illuminance";
+import UserReviewList from "./pages/user/products/UserReviewList";
+import UserQna from "./pages/user/products/UserQna";
 
 
 function App() {
@@ -62,6 +64,9 @@ function App() {
           <Route path="shop-cart" element={<ShopCart />} />
           <Route path="buy-list" element={<BuyList />} />
           <Route path="/mypage/delivery" element={<Deliverypage/>}/>
+          <Route path="/mypage/review-list" element={<UserReviewList />}/>
+          <Route path="/mypage/Qna" element={<UserQna />}/>
+
         </Route>
 
         {/* 관리자 페이지 */}

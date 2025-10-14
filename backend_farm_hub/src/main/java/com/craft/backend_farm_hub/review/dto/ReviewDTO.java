@@ -17,6 +17,8 @@ public class ReviewDTO {
   private int readCnt;
   private LocalDateTime createDate;
 
+  private String itemName;
+
   //  리뷰 하나에 이미지는 여러개
   private List<ReviewImgDTO> reviewImgList;
 }

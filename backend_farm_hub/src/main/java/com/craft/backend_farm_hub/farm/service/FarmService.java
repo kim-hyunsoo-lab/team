@@ -26,8 +26,8 @@ public class FarmService {
     return farmMapper.getIlluminanceData(each);
   }
 
+  //축사 공기질 데이터 조회
   public List<Integer> getAirQualityData(int[] each) {
     return farmMapper.getAirQualityData(each);
-
   }
 }

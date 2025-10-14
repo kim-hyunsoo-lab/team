@@ -48,7 +48,7 @@ public class FarmController {
 
   //축사 조도 데이터 조회 api
   @GetMapping("/illuminance")
-  public ResponseEntity<?> getIlluminanceData(int[] each){
+  public ResponseEntity<?> getIlluminanceData(int[] each) {
     try {
       List<Integer> list = farmService.getIlluminanceData(each);
       return ResponseEntity
@@ -62,6 +62,7 @@ public class FarmController {
     }
   }
 
+  //축사 공기질 데이터 조회 api
   @GetMapping("/air-quality")
   public ResponseEntity<?> getAirQualityData(int[] each) {
     try {
