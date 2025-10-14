@@ -1,9 +1,11 @@
 package com.craft.backend_farm_hub.shop_member.controller;
 
 import com.craft.backend_farm_hub.buy.dto.BuyDTO;
+import com.craft.backend_farm_hub.shop_member.dto.DeleteMemberDTO;
 import com.craft.backend_farm_hub.shop_member.dto.ForgotPwDTO;
 import com.craft.backend_farm_hub.shop_member.dto.ShopMemberDTO;
 import com.craft.backend_farm_hub.shop_member.service.ShopMemberService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,7 @@ public class ShopMemberController {
   //회원 등록 api
   @PostMapping("")
   public ResponseEntity<?> regMember(@RequestBody ShopMemberDTO shopMemberDTO) {
-    try{
+    try {
       shopMemberService.regMember(shopMemberDTO);
       return ResponseEntity
               .status(HttpStatus.CREATED)
@@ -38,10 +40,16 @@ public class ShopMemberController {
   public ResponseEntity<?> login(ShopMemberDTO shopMemberDTO) {
     try {
       ShopMemberDTO loginMember = shopMemberService.login(shopMemberDTO);
+      System.out.println(loginMember);
       if (loginMember == null) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body("아이디 또는 비밀번호가 일치하지 않습니다.");
+      }
+      else if(loginMember.getStatus().equals("WITHDRAWN")){
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body("탈퇴한 계정입니다.");
       }
       return ResponseEntity.ok(loginMember);
     } catch (Exception e) {
@@ -69,7 +77,7 @@ public class ShopMemberController {
   //비밀번호 찾기 질문 목록 조회 api
   @GetMapping("/pw-question")
   public ResponseEntity<?> getQuestion() {
-    try{
+    try {
       List<ForgotPwDTO> list = shopMemberService.getQuestion();
       return ResponseEntity.status(HttpStatus.OK).body(list);
     } catch (Exception e) {
@@ -82,8 +90,8 @@ public class ShopMemberController {
 
   //비밀번호 찾기
   @GetMapping("/forgotPw/{memId}")
-  public ResponseEntity<?> forgotPw(@PathVariable("memId") String memId){
-    try{
+  public ResponseEntity<?> forgotPw(@PathVariable("memId") String memId) {
+    try {
       ShopMemberDTO shopMemberDTO = shopMemberService.forgotPw(memId);
       if (shopMemberDTO == null) {
         return ResponseEntity
@@ -102,7 +110,7 @@ public class ShopMemberController {
   //비밀번호 변경
   @PutMapping("/renewalPw")
   public ResponseEntity<?> renewalPw(@RequestBody ShopMemberDTO shopMemberDTO) {
-    try{
+    try {
       shopMemberService.renewalPw(shopMemberDTO);
       return ResponseEntity
               .status(HttpStatus.OK)
@@ -117,8 +125,8 @@ public class ShopMemberController {
 
   //멤버 목록 조회
   @GetMapping("/selectmembers")
-  public ResponseEntity<?> selectMembers(){
-    try{
+  public ResponseEntity<?> selectMembers() {
+    try {
       List<ShopMemberDTO> list = shopMemberService.selectMembers();
       return ResponseEntity.status(HttpStatus.OK).body(list);
     } catch (Exception e) {
@@ -157,6 +165,29 @@ public class ShopMemberController {
                        @RequestBody ShopMemberDTO shopMemberDTO) {
     shopMemberDTO.setMemId(memId);
     shopMemberService.updateId(shopMemberDTO);
+  }
+
+  @PostMapping("/survey")
+  public ResponseEntity<String> delSurvey(@RequestBody DeleteMemberDTO deleteMemberDTO) {
+    try {
+      // DTO에서 직접 memId 가져오기
+      String memId = deleteMemberDTO.getMemId();
+
+      // memId 유효성 검증
+      if (memId == null || memId.trim().isEmpty()) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body("로그인이 필요합니다.");
+      }
+
+      // 탈퇴 처리
+      shopMemberService.delSurvey(deleteMemberDTO);
+
+      return ResponseEntity.ok("회원 탈퇴가 완료되었습니다.");
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("탈퇴 처리 중 오류가 발생했습니다.");
+    }
   }
 }
 
