@@ -60,7 +60,6 @@ const UserHeader = () => {
               <li onClick={() => setIsOpenForgotPw(true)}>비밀번호 찾기</li>
             </>
           )}
-          <li>고객센터</li>
         </ul>
       </div>
       <div className={styles.search}>
