@@ -1,5 +1,6 @@
 package com.craft.backend_farm_hub.shop_member.mapper;
 
+import com.craft.backend_farm_hub.shop_member.dto.DeleteMemberDTO;
 import com.craft.backend_farm_hub.shop_member.dto.ForgotPwDTO;
 import com.craft.backend_farm_hub.shop_member.dto.ShopMemberDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -37,5 +38,11 @@ public interface ShopMemberMapper {
 
   //회원정보 변경 시 1명의 회원정보 수정
   public void updateId(ShopMemberDTO shopMemberDTO);
+
+  //회원탈퇴 쿼리
+  public void deletemb(String memId);
+
+  //설문조사 등록 쿼리
+  public void survey(DeleteMemberDTO deleteMemberDTO);
 
 }

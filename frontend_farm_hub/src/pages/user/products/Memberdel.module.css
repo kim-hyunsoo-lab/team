@@ -151,6 +151,13 @@
   line-height: 1.8;
   font-size: 15px;
 }
+.TextProp{
+  font-size: 1rem;
+}
+
+.modal_delete{
+  
+}
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {

@@ -1,10 +1,12 @@
 package com.craft.backend_farm_hub.shop_member.service;
 
+import com.craft.backend_farm_hub.shop_member.dto.DeleteMemberDTO;
 import com.craft.backend_farm_hub.shop_member.dto.ForgotPwDTO;
 import com.craft.backend_farm_hub.shop_member.dto.ShopMemberDTO;
 import com.craft.backend_farm_hub.shop_member.mapper.ShopMemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,7 +22,21 @@ public class ShopMemberService {
 
   //로그인 기능
   public ShopMemberDTO login(ShopMemberDTO shopMemberDTO) {
-    return shopMemberMapper.login(shopMemberDTO);
+    // 1. ID와 비밀번호로 회원 조회
+    ShopMemberDTO member = shopMemberMapper.login(shopMemberDTO);
+
+    // 2. 회원이 없으면 null 반환
+    if (member == null) {
+      return null;
+    }
+
+    // ⭐ 3. 탈퇴한 회원인지 체크
+    if ("WITHDRAWN".equals(member.getStatus())) {
+      return null;  // 탈퇴 회원은 로그인 불가
+    }
+
+    // 4. 정상 회원이면 반환
+    return member;
   }
 
   //아이디 중복검사, 사용 가능하면 null 데이터가 조회됨
@@ -65,5 +81,10 @@ public class ShopMemberService {
     shopMemberMapper.updateId(shopMemberDTO);
   }
 
-
+  //회원탈퇴 + 설문조사 등록 쿼리
+  @Transactional(rollbackFor = Exception.class)
+  public void delSurvey(DeleteMemberDTO deleteMemberDTO){
+    shopMemberMapper.survey(deleteMemberDTO);
+    shopMemberMapper.deletemb(deleteMemberDTO.getMemId());
+  }
 }
