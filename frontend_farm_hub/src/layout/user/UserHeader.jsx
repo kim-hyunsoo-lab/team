@@ -54,12 +54,11 @@ const UserHeader = () => {
               <li onClick={() => setIsOpenForgotPw(true)}>비밀번호 찾기</li>
             </>
           )}
-          <li>고객센터</li>
         </ul>
       </div>
       <div className={styles.search}>
         <div className={styles.img_div} onClick={(e) => nav("/")}>          
-          <img className={styles.banner_img} src="/headertest.png"/>
+          <img className={styles.banner_img} src="/header2.png"/>
         </div>
       </div>
 
