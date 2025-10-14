@@ -30,11 +30,6 @@ public class ShopMemberService {
       return null;
     }
 
-    // ⭐ 3. 탈퇴한 회원인지 체크
-    if ("WITHDRAWN".equals(member.getStatus())) {
-      return null;  // 탈퇴 회원은 로그인 불가
-    }
-
     // 4. 정상 회원이면 반환
     return member;
   }

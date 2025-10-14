@@ -40,10 +40,16 @@ public class ShopMemberController {
   public ResponseEntity<?> login(ShopMemberDTO shopMemberDTO) {
     try {
       ShopMemberDTO loginMember = shopMemberService.login(shopMemberDTO);
+      System.out.println(loginMember);
       if (loginMember == null) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body("아이디 또는 비밀번호가 일치하지 않습니다.");
+      }
+      else if(loginMember.getStatus().equals("WITHDRAWN")){
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body("탈퇴한 계정입니다.");
       }
       return ResponseEntity.ok(loginMember);
     } catch (Exception e) {

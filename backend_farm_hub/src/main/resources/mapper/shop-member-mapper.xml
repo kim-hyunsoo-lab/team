@@ -19,6 +19,7 @@
       <result column="JOIN_DATE" property="joinDate" />
 <!--      구매내역 요약-->
       <result column="PURCHASE" property="purchase" />
+      <result column="STATUS" property="status" />
     </resultMap>
 
   <!--비밀번호 찾기 질문 resultMap-->
