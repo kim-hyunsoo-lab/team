@@ -19,7 +19,7 @@ const MypageSide = () => {
               <span>
                 <i className="bi bi-file-earmark-text-fill"></i>
               </span>
-              주문목록/배송조회
+              주문목록
             </p>
           </li>
           <li>
@@ -48,23 +48,7 @@ const MypageSide = () => {
           </li>
         </ul>
       </div>
-      <div className={styles.category}>
-        <p>혜택 관리</p>
-        <ul>
-          <li>
-            <span>
-              <i className="bi bi-bar-chart-line-fill"></i>
-            </span>
-            쿠폰
-          </li>
-          <li>
-            <span>
-              <i className="bi bi-bar-chart-line-fill"></i>
-            </span>
-            적립금
-          </li>
-        </ul>
-      </div>
+      
       <div className={styles.category}>
         <p>회원정보</p>
         <ul>

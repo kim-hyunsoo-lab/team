@@ -13,17 +13,7 @@ const ShopCart = () => {
   //체크박스 선택 상태
   const [selectedItems, setSelectedItems] = useState([]);
 
-  //변경된 수량을 저장할 state 변수
-  const [cnt, setCnt] = useState(0);
-
   const memId = JSON.parse(sessionStorage.getItem('loginInfo')).memId;
-
-  //각 행의 구매 데이터를 담을 state 변수
-  const [eachItem, setEachItem] = useState({
-    itemNum : cartList.itemNum,
-    memId,
-    buyCnt : cnt
-  });
 
   console.log(cartList);
 
@@ -42,56 +32,52 @@ const ShopCart = () => {
   }, [reloading]);
 
   // 수량 변경 함수 - 숫자 검증 추가
-const handleCntChange = (i, value) => {
-  const updatedCartList = [...cartList];
-  // 빈 문자열이나 숫자가 아닌 값 체크
-  const numValue = parseInt(value);
-  if (isNaN(numValue) || numValue < 1) {
-    updatedCartList[i].cartCnt = 1; // 최소값 1로 설정
-  } else {
-    updatedCartList[i].cartCnt = numValue;
-  }
-  setCartList(updatedCartList);
-};
+  const handleCntChange = (i, value) => {
+    const updatedCartList = [...cartList];
+    const numValue = parseInt(value);
+    if (isNaN(numValue) || numValue < 1) {
+      updatedCartList[i].cartCnt = 1;
+    } else {
+      updatedCartList[i].cartCnt = numValue;
+    }
+    setCartList(updatedCartList);
+  };
 
-// 수량 변경 버튼 클릭 함수 - 유효성 검증 추가
-const updateCartCnt = (cart) => {
-  // cartCnt가 유효한 숫자인지 확인
-  if (!cart.cartCnt || isNaN(cart.cartCnt) || cart.cartCnt < 1) {
-    alert('유효한 수량을 입력해주세요.');
-    return;
-  }
+  // 수량 변경 버튼 클릭 함수
+  const updateCartCnt = (cart) => {
+    if (!cart.cartCnt || isNaN(cart.cartCnt) || cart.cartCnt < 1) {
+      alert('유효한 수량을 입력해주세요.');
+      return;
+    }
 
-  // URL에는 cartNum(장바구니 번호)을 사용하고, body에는 숫자로 변환된 cartCnt를 전송
-  axios.put(`/api/carts/${cart.cartNum}`, {
-    cartCnt: Number(cart.cartCnt),
-    memId,
-    itemNum : cart.itemNum
-  })
-  .then(res => {
-    console.log(res.data);
-    alert('수량이 변경되었습니다.');
-    setReloading(reloading + 1);
-  })
-  .catch(e => {
-    console.log(e);
-    alert(e.response.data);
-  });
-};
+    axios.put(`/api/carts/${cart.cartNum}`, {
+      cartCnt: Number(cart.cartCnt),
+      memId,
+      itemNum : cart.itemNum
+    })
+    .then(res => {
+      console.log(res.data);
+      alert('수량이 변경되었습니다.');
+      setReloading(reloading + 1);
+    })
+    .catch(e => {
+      console.log(e);
+      alert(e.response.data);
+    });
+  };
 
-  //총 구매 가격 계산
+  //총 구매 가격 계산 (체크된 상품만)
   const getTotalPrice = () => {
-    return cartList.reduce((sum, cart) => sum + cart.totalPrice, 0);
+    return cartList
+      .filter(cart => selectedItems.includes(cart.cartNum))
+      .reduce((sum, cart) => sum + cart.totalPrice, 0);
   };
 
   //체크박스 값 변경 시 실행 함수
   const handleCheckbox = (e) => {
-    //체크가 됐다면...
-    //cartNum을 숫자로 변환해서 저장  parseInt(문자열)
     if (e.target.checked) {
       setSelectedItems([...selectedItems, parseInt(e.target.value)]);
     }
-    //체크가 해제 됐다면...
     else {
       const result = selectedItems.filter((cartNum) => {return cartNum != e.target.value});
       setSelectedItems(result);
@@ -116,9 +102,7 @@ const updateCartCnt = (cart) => {
     axios.delete(`/api/carts/${cartNum}`)
     .then(() => {
       alert('상품이 삭제되었습니다.');
-      // 삭제된 상품을 제외한 나머지 상품들로 cartList 업데이트
       setCartList(cartList.filter(cart => cart.cartNum !== cartNum));
-      // 선택 목록에서도 제거
       setSelectedItems(selectedItems.filter(num => num !== cartNum));
     })
     .catch(e => {
@@ -138,8 +122,6 @@ const updateCartCnt = (cart) => {
       return;
     }
 
-    // Promise.all: 여러 개의 비동기 요청을 동시에 실행하고, 모든 요청이 완료될 때까지 기다림
-    // selectedItems 배열의 각 cartNum에 대해 삭제 API를 호출하고, 모든 삭제가 완료되면 then 실행
     Promise.all(
       selectedItems.map(cartNum =>
         axios.delete(`/api/carts/${cartNum}`)
@@ -147,7 +129,6 @@ const updateCartCnt = (cart) => {
     )
     .then(() => {
       alert('선택한 상품이 삭제되었습니다.');
-      // 삭제된 상품들을 제외한 나머지 상품들로 cartList 업데이트
       setCartList(cartList.filter(cart => !selectedItems.includes(cart.cartNum)));
       setSelectedItems([]);
     })
@@ -157,23 +138,54 @@ const updateCartCnt = (cart) => {
     });
   };
 
-  //각 행의 상품 구매 버튼
-  const buyItem = () => {
-    axios.post('/api/buy/each-cart', eachItem)
+  // ✅ 수정된 각 행의 상품 구매 함수
+  const buyItem = (cart) => {
+    if (!confirm('이 상품을 구매하시겠습니까?')) {
+      return;
+    }
+
+    axios.post('/api/buy/each-cart', {
+      cartNum: cart.cartNum,
+      memId: memId
+    })
     .then(res => {
-      alert('상품을 구매했습니다.')
+      alert('상품을 구매했습니다.');
+      // 구매 후 장바구니에서 제거
+      setCartList(cartList.filter(c => c.cartNum !== cart.cartNum));
+      setSelectedItems(selectedItems.filter(num => num !== cart.cartNum));
     })
     .catch(e => {
       console.log(e);
-      alert(e.response.data)
+      alert(e.response?.data || '구매 중 오류가 발생했습니다.');
+    });
+  };
+
+  // 선택 상품 구매 함수
+  const buySelectedItems = () => {
+    if (selectedItems.length === 0) {
+      alert('구매할 상품을 선택해주세요.');
+      return;
+    }
+
+    if (!confirm(`선택한 ${selectedItems.length}개 상품을 구매하시겠습니까?`)) {
+      return;
+    }
+
+    axios.post('/api/buy/cart', {
+      cartNumList: selectedItems,
+      memId: memId
     })
-  }
-
-  //내용 줄의 체크박스가 변할 때, 총 구매 가격을 변경하는 함수
-  const handleFinalPrice = (price, e) => {
-    e.target.checked ? setFinalPrice(finalPrice + price) : setFinalPrice(finalPrice - price);
-
-  }
+    .then(res => {
+      alert('선택한 상품을 구매했습니다.');
+      // 구매 후 장바구니에서 제거
+      setCartList(cartList.filter(cart => !selectedItems.includes(cart.cartNum)));
+      setSelectedItems([]);
+    })
+    .catch(e => {
+      console.log(e);
+      alert(e.response?.data || '구매 중 오류가 발생했습니다.');
+    });
+  };
 
   return (
     <div className={styles.container}>
@@ -230,13 +242,7 @@ const updateCartCnt = (cart) => {
                     <Button
                       title='수량변경'
                       size='70px'
-                      onClick={() => {
-                        updateCartCnt(cart);
-                        setEachItem({
-                          ...eachItem,
-                          
-                        })
-                      }}
+                      onClick={() => updateCartCnt(cart)}
                     />
                   </td>
                   <td>{cart.totalPrice.toLocaleString()}원</td>
@@ -245,7 +251,7 @@ const updateCartCnt = (cart) => {
                     <Button
                       title='구매하기'
                       size='70px'
-                      onClick={() => buyItem()}
+                      onClick={() => buyItem(cart)}
                     />
                     <Button
                       title='삭제'
@@ -267,7 +273,7 @@ const updateCartCnt = (cart) => {
         </div>
         <div className={styles.button_group}>
           <Button title='선택 삭제' color='gray' size='150px' onClick={deleteSelectedItems} />
-          <Button title='선택 상품 구매' color='green' size='200px' onClick={() => {}} />
+          <Button title='선택 상품 구매' color='green' size='200px' onClick={buySelectedItems} />
         </div>
       </div>
     </div>
