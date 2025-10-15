@@ -136,6 +136,9 @@ UPDATE SHOP_MEMBER SET STATUS = 'ACTIVE' WHERE STATUS IS NULL;
  	DELETE_DATE DATETIME DEFAULT SYSDATE()         -- 탈퇴일
  );  
  
+ 
+ 
+ 
  #################################################
  ### 이 워크시트에 CREATE 문을 다 작성해주세요 ###
 
