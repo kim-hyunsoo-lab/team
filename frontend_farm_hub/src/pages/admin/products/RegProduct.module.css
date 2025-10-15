@@ -1,22 +1,22 @@
 .container {
   max-width: 700px;
   margin: 0 auto;
-  padding: 15px;
+  padding: 10px;
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .container > div {
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .container > div > div {
   background-color: #f8f9fa;
-  padding: 12px;
+  padding: 8px;
   border-radius: 8px;
   border: 1px solid #e9ecef;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   transition: all 0.2s ease;
 }
 
@@ -29,7 +29,7 @@
   font-size: 14px;
   font-weight: 600;
   color: #2d3748;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   display: flex;
   align-items: center;
 }
@@ -76,20 +76,20 @@
 /* 버튼 영역 */
 .container > div:last-child {
   text-align: right;
-  margin-top: 16px;
-  padding-top: 12px;
+  margin-top: 12px;
+  padding-top: 8px;
   border-top: 2px solid #e9ecef;
 }
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .container {
-    padding: 12px;
-    margin: 10px;
+    padding: 8px;
+    margin: 8px;
   }
 
   .container > div > div {
-    padding: 10px;
+    padding: 6px;
   }
 }
 
