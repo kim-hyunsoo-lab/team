@@ -87,141 +87,140 @@ const RegReview = ({itemNum, isOpenRegReview, onClose}) => {
     setIsDisabledBtn(true);
     setIsSubmitting(false);
   }
-
-  // 이미지 있는 리뷰 등록
-  const regNewReview = async () => {
-    // 중복 클릭 방지
-    if (isSubmitting) {
-      console.log('이미 등록 중입니다.');
-      return;
-    }
-
-    // 유효성 검사
-    if (!reviewData.title) {
-      alert('리뷰 제목은 비워둘 수 없습니다');
-      return;
-    }
-    if (!reviewData.rating) {
-      alert('별점은 비워둘 수 없습니다');
-      return;
-    }
-    if (!reviewData.content) {
-      alert('리뷰 내용은 비워둘 수 없습니다');
-      return;
-    }
-
-    const formData = new FormData();
-    
-    for(const ee of reviewImgs){
-      formData.append('reviewImgs', ee);
-    }
-    formData.append('title', reviewData.title);
-    formData.append('rating', reviewData.rating);
-    formData.append('content', reviewData.content);
-    formData.append('memId', memId);
-    formData.append('itemNum', itemNum);
-
-    setIsSubmitting(true); // 등록 시작
-    
-    try {
-      const response = await axios.post('/api/reviews', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        timeout: 30000
-      });
-      
-      console.log('✅ 서버 응답:', response.data);
-      
-      if (response.data.success) {
-        alert(response.data.message);
-        resetForm();
-        onClose();
-      } else {
-        alert(response.data.message);
-        setIsSubmitting(false);
-      }
-      
-    } catch (error) {
-      console.error('❌ 에러 발생:', error);
-      
-      if (error.response) {
-        // 서버가 응답했지만 에러
-        alert(error.response.data.message || '리뷰 등록에 실패했습니다.');
-      } else if (error.request) {
-        // 요청은 보냈지만 응답 없음
-        alert('서버와 통신할 수 없습니다.');
-      } else {
-        // 요청 설정 중 에러
-        alert('요청 처리 중 오류가 발생했습니다.');
-      }
-      
-      setIsSubmitting(false);
-    }
+// 이미지 있는 리뷰 등록
+const regNewReview = async () => {
+  if (isSubmitting) {
+    console.log('이미 등록 중입니다.');
+    return;
   }
 
-  // 이미지 없는 리뷰 등록
-  const regNewReviewNoImg = async () => {
-    // 중복 클릭 방지
-    if (isSubmitting) {
-      console.log('이미 등록 중입니다.');
-      return;
-    }
-
-    // 유효성 검사
-    if (!reviewData.title) {
-      alert('리뷰 제목은 비워둘 수 없습니다');
-      return;
-    }
-    if (!reviewData.rating) {
-      alert('별점은 비워둘 수 없습니다');
-      return;
-    }
-    if (!reviewData.content) {
-      alert('리뷰 내용은 비워둘 수 없습니다');
-      return;
-    }
-
-    setIsSubmitting(true); // 등록 시작
-    
-    try {
-      const response = await axios.post('/api/reviews/noimg', {
-        ...reviewData, 
-        'memId': memId,
-        'itemNum': itemNum
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        timeout: 10000
-      });
-      
-      console.log('✅ 서버 응답:', response.data);
-      
-      if (response.data.success) {
-        alert(response.data.message);
-        resetForm();
-        onClose();
-      } else {
-        alert(response.data.message);
-        setIsSubmitting(false);
-      }
-      
-    } catch (error) {
-      console.error('❌ 에러 발생:', error);
-      
-      if (error.response) {
-        alert(error.response.data.message || '리뷰 등록에 실패했습니다.');
-      } else if (error.request) {
-        alert('서버와 통신할 수 없습니다.');
-      } else {
-        alert('요청 처리 중 오류가 발생했습니다.');
-      }
-      
-      setIsSubmitting(false);
-    }
+  if (!reviewData.title) {
+    alert('리뷰 제목은 비워둘 수 없습니다');
+    return;
+  }
+  if (!reviewData.rating) {
+    alert('별점은 비워둘 수 없습니다');
+    return;
+  }
+  if (!reviewData.content) {
+    alert('리뷰 내용은 비워둘 수 없습니다');
+    return;
   }
 
+  const formData = new FormData();
+  
+  for(const ee of reviewImgs){
+    formData.append('reviewImgs', ee);
+  }
+  formData.append('title', reviewData.title);
+  formData.append('rating', reviewData.rating);
+  formData.append('content', reviewData.content);
+  formData.append('memId', memId);
+  formData.append('itemNum', itemNum);
+
+  setIsSubmitting(true);
+  
+  try {
+    const response = await axios.post('/api/reviews', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      timeout: 30000
+    });
+    
+    console.log('✅ 서버 응답:', response.data);
+    
+    if (response.data.success) {
+      alert(response.data.message);
+      
+      // ⭐ 커스텀 이벤트 발생 - 상품 정보 갱신 ⭐
+      window.dispatchEvent(new Event('reviewUpdated'));
+      
+      resetForm();
+      onClose();
+    } else {
+      alert(response.data.message);
+      setIsSubmitting(false);
+    }
+    
+  } catch (error) {
+    console.error('❌ 에러 발생:', error);
+    
+    if (error.response) {
+      alert(error.response.data.message || '리뷰 등록에 실패했습니다.');
+    } else if (error.request) {
+      alert('서버와 통신할 수 없습니다.');
+    } else {
+      alert('요청 처리 중 오류가 발생했습니다.');
+    }
+    
+    setIsSubmitting(false);
+  }
+}
+
+// 이미지 없는 리뷰 등록
+const regNewReviewNoImg = async () => {
+  if (isSubmitting) {
+    console.log('이미 등록 중입니다.');
+    return;
+  }
+
+  if (!reviewData.title) {
+    alert('리뷰 제목은 비워둘 수 없습니다');
+    return;
+  }
+  if (!reviewData.rating) {
+    alert('별점은 비워둘 수 없습니다');
+    return;
+  }
+  if (!reviewData.content) {
+    alert('리뷰 내용은 비워둘 수 없습니다');
+    return;
+  }
+
+  setIsSubmitting(true);
+  
+  try {
+    const response = await axios.post('/api/reviews/noimg', {
+      ...reviewData, 
+      'memId': memId,
+      'itemNum': itemNum
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      timeout: 10000
+    });
+    
+    console.log('✅ 서버 응답:', response.data);
+    
+    if (response.data.success) {
+      alert(response.data.message);
+      
+      // ⭐ 커스텀 이벤트 발생 - 상품 정보 갱신 ⭐
+      window.dispatchEvent(new Event('reviewUpdated'));
+      
+      resetForm();
+      onClose();
+    } else {
+      alert(response.data.message);
+      setIsSubmitting(false);
+    }
+    
+  } catch (error) {
+    console.error('❌ 에러 발생:', error);
+    
+    if (error.response) {
+      alert(error.response.data.message || '리뷰 등록에 실패했습니다.');
+    } else if (error.request) {
+      alert('서버와 통신할 수 없습니다.');
+    } else {
+      alert('요청 처리 중 오류가 발생했습니다.');
+    }
+    
+    setIsSubmitting(false);
+  }
+}
   // 모달 닫을 때 상태 초기화
   const handleClose = () => {
     if (isSubmitting) {
