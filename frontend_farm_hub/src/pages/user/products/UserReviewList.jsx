@@ -111,24 +111,25 @@ const UserReviewList = () => {
                   <td>{e.itemName}</td>
                   <td>{dayjs(e.createDate).format('YYYY년 MM월 DD일')}</td>
                 </tr>
-
-                {expandedRowId === e.reviewNum &&             
-                (<tr style={{textAlign : 'left'}}>
-                  <td colSpan={5}>
-                    <div className={styles.img} >
-                      {e.reviewImgList[0].reviewImgNum == 0 ? null :
-                      e.reviewImgList.map((img, i) => {
-                        return(
-                        <img src={`http://localhost:8080/reviewupload/${img.reviewAttachedImgName}`} key={i} />
-                        )
-                      })                   
-                      }                    
-                      <div>
-                        {e.content}                    
+                 {expandedRowId === e.reviewNum &&             
+                  (<tr style={{textAlign : 'left'}}>
+                    <td colSpan={5}>
+                      <div className={styles.img} >                 
+                        {e.reviewImgList && e.reviewImgList.length > 0 ? (
+                          e.reviewImgList.map((img, i) => (
+                            <img 
+                              src={`http://localhost:8080/reviewupload/${img.reviewAttachedImgName}`} 
+                              key={i}
+                              alt={`리뷰 이미지 ${i + 1}`}
+                            />
+                          ))
+                        ) : null}
+                        <div>
+                          {e.content}                    
+                        </div>
                       </div>
-                    </div>
                     </td>
-                </tr>
+                  </tr>
                 )}
                 </React.Fragment>              
               )) 
