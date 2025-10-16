@@ -19,10 +19,11 @@ ALTER TABLE SHOP_MEMBER ADD (
 );
 
 -- 기존 회원들 상태 업데이트
-UPDATE SHOP_MEMBER SET STATUS = 'ACTIVE' WHERE STATUS IS NULL; 
+UPDATE shop_member SET STATUS = 'ACTIVE' WHERE STATUS IS NULL; 
   
-  
-  SELECT * FROM illuminance_function;
+  DELETE FROM shop_member WHERE mem_id = 'react';
+  SELECT * FROM SHOP_MEMBER;
+
  
  #상품정보
  CREATE TABLE ITEM (
