@@ -6,9 +6,26 @@ import { Tabs } from 'expo-router'
 const TabLayout = () => {
   return (
     <Tabs screenOptions={{headerShown : false}}>
-      <Tabs.Screen />
-      <Tabs.Screen />
-      <Tabs.Screen />
+      <Tabs.Screen 
+        name='(home)'
+        options={{
+          title : 'Home'
+        }}
+      />
+
+      <Tabs.Screen 
+        name='alarm'
+        options={{
+          title : 'Alarm'
+        }}
+      />
+      
+      <Tabs.Screen 
+        name='control'
+        options={{
+          title : 'Control'
+        }}
+      />
     </Tabs>
   )
 }
