@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Tabs } from 'expo-router'
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 // (home), alarm, control 폴더를 tab 구조롤 설정하는 파일
 const TabLayout = () => {
@@ -9,21 +10,24 @@ const TabLayout = () => {
       <Tabs.Screen 
         name='(home)'
         options={{
-          title : 'Home'
+          title : 'Home',
+          tabBarIcon : () => <FontAwesome name="home" size={24} color="black" />
         }}
       />
 
       <Tabs.Screen 
         name='alarm'
         options={{
-          title : 'Alarm'
+          title : 'Alarm',
+          tabBarIcon : () => <FontAwesome name="bell" size={24} color="black" />
         }}
       />
       
       <Tabs.Screen 
         name='control'
         options={{
-          title : 'Control'
+          title : 'Control',
+          tabBarIcon : () => <FontAwesome name="gear" size={24} color="black" />
         }}
       />
     </Tabs>
