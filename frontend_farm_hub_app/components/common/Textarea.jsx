@@ -11,12 +11,11 @@ const Textarea = ({
   showCounter = false,
   ...props  
 }) => {
-  const [focus, setFocus] = useState(false);
+  const [focus, setFocus] = useState(false);  
 
   return (
     <View>
-      {label && <Text style={styles.label}>{label}</Text>}
-      
+      {label && <Text style={styles.label}>{label}</Text>}            
       <TextInput 
         multiline
         numberOfLines={numberOfLines}

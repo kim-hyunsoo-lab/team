@@ -3,7 +3,7 @@ package com.craft.backend_farm_hub.review.controller;
 import com.craft.backend_farm_hub.review.dto.ReviewDTO;
 import com.craft.backend_farm_hub.review.dto.ReviewImgDTO;
 import com.craft.backend_farm_hub.review.service.ReviewService;
-import com.craft.backend_farm_hub.util.ReviewImgUploadUtil;
+import com.craft.backend_farm_hub.util.FileUploadUtil;  // ← 이 줄만 변경!
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -31,7 +31,8 @@ public class ReviewController {
     Map<String, Object> response = new HashMap<>();
 
     try {
-      List<ReviewImgDTO> reviewImgList = ReviewImgUploadUtil.multipleReviewFileUpload(reviewImgs);
+      // ← 이 줄만 변경!
+      List<ReviewImgDTO> reviewImgList = FileUploadUtil.multipleReviewFileUpload(reviewImgs);
       reviewService.insertReview(reviewDTO, reviewImgList);
 
       response.put("success", true);
