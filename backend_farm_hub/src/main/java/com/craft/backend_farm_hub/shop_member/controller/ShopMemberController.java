@@ -189,5 +189,16 @@ public class ShopMemberController {
               .body("탈퇴 처리 중 오류가 발생했습니다.");
     }
   }
+
+  @GetMapping("/insertSurvey")
+  public ResponseEntity<?> insertSurvey(){
+    try {
+      List<DeleteMemberDTO> list = shopMemberService.insertSurvey();
+      return ResponseEntity.status(HttpStatus.OK).body(list);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("설문 조회에 실패했습니다: " + e.getMessage());
+    }
+  }
 }
 

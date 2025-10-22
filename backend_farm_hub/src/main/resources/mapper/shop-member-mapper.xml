@@ -193,7 +193,16 @@
       ,#{reasonGood}
       ,#{reasonImprovement}
     )
-
   </insert>
+
+  <select id="insertSurvey" resultMap="deleteMember">
+    SELECT
+      NUM
+      ,WITHDRAWAL
+      ,REASON_UNCOMFORTABLE
+      ,REASON_GOOD
+      ,REASON_IMPROVEMENT
+    FROM SURVEY
+  </select>
 
 </mapper>

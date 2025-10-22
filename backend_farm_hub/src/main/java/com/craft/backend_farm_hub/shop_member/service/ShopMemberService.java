@@ -82,4 +82,9 @@ public class ShopMemberService {
     shopMemberMapper.survey(deleteMemberDTO);
     shopMemberMapper.deletemb(deleteMemberDTO.getMemId());
   }
+
+  //설문조사 내용 조회
+  public List<DeleteMemberDTO> insertSurvey(){
+    return shopMemberMapper.insertSurvey();
+  }
 }
