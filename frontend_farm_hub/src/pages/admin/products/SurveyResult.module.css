@@ -1,0 +1,83 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.dateSection {
+  padding: 3px 15px;
+}
+
+.surveyTable {
+  width: 100%;
+  text-align: center;
+  background-color: #fff;
+  border-collapse: collapse;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.surveyTable thead tr {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.surveyTable thead th {
+  padding: 4px 0px;
+  font-weight: 600;
+  color: #495057;
+  font-size: 15px;
+}
+
+.surveyTable tbody tr {
+  border-bottom: 1px solid #dee2e6;
+  transition: 0.2s;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.surveyTable tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.surveyTable tbody td {
+  padding: 4px 0px;
+  vertical-align: middle;
+}
+
+/* 헤더 영역 */
+.header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #7f8c8d;
+  margin: 0;
+}
+
+/* 로딩 상태 */
+.loading {
+  text-align: center;
+  padding: 60px;
+  font-size: 16px;
+  color: #7f8c8d;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 데이터 없음 */
+.noData {
+  text-align: center;
+  padding: 60px !important;
+  color: #7f8c8d;
+  font-size: 16px;
+}

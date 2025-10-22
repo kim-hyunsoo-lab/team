@@ -45,4 +45,7 @@ public interface ShopMemberMapper {
   //설문조사 등록 쿼리
   public void survey(DeleteMemberDTO deleteMemberDTO);
 
+  //설문조사 내용 조회 쿼리
+  public List<DeleteMemberDTO> insertSurvey ();
+
 }
