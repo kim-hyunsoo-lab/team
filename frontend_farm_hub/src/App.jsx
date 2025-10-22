@@ -34,7 +34,7 @@ import Illuminance from "./pages/admin/Illuminance";
 import UserReviewList from "./pages/user/products/UserReviewList";
 import UserQna from "./pages/user/products/UserQna";
 import ScrollToTop from "./common/ScrollToTop";
-
+import SurveyResult from "./pages/admin/products/SurveyResult";
 
 function App() {
   return (
@@ -65,10 +65,9 @@ function App() {
           <Route path="/mypage/memdel" element={<Memberdel />} />
           <Route path="shop-cart" element={<ShopCart />} />
           <Route path="buy-list" element={<BuyList />} />
-          <Route path="/mypage/delivery" element={<Deliverypage/>}/>
-          <Route path="/mypage/review-list" element={<UserReviewList />}/>
-          <Route path="/mypage/Qna" element={<UserQna />}/>
-
+          <Route path="/mypage/delivery" element={<Deliverypage />} />
+          <Route path="/mypage/review-list" element={<UserReviewList />} />
+          <Route path="/mypage/Qna" element={<UserQna />} />
         </Route>
 
         {/* 관리자 페이지 */}
@@ -77,12 +76,12 @@ function App() {
           <Route path="sales-list" element={<SalesList />} />
           <Route path="reg-product" element={<RegProduct />} />
           <Route path="member-list" element={<MemberList />} />
-
-          <Route path="qna-reply" element={<Reply />}/>
-          <Route path="temperature" element={ <Temperature /> }/>
-          <Route path="humidity" element={ <Humidity /> }/>
-          <Route path="air-quality" element={ <AirQuality /> }/>
-          <Route path="illuminance" element={ <Illuminance /> }/>
+          <Route path="survey-result" element={<SurveyResult />} />
+          <Route path="qna-reply" element={<Reply />} />
+          <Route path="temperature" element={<Temperature />} />
+          <Route path="humidity" element={<Humidity />} />
+          <Route path="air-quality" element={<AirQuality />} />
+          <Route path="illuminance" element={<Illuminance />} />
         </Route>
       </Routes>
     </>
