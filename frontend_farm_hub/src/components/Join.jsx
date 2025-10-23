@@ -67,6 +67,8 @@ const Join = ({isOpenJoin, onClose}) => {
       [e.target.name]: e.target.value}))
     };
 
+    
+
   // 회원가입 
   const regNewShopMember = () =>{     
     axios.post('/api/members', newShopMember)

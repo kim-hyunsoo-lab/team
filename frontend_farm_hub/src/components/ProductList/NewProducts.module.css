@@ -37,3 +37,10 @@
   margin: 0px;
 }
 
+.product_price {
+  font-size: 18px;
+  font-weight: bold;
+  color: brown;
+  margin-bottom: 4px;
+}
+
