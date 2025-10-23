@@ -75,8 +75,19 @@ const NewProducts = () => {
                 </div>
                 <div className={styles.grid_info}>
                   <h3>{newProduct.itemName}</h3>
-                  <p>{newProduct.price.toLocaleString()}원</p>
-                  <p>판매자:{newProduct.seller}</p>
+                  <p className={styles.product_price}>{newProduct.price.toLocaleString()}원</p>
+                  {/* 평점이 있을 때만 표시 */}
+                  {
+                    newProduct.reviewAvg
+                    ?
+                    (
+                      <p className={styles.rating}>
+                        ⭐ {newProduct.reviewAvg.toFixed(1)} ({newProduct.reviewCnt || 0})
+                      </p>
+                    )
+                    :
+                    <p>리뷰 없음</p>
+                  }
                 </div>
               </div>
             )
