@@ -26,7 +26,7 @@ const Home = () => {
       <div className={styles.new_product}>
         <PopularProducts />
         <p className={`${styles.more}`}>
-          <span onClick={e => nav('/new-product-list')}>더보기</span>
+          <span onClick={e => nav('/popular-product-list')}>더보기</span>
         </p>
       </div>
       <div className={styles.discount_product}>
