@@ -3,8 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import axios from 'axios';
 import { SERVER_URL } from '../../../constants/appConst';
-import { router } from 'expo-router';
-import PageTitle from '../../../components/common/PageTitle';
+import { router, useRouter } from 'expo-router';
+import Button from '@/components/common/Button';
+import * as SecureStore from 'expo-secure-store';
+import PageTitle from '@/components/common/PageTitle';
 
 const ProductScreen = () => {
   // 상품 정보를 저장할 state 변수들
@@ -148,7 +150,7 @@ const ProductScreen = () => {
     </View>
   );
 
-  // 화면에 표시될 UI를 반환하는 부분
+
   return (
     // SafeAreaView: 노치, 상태바 등을 피해서 안전한 영역에만 컨텐츠 표시
     <SafeAreaView style={styles.container}>

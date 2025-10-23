@@ -2,7 +2,7 @@ import { StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
 import { colors } from '../../constants/colorConstant';
 
-const Input = ({label='', isPW=false, ...props}) => {
+const Input = ({label='', isPw=false, ...props}) => {
   const [focus, setFocus] = useState(false);
 
   return (
@@ -12,7 +12,7 @@ const Input = ({label='', isPW=false, ...props}) => {
         style={[styles.input, focus && styles.focused]} 
         onFocus={() => setFocus(true)}        
         onBlur={()=>setFocus(false)}
-        secureTextEntry={isPW}
+        secureTextEntry={isPw}
         {...props}
       />
     </View>
