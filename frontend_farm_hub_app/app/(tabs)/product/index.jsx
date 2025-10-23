@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import axios from 'axios';
 import { SERVER_URL } from '../../../constants/appConst';
+import { useRouter } from 'expo-router'
+import Button from '@/components/common/Button';
+import * as SecureStore from 'expo-secure-store'
 
 const ProductScreen = () => {
   //상품 정보를 저장할 state 변수
@@ -58,6 +61,21 @@ const ProductScreen = () => {
     </View>
   );
 
+
+    // 로그아웃 함수
+  const logout = async () => {
+    // SecureStore에 저장된 로그인 정보 삭제
+    await SecureStore.deleteItemAsync('loginInfo');
+
+    // 모든 스택 제거
+    if (router.canDismiss()){ 
+    router.dismissAll();} 
+
+    // 첫 페이지로 이동
+    router.replace('/product');
+  }
+  
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -74,6 +92,8 @@ const ProductScreen = () => {
         {/* 할인상품 섹션 */}
         {renderSection('할인상품', discountProductList)}
       </ScrollView>
+
+      <Button title='로그아웃' onPress={()=>{logout()}} />
     </SafeAreaView>
   )
 }
