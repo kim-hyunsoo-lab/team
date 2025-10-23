@@ -9,6 +9,7 @@ import { LineChart } from "react-native-gifted-charts";
 import { Picker } from "@react-native-picker/picker";
 import axios from "axios";
 import dayjs from "dayjs";
+import { SERVER_URL } from '../../../constants/appConst';
 
 const { width } = Dimensions.get("window");
 
@@ -41,7 +42,7 @@ const HomeScreen = () => {
   useEffect(() => {
     const rangeArray = days.slice(0, parseInt(dateRange));
     axios
-      .get("http://192.168.30.110:8080/farms/temperature", { params: { each: rangeArray } })
+      .get(`${SERVER_URL}/farms/temperature`, { params: { each: rangeArray } })
       .then((res) => {
         console.log(res.data);
         setTemperatureData(res.data);
@@ -55,7 +56,7 @@ const HomeScreen = () => {
   useEffect(() => {
     const rangeArray = days.slice(0, parseInt(humidityDateRange));
     axios
-      .get("http://192.168.30.110:8080/farms/humidity", { params: { each: rangeArray } })
+      .get(`${SERVER_URL}/farms/humidity`, { params: { each: rangeArray } })
       .then((res) => {
         console.log(res.data);
         setHumidityData(res.data);
@@ -69,7 +70,7 @@ const HomeScreen = () => {
   useEffect(() => {
     const rangeArray = days.slice(0, parseInt(illuminanceDateRange));
     axios
-      .get("http://192.168.30.110:8080/farms/illuminance", { params: { each: rangeArray } })
+      .get(`${SERVER_URL}/farms/illuminance`, { params: { each: rangeArray } })
       .then((res) => {
         console.log(res.data);
         setIlluminanceData(res.data);
@@ -83,7 +84,7 @@ const HomeScreen = () => {
   useEffect(() => {
     const rangeArray = days.slice(0, parseInt(airQualityDateRange));
     axios
-      .get("http://192.168.30.110:8080/farms/air-quality", { params: { each: rangeArray } })
+      .get(`${SERVER_URL}/farms/air-quality`, { params: { each: rangeArray } })
       .then((res) => {
         console.log("공기질 데이터:", res.data);
         setAirQualityData(res.data);

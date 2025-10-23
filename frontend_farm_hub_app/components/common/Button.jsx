@@ -2,14 +2,15 @@ import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { colors } from '@/constants/colorConstant'
 
-const Button = ({title='버튼', size='large', onPress, ...props}) => {
+const Button = ({title='버튼', size='large', onPress, style, ...props}) => {
   return (
-    <Pressable 
+    <Pressable
       style={({pressed})=>[
-        styles.buttonContainer, 
-        styles.large, 
-        styles[size], 
-        pressed && styles.pressed
+        styles.buttonContainer,
+        styles.large,
+        styles[size],
+        pressed && styles.pressed,
+        style
       ]}
       onPress={()=>onPress()}
       {...props}

@@ -7,6 +7,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 const TabLayout = () => {
   return (
     <Tabs screenOptions={{headerShown : false}}>
+      {/* 관리자 홈 화면 */}
       <Tabs.Screen 
         name='(home)'
         options={{
@@ -15,6 +16,7 @@ const TabLayout = () => {
         }}
       />
 
+      {/* 관리자 축사 알림 */}
       <Tabs.Screen 
         name='alarm'
         options={{
@@ -23,6 +25,7 @@ const TabLayout = () => {
         }}
       />
       
+      {/* 관리자 축사 관리 */}
       <Tabs.Screen 
         name='control'
         options={{
@@ -30,6 +33,30 @@ const TabLayout = () => {
           tabBarIcon : () => <FontAwesome name="gear" size={24} color="black" />
         }}
       />
+
+      {/* 소비자 홈 화면 */}
+      <Tabs.Screen 
+        name='product'
+        options={{
+          title : 'Home',
+          tabBarIcon : () => <FontAwesome name="home" size={24} color="black" />
+        }}
+      />
+
+      {/* 소비자 상품 검색 */}
+      <Tabs.Screen 
+        name='search'
+        options={{
+          title : 'Search',
+          tabBarIcon : () => <FontAwesome name="search" size={24} color="black" />
+        }}
+      />
+
+      {/* 소비자 알림 기능 */}
+      
+      {/* 소비자 마이페이지 */}
+
+
     </Tabs>
   )
 }
