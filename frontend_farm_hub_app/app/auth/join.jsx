@@ -1,7 +1,6 @@
 import { Alert, Modal, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { useFocusEffect } from 'expo-router';
 import Button from '@/components/common/Button';
 import axios from 'axios';
