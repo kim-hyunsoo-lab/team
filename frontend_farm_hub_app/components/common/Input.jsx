@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
   label: {
     marginBottom: 6,
     fontSize: 16,
-    color: colors.GRAY_500
+    color: colors.GRAY_700,
+    fontWeight: '600'
   },
 
   focused: {
