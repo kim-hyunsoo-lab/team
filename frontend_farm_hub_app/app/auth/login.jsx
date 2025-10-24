@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import { SERVER_URL } from '@/constants/appConst';
+import PageTitle from '@/components/common/PageTitle';
 
 const login = () => {
   const router = useRouter();
@@ -98,53 +99,66 @@ const login = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
-        <View style={styles.content}>
-          <Input 
-            name="memId" 
-            value={loginData.memId} 
-            label='아이디'
-            placeholder="아이디를 입력하세요"
-            onChangeText={(text) => {
-              setLoginData({...loginData, memId: text});
-            }}
-            onSubmitEditing={() => {}} 
-            returnKeyType="next"
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
+        <PageTitle title='로그인' />
+        <View style={styles.content}>  
+          <View style={{ marginBottom: 16 }}>           
+            <Input 
+              name="memId" 
+              value={loginData.memId} 
+              label='아이디'
+              placeholder="아이디를 입력하세요"
+              onChangeText={(text) => {
+                setLoginData({...loginData, memId: text});
+              }}
+              onSubmitEditing={() => {}} 
+              returnKeyType="next"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </View> 
 
-          <Input 
-            name="memPw" 
-            value={loginData.memPw} 
-            label='비밀번호'
-            placeholder="비밀번호를 입력하세요"
-            isPw={true} 
-            onChangeText={(text) => {
-              setLoginData({...loginData, memPw: text});
-            }}
-            onSubmitEditing={loginNow} 
-            returnKeyType="done"
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
-          
-          <Button onPress={loginNow} title='로그인' />
+          <View style={{ marginBottom: 12 }}> 
+            <Input 
+              name="memPw" 
+              value={loginData.memPw} 
+              label='비밀번호'
+              placeholder="비밀번호를 입력하세요"
+              isPw={true} 
+              onChangeText={(text) => {
+                setLoginData({...loginData, memPw: text});
+              }}
+              onSubmitEditing={loginNow} 
+              returnKeyType="done"
+              autoCapitalize="none"
+              autoCorrect={false}
+              />
+          </View> 
 
-          <Pressable style={styles.joinLink} onPress={()=>{router.push('/auth/join')}}>
+          <View style={{ marginBottom: 8 }}>
+            <Button onPress={loginNow} title='로그인' />
+          </View>          
+
+          <Pressable style={styles.joinLink} onPress={()=>{if (router.canDismiss()) {
+          router.dismissAll();}
+          router.replace('/auth/join');}}>
             <Text style={styles.joinText}>회원가입</Text>
           </Pressable>
-          <Pressable style={styles.joinLink}>
+          <Pressable style={styles.joinLink} onPress={()=>{if (router.canDismiss()) {
+          router.dismissAll();}
+          router.replace('/auth/forgotPw');}}>
             <Text style={styles.joinText}>비밀번호 찾기</Text>
           </Pressable>
-          <Pressable style={styles.joinLink} onPress={()=>{router.push('/product')}}>
-            <Text style={styles.joinText}>메인화면</Text>
+          <Pressable style={styles.joinLink} 
+          onPress={()=>{if (router.canDismiss()) {
+          router.dismissAll();}
+          router.replace('/product');}}>
+            <Text style={styles.joinText}>홈페이지</Text>
           </Pressable>
         </View>        
       </SafeAreaView>
     </TouchableWithoutFeedback>   
   )
 }
-
 export default login
 
 const styles = StyleSheet.create({
@@ -152,7 +166,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    padding: 20,
+    paddingRight: 15,
+    paddingLeft: 15, 
+
   },
   joinLink: {
     alignItems: 'flex-end',
