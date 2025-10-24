@@ -11,18 +11,24 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { SERVER_URL } from '../../../../constants/appConst';
+import { colors } from '../../../../constants/colorConstant';
 import Input from '../../../../components/common/Input'
 import Button from '../../../../components/common/Button'
+import { router, useLocalSearchParams } from 'expo-router';
+import PageTitle from '../../../../components/common/PageTitle';
+import Info from './info';
+import Review from './review';
+import Qna from './qna';
+import QnA from './qna';
 
 const ProductDetail = () => {
   const navigation = useNavigation();
-  const route = useRoute();
-  const { itemNum } = route.params;
+  const { itemNum } = useLocalSearchParams();
 
   const [itemDetail, setItemDetail] = useState({});
   const [cnt, setCnt] = useState('1');
@@ -37,7 +43,7 @@ const ProductDetail = () => {
         Alert.alert('알림', message, [
           {
             text: '확인',
-            onPress: () => navigation.navigate('Login'),
+            onPress: () => router.push('/auth/login'),
           },
         ]);
         return false;
@@ -57,7 +63,7 @@ const ProductDetail = () => {
       const loginData = await AsyncStorage.getItem('loginInfo');
       const memId = JSON.parse(loginData).memId;
 
-      const response = await axios.post('/api/carts', {
+      const response = await axios.post(`${SERVER_URL}/carts`, {
         itemNum,
         cartCnt: parseInt(cnt),
         memId,
@@ -94,7 +100,7 @@ const ProductDetail = () => {
             const loginData = await AsyncStorage.getItem('loginInfo');
             const memId = JSON.parse(loginData).memId;
 
-            await axios.post('/api/buy', {
+            await axios.post(`${SERVER_URL}/buy`, {
               itemNum,
               memId,
               buyCnt: parseInt(cnt),
@@ -118,7 +124,7 @@ const ProductDetail = () => {
   // 상품 정보 가져오기
   const getItem = async () => {
     try {
-      const response = await axios.get(`/${SERVER_URL}/items/${itemNum}`);
+      const response = await axios.get(`${SERVER_URL}/items/${itemNum}`);
       console.log(response.data);
       setItemDetail(response.data);
       setLoading(false);
@@ -137,7 +143,7 @@ const ProductDetail = () => {
     if (itemDetail.imgList) {
       const mainImg = itemDetail.imgList.find((img) => img.isMain === 'Y');
       return mainImg
-        ? `http://localhost:8080/upload/${mainImg.attachedImgName}`
+        ? `${SERVER_URL}/upload/${mainImg.attachedImgName}`
         : null;
     }
     return null;
@@ -156,6 +162,9 @@ const ProductDetail = () => {
       <ScrollView style={styles.container}>
       {/* 상품 정보 영역 */}
       <View style={styles.itemInfo}>
+        <View style={styles.titleDiv}>
+          <PageTitle title='상품 상세정보' titleSize={180} />
+        </View>
         {/* 메인 이미지 */}
         <View style={styles.mainImgDiv}>
           {getMainImage() ? (
@@ -214,20 +223,20 @@ const ProductDetail = () => {
             {/* 찜한상품 버튼 - 회색 */}
             <Button
               title='찜한상품'
-              bgColor='#999999'
+              bgColor={colors.GRAY_500}
               style={styles.button}
             />
             {/* 장바구니 버튼 - 갈색 */}
             <Button
               title='장바구니'
-              bgColor='#8B4513'
+              bgColor={colors.BROWN}
               onPress={insertCart}
               style={styles.button}
             />
             {/* 구매하기 버튼 - 녹색 */}
             <Button
               title='구매하기'
-              bgColor='#4CAF50'
+              bgColor={colors.GREEN}
               onPress={buyItem}
               style={styles.button}
             />
@@ -285,20 +294,17 @@ const ProductDetail = () => {
       <View style={styles.details}>
         {activeTab === 'intro' && (
           <View style={styles.detailContent}>
-            <Text style={styles.detailTitle}>상품 정보</Text>
-            {/* 상품 정보 컨텐츠 추가 */}
+            <Info itemDetail={itemDetail} />
           </View>
         )}
         {activeTab === 'review' && (
           <View style={styles.detailContent}>
-            <Text style={styles.detailTitle}>이용 후기</Text>
-            {/* 리뷰 컨텐츠 추가 */}
+            <Review />
           </View>
         )}
         {activeTab === 'qna' && (
           <View style={styles.detailContent}>
-            <Text style={styles.detailTitle}>상품 문의</Text>
-            {/* QnA 컨텐츠 추가 */}
+            <QnA />
           </View>
         )}
       </View>
@@ -325,7 +331,7 @@ const styles = StyleSheet.create({
   },
   mainImgDiv: {
     width: '100%',
-    height: 300,
+    height: 350,
     marginBottom: 20,
   },
   mainImg: {
@@ -406,7 +412,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     backgroundColor: '#eeeeee',
     borderBottomWidth: 2,
-    borderBottomColor: '#8B4513',
+    borderBottomColor: colors.BROWN,
     alignItems: 'center',
   },
   activeTab: {
@@ -414,14 +420,14 @@ const styles = StyleSheet.create({
     borderTopWidth: 2,
     borderLeftWidth: 2,
     borderRightWidth: 2,
-    borderTopColor: '#8B4513',
-    borderLeftColor: '#8B4513',
-    borderRightColor: '#8B4513',
+    borderTopColor: colors.BROWN,
+    borderLeftColor: colors.BROWN,
+    borderRightColor: colors.BROWN,
     borderBottomWidth: 0,
   },
   tabText: {
     fontSize: 16,
-    color: '#8B4513',
+    color: colors.BROWN,
   },
   activeTabText: {
     fontWeight: 'bold',
@@ -433,12 +439,15 @@ const styles = StyleSheet.create({
   detailContent: {
     paddingVertical: 20,
   },
-  detailTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 15,
-    color: '#333',
-  },
+  // detailTitle: {
+  //   fontSize: 18,
+  //   fontWeight: 'bold',
+  //   marginBottom: 15,
+  //   color: '#333',
+  // },
+  titleDiv: {
+    marginBottom: 15
+  }
 });
 
 export default ProductDetail;
