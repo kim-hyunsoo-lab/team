@@ -1,6 +1,6 @@
-import React from 'react'
-import styles from './Menu.module.css'
-import { NavLink } from 'react-router'
+import React from "react";
+import styles from "./Menu.module.css";
+import { NavLink } from "react-router";
 
 const Menu = () => {
   return (
@@ -8,24 +8,24 @@ const Menu = () => {
       <ul>
         <li>
           <NavLink
-            to={'/new-product-list'}
-            className={({isActive}) => isActive ? styles.active : undefined}
+            to={"/new-product-list"}
+            className={({ isActive }) => (isActive ? styles.active : undefined)}
           >
             <p>신상품</p>
           </NavLink>
         </li>
         <li>
           <NavLink
-            to={'/popular-product-list'}
-            className={({isActive}) => isActive ? styles.active : undefined}
+            to={"/popular-product-list"}
+            className={({ isActive }) => (isActive ? styles.active : undefined)}
           >
             <p>인기상품</p>
           </NavLink>
         </li>
         <li>
           <NavLink
-            to={'/discount-product-list'}
-            className={({isActive}) => isActive ? styles.active : undefined}
+            to={"/discount-product-list"}
+            className={({ isActive }) => (isActive ? styles.active : undefined)}
           >
             <p>할인상품</p>
           </NavLink>
@@ -37,7 +37,7 @@ const Menu = () => {
         </li>
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default Menu
+export default Menu;
