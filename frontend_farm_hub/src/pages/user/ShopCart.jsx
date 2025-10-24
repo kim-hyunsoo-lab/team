@@ -5,8 +5,11 @@ import Button from '../../common/Button';
 import styles from './ShopCart.module.css'
 import Input from '../../common/Input';
 import dayjs from 'dayjs';
+import { useNavigate } from 'react-router';
 
 const ShopCart = () => {
+  const nav = useNavigate();
+
   //장바구니 목록 조회
   const [cartList, setCartList] = useState([]);
 
@@ -138,52 +141,31 @@ const ShopCart = () => {
     });
   };
 
-  // ✅ 수정된 각 행의 상품 구매 함수
+  // 개별 상품 구매 함수 - 결제 페이지로 이동
   const buyItem = (cart) => {
-    if (!confirm('이 상품을 구매하시겠습니까?')) {
-      return;
-    }
-
-    axios.post('/api/buy/each-cart', {
-      cartNum: cart.cartNum,
-      memId: memId
-    })
-    .then(res => {
-      alert('상품을 구매했습니다.');
-      // 구매 후 장바구니에서 제거
-      setCartList(cartList.filter(c => c.cartNum !== cart.cartNum));
-      setSelectedItems(selectedItems.filter(num => num !== cart.cartNum));
-    })
-    .catch(e => {
-      console.log(e);
-      alert(e.response?.data || '구매 중 오류가 발생했습니다.');
+    nav('/mypage/payment', {
+      state: {
+        cartItems: [cart]
+      }
     });
   };
 
-  // 선택 상품 구매 함수
+  // 선택 상품 구매 함수 - 결제 페이지로 이동
   const buySelectedItems = () => {
     if (selectedItems.length === 0) {
       alert('구매할 상품을 선택해주세요.');
       return;
     }
 
-    if (!confirm(`선택한 ${selectedItems.length}개 상품을 구매하시겠습니까?`)) {
-      return;
-    }
+    // 선택된 상품들만 필터링
+    const selectedCartItems = cartList.filter(cart =>
+      selectedItems.includes(cart.cartNum)
+    );
 
-    axios.post('/api/buy/cart', {
-      cartNumList: selectedItems,
-      memId: memId
-    })
-    .then(res => {
-      alert('선택한 상품을 구매했습니다.');
-      // 구매 후 장바구니에서 제거
-      setCartList(cartList.filter(cart => !selectedItems.includes(cart.cartNum)));
-      setSelectedItems([]);
-    })
-    .catch(e => {
-      console.log(e);
-      alert(e.response?.data || '구매 중 오류가 발생했습니다.');
+    nav('/mypage/payment', {
+      state: {
+        cartItems: selectedCartItems
+      }
     });
   };
 

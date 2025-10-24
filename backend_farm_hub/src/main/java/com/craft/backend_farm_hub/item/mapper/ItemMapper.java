@@ -17,6 +17,9 @@ public interface ItemMapper {
 //  itemNum 조회
   public int getNextItemNum();
 
+  // 단일 상품 조회
+  ItemDTO selectItem(int itemNum);
+
   //신상품 목록 조회
   public List<ItemDTO> getItemList();
 

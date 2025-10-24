@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<!-- namespace에는 xml파일과 연결할 Mapper interface 파일명을 패키지를 포함하여 적어주세요 -->
+<mapper namespace="com.craft.backend_farm_hub.pay.mapper.PayMapper">
+	<resultMap id="pay" type="com.craft.backend_farm_hub.pay.dto.PayDTO">
+      <id column="PAYMENT_ID" property="paymentId"/>
+      <result column="ORDER_ID" property="orderId"/>
+      <result column="PAYMENT_METHOD" property="paymentMethod"/>
+      <result column="PAYMENT_STATUS" property="paymentStatus"/>
+      <result column="PAID_AMOUNT" property="paidAmount"/>
+      <result column="PAID_AT" property="paidAt"/>
+    </resultMap>
+
+      <!-- ===== 결제 관련 쿼리 ===== -->
+
+      <!-- 결제 정보 저장 -->
+      <insert id="insertPay" parameterType="com.craft.backend_farm_hub.pay.dto.PayDTO">
+            INSERT INTO PAYMENT (
+            PAYMENT_ID,
+            ORDER_ID,
+            PAYMENT_METHOD,
+            PAYMENT_STATUS,
+            PAID_AMOUNT,
+            PAID_AT
+            ) VALUES (
+            #{payId},
+            #{orderId},
+            #{payMethod},
+            #{payStatus},
+            #{paidAmount},
+            NOW()
+            )
+      </insert>
+
+      <!-- 결제 정보 조회 (ResultMap 사용) -->
+      <select id="selectPay" resultMap="payResultMap">
+            SELECT
+            PAYMENT_ID,
+            ORDER_ID,
+            PAYMENT_METHOD,
+            PAYMENT_STATUS,
+            PAID_AMOUNT,
+            PAID_AT
+            FROM PAYMENT
+            WHERE PAYMENT_ID = #{payId}
+      </select>
+
+      <!-- 주문 ID로 결제 정보 조회 -->
+      <select id="selectPayByOrderId" resultMap="payResultMap">
+            SELECT
+            PAYMENT_ID,
+            ORDER_ID,
+            PAYMENT_METHOD,
+            PAYMENT_STATUS,
+            PAID_AMOUNT,
+            PAID_AT
+            FROM PAYMENT
+            WHERE ORDER_ID = #{orderId}
+      </select>
+
+      <!-- 결제 상태 업데이트 -->
+      <update id="updatePayStatus" parameterType="com.craft.backend_farm_hub.pay.dto.PayDTO">
+            UPDATE PAYMENT
+            SET PAYMENT_STATUS = #{payStatus}
+            WHERE PAYMENT_ID = #{payId}
+      </update>
+
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -33,7 +33,6 @@ ALTER TABLE SHOP_MEMBER ADD (
  );
  
 CREATE TABLE ORDERS (
-    -- 주문 고유 식별자 (Primary Key)
     -- 예: ORDER20231015001, payment-1697356800000
     ORDER_ID VARCHAR(100) PRIMARY KEY,
     
@@ -41,10 +40,6 @@ CREATE TABLE ORDERS (
     -- 예: user123, hong@email.com
     -- 외래키: members 테이블의 member_id를 참조
     MEM_ID VARCHAR(50) REFERENCES SHOP_MEMBER(MEM_ID),
-    
-    -- 결제 고유 식별자 (포트원에서 발급한 paymentId)
-    -- payment 테이블과 1:1 관계
-    PAYMENT_ID (VARCHAR(100) NOT NULL,
     
     -- 주문한 상품명
     -- 예: "나이키 에어맥스", "아이폰 15 Pro"
@@ -57,13 +52,13 @@ CREATE TABLE ORDERS (
     -- 주문 상태
     -- 예: PENDING(대기), PAID(결제완료), SHIPPING(배송중), 
     --     DELIVERED(배송완료), CANCELLED(취소)
-    ORDER_STATUS VARCHAR(20) NOT NULL,
+    ORDER_STATUS VARCHAR(20) NOT NULL DEFAULT 'PENDING',
     
     SHIPPING_REQUEST TEXT,
     
     -- 주문 생성 시간 (자동으로 현재 시간 입력)
     -- 예: 2023-10-15 14:30:25
-    ORDER_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ORDER_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ============================================
@@ -88,7 +83,7 @@ CREATE TABLE PAYMENT (
     -- 결제 상태
     -- 예: READY(준비), PAID(결제완료), FAILED(결제실패), 
     --     CANCELLED(결제취소), REFUNDED(환불완료)
-    PAYMENT_STATUS VARCHAR(20) NOT NULL,
+    PAYMENT_STATUS VARCHAR(20) NOT NULL DEFAULT 'READY',
     
     -- 실제 결제된 금액 (단위: 원)
     -- total_amount와 일치해야 함 (검증용)
@@ -97,7 +92,7 @@ CREATE TABLE PAYMENT (
     
     -- 결제 완료 시간
     -- 예: 2023-10-15 14:35:10
-    PAID_AT TIMESTAMP,
+    PAID_AT TIMESTAMP
 );
  
  #상품 이미지 테이블
@@ -195,8 +190,8 @@ CREATE TABLE PAYMENT (
  	MEM_ID VARCHAR(20) REFERENCES SHOP_MEMBER(MEM_ID),
  	WITHDRAWAL VARCHAR(20),                        -- 탈퇴사유
  	REASON_UNCOMFORTABLE TEXT,            				 -- 불편했던 점
-  REASON_GOOD TEXT,                   				   -- 좋았던 점
-  REASON_IMPROVEMENT TEXT NOT NULL,							 -- 개선사항
+  	REASON_GOOD TEXT,                   				   -- 좋았던 점
+  	REASON_IMPROVEMENT TEXT NOT NULL,							 -- 개선사항
  	DELETE_DATE DATETIME DEFAULT SYSDATE()         -- 탈퇴일
  );  
  
