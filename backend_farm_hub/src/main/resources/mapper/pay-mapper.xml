@@ -35,7 +35,7 @@
       </insert>
 
       <!-- 결제 정보 조회 (ResultMap 사용) -->
-      <select id="selectPay" resultMap="payResultMap">
+      <select id="selectPay" resultMap="pay">
             SELECT
             PAYMENT_ID,
             ORDER_ID,
@@ -48,7 +48,7 @@
       </select>
 
       <!-- 주문 ID로 결제 정보 조회 -->
-      <select id="selectPayByOrderId" resultMap="payResultMap">
+      <select id="selectPayByOrderId" resultMap="pay">
             SELECT
             PAYMENT_ID,
             ORDER_ID,
