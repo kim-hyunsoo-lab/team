@@ -32,6 +32,74 @@ ALTER TABLE SHOP_MEMBER ADD (
  	, REG_DATE DATETIME DEFAULT SYSDATE() #상품 등록일
  );
  
+CREATE TABLE ORDERS (
+    -- 주문 고유 식별자 (Primary Key)
+    -- 예: ORDER20231015001, payment-1697356800000
+    ORDER_ID VARCHAR(100) PRIMARY KEY,
+    
+    -- 주문한 회원의 ID (회원 테이블과 연결)
+    -- 예: user123, hong@email.com
+    -- 외래키: members 테이블의 member_id를 참조
+    MEM_ID VARCHAR(50) REFERENCES SHOP_MEMBER(MEM_ID),
+    
+    -- 결제 고유 식별자 (포트원에서 발급한 paymentId)
+    -- payment 테이블과 1:1 관계
+    PAYMENT_ID (VARCHAR(100) NOT NULL,
+    
+    -- 주문한 상품명
+    -- 예: "나이키 에어맥스", "아이폰 15 Pro"
+    PRODUCT_NAME VARCHAR(200) NOT NULL,
+    
+    -- 총 주문 금액 (단위: 원)
+    -- 예: 10000 = 10,000원
+    TOTAL_AMOUNT INT NOT NULL,
+    
+    -- 주문 상태
+    -- 예: PENDING(대기), PAID(결제완료), SHIPPING(배송중), 
+    --     DELIVERED(배송완료), CANCELLED(취소)
+    ORDER_STATUS VARCHAR(20) NOT NULL,
+    
+    SHIPPING_REQUEST TEXT,
+    
+    -- 주문 생성 시간 (자동으로 현재 시간 입력)
+    -- 예: 2023-10-15 14:30:25
+    ORDER_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+);
+
+-- ============================================
+-- 결제(Payment) 테이블
+-- 실제 결제 처리 정보를 저장하는 테이블
+-- 포트원 API로 받은 결제 정보를 저장
+-- ============================================
+CREATE TABLE PAYMENT (
+    -- 결제 고유 식별자 (Primary Key, 포트원에서 발급)
+    -- 예: imp_123456789012
+    PAYMENT_ID VARCHAR(100) PRIMARY KEY,
+    
+    -- 어떤 주문에 대한 결제인지 연결 (orders 테이블과 연결)
+    -- 한 주문당 하나의 결제
+    ORDER_ID VARCHAR(100) REFERENCES ORDERS(ORDER_ID),
+    
+    -- 결제 수단
+    -- 예: CARD(카드), VBANK(가상계좌), TRANS(실시간계좌이체), 
+    --     PHONE(휴대폰), KAKAOPAY(카카오페이)
+    PAYMENT_METHOD VARCHAR(20) NOT NULL,
+    
+    -- 결제 상태
+    -- 예: READY(준비), PAID(결제완료), FAILED(결제실패), 
+    --     CANCELLED(결제취소), REFUNDED(환불완료)
+    PAYMENT_STATUS VARCHAR(20) NOT NULL,
+    
+    -- 실제 결제된 금액 (단위: 원)
+    -- total_amount와 일치해야 함 (검증용)
+    -- 예: 10000 = 10,000원
+    PAID_AMOUNT INT NOT NULL,
+    
+    -- 결제 완료 시간
+    -- 예: 2023-10-15 14:35:10
+    PAID_AT TIMESTAMP,
+);
+ 
  #상품 이미지 테이블
  CREATE TABLE ITEM_IMG (
  	IMG_NUM INT PRIMARY KEY AUTO_INCREMENT
@@ -138,6 +206,6 @@ ALTER TABLE SHOP_MEMBER ADD (
  #################################################
  ### 이 워크시트에 CREATE 문을 다 작성해주세요 ###
 
-SELECT * FROM survey;
+SELECT * FROM illuminance_function;
 SELECT * FROM SHOP_MEMBER;
 SELECT * FROM FAN_FUNCTION;

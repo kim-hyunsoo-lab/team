@@ -1,0 +1,224 @@
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background-color: #f8f9fa;
+}
+
+.pageTitle {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* 섹션 */
+.section {
+  background-color: white;
+  padding: 30px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #4a90e2;
+}
+
+/* 배송지 정보 박스 */
+.infoBox {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.infoBox p {
+  margin: 10px 0;
+  font-size: 15px;
+  color: #333;
+}
+
+.infoBox strong {
+  display: inline-block;
+  width: 100px;
+  font-weight: 600;
+}
+
+/* 주문 테이블 */
+.orderTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.orderTable thead {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.orderTable thead th {
+  padding: 12px;
+  font-weight: 600;
+  color: #495057;
+  font-size: 15px;
+}
+
+.orderTable tbody tr {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.orderTable tbody td {
+  padding: 15px;
+  font-size: 15px;
+  color: #333;
+}
+
+.noData {
+  padding: 40px !important;
+  color: #999;
+}
+
+/* select */
+.select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #4a90e2;
+}
+
+/* textarea */
+.textarea {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  resize: vertical;
+  min-height: 80px;
+  box-sizing: border-box;
+}
+
+/* 결제 수단 */
+.paymentMethods {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex: 1;
+  min-width: 150px;
+}
+
+.radioLabel:hover {
+  border-color: #4a90e2;
+  background-color: #f8f9fa;
+}
+
+.radioLabel input[type="radio"] {
+  margin-right: 10px;
+}
+
+.radioLabel span {
+  font-size: 15px;
+  color: #333;
+  font-weight: 500;
+}
+
+/* 결제 금액 */
+.priceBox {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.divider {
+  height: 1px;
+  background-color: #ddd;
+  margin: 15px 0;
+}
+
+.finalPrice {
+  font-size: 18px;
+  font-weight: 700;
+  padding-top: 15px;
+}
+
+.finalAmount {
+  color: #4a90e2;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.freeDelivery {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.deliveryNotice {
+  text-align: center;
+  color: #ff6b6b;
+  font-size: 14px;
+  margin-top: 15px;
+  font-weight: 500;
+}
+
+/* 결제 버튼 영역 */
+.paymentButtonArea {
+  margin-top: 30px;
+  text-align: center;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px 10px;
+  }
+
+  .section {
+    padding: 20px 15px;
+  }
+
+  .paymentMethods {
+    flex-direction: column;
+  }
+
+  .radioLabel {
+    min-width: auto;
+  }
+
+  .infoBox strong {
+    display: block;
+    margin-bottom: 5px;
+  }
+}

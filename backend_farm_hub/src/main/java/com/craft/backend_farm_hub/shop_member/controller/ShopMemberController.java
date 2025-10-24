@@ -153,10 +153,24 @@ public class ShopMemberController {
     }
   }
 
-  //<!--회원정보 수정 시 1명의 회원정보를 조회-->
+  // 회원정보 수정 시 1명의 회원정보를 조회
   @GetMapping("/select/{memId}")
-  public ShopMemberDTO selectId(@PathVariable("memId") String memId) {
-    return shopMemberService.selectId(memId);
+  public ResponseEntity<ShopMemberDTO> selectId(@PathVariable("memId") String memId) {
+    try {
+      ShopMemberDTO member = shopMemberService.selectId(memId);
+
+      // 회원 정보가 없는 경우
+      if (member == null) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+      }
+
+      // 회원 정보 조회 성공
+      return ResponseEntity.ok(member);
+
+    } catch (Exception e) {
+      // 서버 에러 발생 시
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
   }
 
   //회원정보 변경 시 1명의 회원정보 수정
