@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<!-- namespace에는 xml파일과 연결할 Mapper interface 파일명을 패키지를 포함하여 적어주세요 -->
+<mapper namespace="com.craft.backend_farm_hub.pay.mapper.PayMapper">
+	<resultMap id="order" type="com.craft.backend_farm_hub.pay.dto.OrderDTO">
+      <id column="ORDER_ID" property="orderId"/>
+      <result column="MEM_ID" property="memId"/>
+      <result column="PRODUCT_NAME" property="productName"/>
+      <result column="TOTAL_AMOUNT" property="totalAmount"/>
+      <result column="ORDER_STATUS" property="orderStatus"/>
+      <result column="SHIPPING_REQUEST" property="shippingRequest"/>
+      <result column="ORDER_DATE" property="orderDate"/>
+    </resultMap>
+
+      <!-- ===== 주문 관련 쿼리 ===== -->
+
+      <!-- 주문 생성 -->
+      <insert id="insertOrder" parameterType="com.craft.backend_farm_hub.pay.dto.OrderDTO">
+            INSERT INTO ORDERS (
+            ORDER_ID,
+            MEM_ID,
+            PRODUCT_NAME,
+            TOTAL_AMOUNT,
+            ORDER_STATUS,
+            SHIPPING_REQUEST
+            ) VALUES (
+            #{orderId},
+            #{memId},
+            #{productName},
+            #{totalAmount},
+            #{orderStatus},
+            #{shippingRequest}
+            )
+      </insert>
+
+      <!-- 주문 조회 (ResultMap 사용) -->
+      <select id="selectOrder" resultMap="orderResultMap">
+            SELECT
+            ORDER_ID,
+            MEM_ID,
+            PRODUCT_NAME,
+            TOTAL_AMOUNT,
+            ORDER_STATUS,
+            SHIPPING_REQUEST,
+            ORDER_DATE
+            FROM ORDERS
+            WHERE ORDER_ID = #{orderId}
+      </select>
+
+      <!-- 회원별 주문 목록 조회 -->
+      <select id="selectOrdersByMemId" resultMap="orderResultMap">
+            SELECT
+            ORDER_ID,
+            MEM_ID,
+            PRODUCT_NAME,
+            TOTAL_AMOUNT,
+            ORDER_STATUS,
+            SHIPPING_REQUEST,
+            ORDER_DATE
+            FROM ORDERS
+            WHERE MEM_ID = #{memId}
+            ORDER BY ORDER_DATE DESC
+      </select>
+
+      <!-- 주문 상태 업데이트 -->
+      <update id="updateOrderStatus" parameterType="com.craft.backend_farm_hub.pay.dto.OrderDTO">
+            UPDATE ORDERS
+            SET ORDER_STATUS = #{orderStatus}
+            WHERE ORDER_ID = #{orderId}
+      </update>
+
+</mapper>
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

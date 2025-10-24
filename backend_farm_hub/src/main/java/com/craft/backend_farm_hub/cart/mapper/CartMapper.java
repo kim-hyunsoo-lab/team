@@ -22,6 +22,9 @@ public interface CartMapper {
 
   //장바구니 수량 변경
   public void updateCartCnt(CartDTO cartDTO);
+
+  // 여러 cartNum으로 장바구니 조회
+  List<CartDTO> selectCartsByCartNums(List<Integer> cartNumList);
   
   //장바구니 삭제
   public void deleteCart(int cartNum);

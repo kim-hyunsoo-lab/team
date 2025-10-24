@@ -60,20 +60,13 @@ const ProductDetail = () => {
     const confirmBuy = confirm('상품을 구매하시겠습니까?');
     if (!confirmBuy) return;
 
-    axios.post('/api/buy', {
-      itemNum,
-      memId : JSON.parse(loginData).memId,
-      buyCnt : cnt
+    nav('/mypage/payment', {
+      state : {
+        itemNum,
+        itemDetail,
+        buyCnt: cnt
+      }
     })
-    .then(res => {
-      alert('구매 완료');
-      //추후 구매목록 페이지로 이동 예정
-      nav('/mypage/buy-list');
-    })
-    .catch(e => {
-      console.log(e);
-      alert(e.response.data);
-    });
   }
 
 const fetchItem = () =>{
