@@ -7,6 +7,7 @@ import { router, useRouter } from 'expo-router';
 import Button from '@/components/common/Button';
 import * as SecureStore from 'expo-secure-store';
 import PageTitle from '@/components/common/PageTitle';
+import Menu from '../../../components/Menu';
 
 const ProductScreen = () => {
   // 상품 정보를 저장할 state 변수들
@@ -72,7 +73,7 @@ const ProductScreen = () => {
     return (
       <TouchableOpacity
         style={styles.productCard}
-        onPress={() => router.push('/product/product-detail')}
+        onPress={() => router.push(`/product/product-detail?itemNum=${product.itemNum}`)}
       >
         {/* 상품 이미지 영역 */}
         <View style={styles.productImageContainer}>
@@ -97,15 +98,12 @@ const ProductScreen = () => {
         <View style={styles.productInfo}>
           {/* 상품명: 최대 2줄까지만 표시 */}
           <Text style={styles.productName} numberOfLines={2}>{product.itemName}</Text>
-          {/* 가격: 천 단위 콤마 추가 (예: 65000 -> 65,000) */}
           <Text style={styles.productPrice}>{product.price?.toLocaleString()}원</Text>
-          {/* 평점이 있을 때만 표시 (reviewAvg가 0보다 클 때) */}
           {product.reviewAvg > 0 && (
             <Text style={styles.rating}>
               ⭐ {product.reviewAvg.toFixed(1)} ({product.reviewCnt || 0})
             </Text>
           )}
-          {/* 할인율이 있을 경우에만 할인 뱃지 표시 */}
           {product.discount && (
             <View style={styles.discountBadge}>
               <Text style={styles.discountText}>{product.discount}%</Text>
@@ -154,12 +152,11 @@ const ProductScreen = () => {
   return (
     // SafeAreaView: 노치, 상태바 등을 피해서 안전한 영역에만 컨텐츠 표시
     <SafeAreaView style={styles.container}>
+      {/* 메뉴 - 고정 위치 */}
+      <Menu activeMenu="" />
+
       {/* ScrollView: 전체 화면을 세로로 스크롤 가능하게 만듦 */}
       <ScrollView style={styles.scrollView}>
-        {/* 헤더: 페이지 제목 "상품" */}
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>상품</Text>
-        </View>
         {/* 세번째 매개변수 : 이동할 경로 */}
         {/* 신상품 섹션: 모든 상품 표시 */}
         {renderSection('신상품', newProductList, 'new-product')}
