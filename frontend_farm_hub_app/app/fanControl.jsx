@@ -3,9 +3,33 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Button from '../components/common/Button'
 import Input from '../components/common/Input'
+import axios from 'axios'
+import { SERVER_URL } from '../constants/appConst'
 
 
 const fanControl = () => {
+
+  //지정 온도를 저장할 state 변수
+  const [temperature, setTemperature] = useState('');
+
+  //지정 공기질을 저장할 state 변수
+  const [airQuality, setAirQuality] = useState('');
+
+  //지정 온도 저장 버튼 클릭 시 실행함수
+  const regTemp = () => {
+    console.log(1)
+    axios.post(`${SERVER_URL}/decideTemp/${temperature}`)
+    .then(res => alert('온도가 저장되었습니다.'))
+    .catch((e) => console.log(e));
+  }
+
+  //지정 공기질 저장 버튼 클릭 시 실행함수
+  const regAir = () => {
+    console.log(1);
+    axios.post()
+    .then(res => alert('공기질이 저장되었습니다.'))
+    .catch((e) => console.log(e));
+  }
 
   //스위치의 on/off 상태를 관리하는 state 변수
   const [isEnabled, setIsEnabled] = useState(false);
@@ -22,10 +46,18 @@ const fanControl = () => {
           <Text style={styles.label}>선풍기를 돌릴 온도를 입력해주세요.</Text>
           <View style={styles.inputRow}>
             <View style={styles.inputWrapper}>
-              <Input placeholder="온도 (°C)" />
+              <Input 
+                placeholder="온도 (°C)" 
+                value={temperature}
+                onChangeText={(text) => setTemperature(text)}  
+              />
             </View>
             <View style={styles.buttonWrapper}>
-              <Button title='저장' style={styles.button} />
+              <Button 
+                title='저장' 
+                style={styles.button}
+                onPress={() => regTemp()}
+              />
             </View>
           </View>
         </View>
@@ -34,10 +66,18 @@ const fanControl = () => {
           <Text style={styles.label}>환풍기를 돌릴 공기질을 입력해주세요.</Text>
           <View style={styles.inputRow}>
             <View style={styles.inputWrapper}>
-              <Input placeholder="공기질 (ppm)" />
+              <Input 
+                placeholder="공기질 (ppm)" 
+                value={airQuality}
+                onChangeText={(text) => setAirQuality(text)}
+              />
             </View>
             <View style={styles.buttonWrapper}>
-              <Button title='저장' style={styles.button} />
+              <Button 
+                title='저장' 
+                style={styles.button} 
+                onPress={() => regAir()}
+              />
             </View>
           </View>
         </View>
