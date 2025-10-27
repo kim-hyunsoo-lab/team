@@ -31,6 +31,9 @@ const Paymentpage = () => {
   // 결제 수단
   const [paymentMethod, setPaymentMethod] = useState("creditCard");
 
+  // PG사 선택
+  const [selectedPG, setSelectedPG] = useState("tosspayments");
+
   // 금액 계산
   const [priceInfo, setPriceInfo] = useState({
     totalProductPrice: 0,
@@ -38,13 +41,13 @@ const Paymentpage = () => {
     finalPrice: 0,
   });
 
-  const loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'));
+  const loginInfo = JSON.parse(sessionStorage.getItem("loginInfo"));
 
   // 포트원 초기화
   useEffect(() => {
     const { IMP } = window;
     if (IMP) {
-      IMP.init('imp61013503'); // 가맹점 식별코드
+      IMP.init("imp61013503"); // 가맹점 식별코드
     }
   }, []);
 
@@ -150,7 +153,7 @@ const Paymentpage = () => {
 
     const { IMP } = window;
     if (!IMP) {
-      alert('결제 모듈 로딩에 실패했습니다. 페이지를 새로고침해주세요.');
+      alert("결제 모듈 로딩에 실패했습니다. 페이지를 새로고침해주세요.");
       return;
     }
 
@@ -158,89 +161,120 @@ const Paymentpage = () => {
     const merchant_uid = `ORD_${new Date().getTime()}_${loginInfo.memId}`;
 
     // 상품명 생성
-    const itemName = orderItems.length > 1
-      ? `${orderItems[0].itemDTO.itemName} 외 ${orderItems.length - 1}건`
-      : orderItems[0].itemDTO.itemName;
+    const itemName =
+      orderItems.length > 1
+        ? `${orderItems[0].itemDTO.itemName} 외 ${orderItems.length - 1}건`
+        : orderItems[0].itemDTO.itemName;
 
     // 결제 수단 매핑
     const payMethodMap = {
-      creditCard: 'card',
-      bankTransfer: 'trans',
-      mobilePayment: 'phone'
+      creditCard: "card",
+      bankTransfer: "trans",
+      mobilePayment: "phone",
+      kakaopay: "kakaopay",
+      payco: "payco",
     };
 
     // 포트원 결제 요청
-    IMP.request_pay({
-      pg: 'iamporttest_3', // 토스페이먼츠 (또는 포트원 관리자에서 설정한 PG사)
-      pay_method: payMethodMap[paymentMethod],
-      merchant_uid: merchant_uid,
-      name: itemName,
-      amount: priceInfo.finalPrice,
-      buyer_email: loginInfo.memEmail || '',
-      buyer_name: customerInfo.memName,
-      buyer_tel: customerInfo.memTel,
-      buyer_addr: customerInfo.memAddr,
-      buyer_postcode: '',
-      m_redirect_url: window.location.origin + '/payment/complete', // 모바일 결제 후 리다이렉트
-    }, (rsp) => {
-      if (rsp.success) {
-        // 결제 성공 시 백엔드 검증
-        verifyPayment(rsp);
-      } else {
-        // 결제 실패
-        alert(`결제 실패: ${rsp.error_msg}`);
+    IMP.request_pay(
+      {
+        pg: selectedPG, // 선택된 PG사
+        pay_method: payMethodMap[paymentMethod],
+        merchant_uid: merchant_uid,
+        name: itemName,
+        amount: priceInfo.finalPrice,
+        buyer_email: loginInfo.memEmail || "",
+        buyer_name: customerInfo.memName,
+        buyer_tel: customerInfo.memTel,
+        buyer_addr: customerInfo.memAddr,
+        buyer_postcode: "",
+        m_redirect_url: window.location.origin + "/payment/complete", // 모바일 결제 후 리다이렉트
+      },
+      (rsp) => {
+        if (rsp.success) {
+          // 결제 성공 시 백엔드 검증
+          verifyPayment(rsp);
+        } else {
+          // 결제 실패
+          alert(`결제 실패: ${rsp.error_msg}`);
+        }
       }
-    });
+    );
   };
 
   // 백엔드 결제 검증 및 주문 처리
   const verifyPayment = (paymentData) => {
-    console.log('결제 성공 데이터:', paymentData);
+    console.log("결제 성공 데이터:", paymentData);
 
     // ProductDetail에서 직접 구매한 경우
     if (itemNum && itemDetail && buyCnt) {
-      axios.post('/api/buy', {
+      const buyData = {
         itemNum,
         memId: loginInfo.memId,
         buyCnt,
         imp_uid: paymentData.imp_uid,
         merchant_uid: paymentData.merchant_uid,
-        paid_amount: paymentData.paid_amount
-      })
-      .then(() => {
-        alert('결제가 완료되었습니다!');
-        nav('/mypage/order-list');
-      })
-      .catch(e => {
-        console.log(e);
-        alert('결제 검증 실패: ' + (e.response?.data || '오류가 발생했습니다.'));
-      });
+        paid_amount: paymentData.paid_amount,
+      };
+
+      console.log("개별 상품 구매 요청 데이터:", buyData);
+
+      axios
+        .post("/api/buy", buyData)
+        .then((response) => {
+          console.log("개별 상품 구매 성공:", response.data);
+          alert("결제가 완료되었습니다!");
+          nav("/mypage/buy-list", { replace: true });
+        })
+        .catch((e) => {
+          console.error("개별 상품 구매 실패:", e);
+          console.error("에러 응답:", e.response);
+          alert(
+            "결제 검증 실패: " + (e.response?.data || "오류가 발생했습니다.")
+          );
+        });
       return;
     }
 
     // 장바구니에서 구매한 경우
     const cartNumList = orderItems
-      .filter(item => item.cartNum)
-      .map(item => item.cartNum);
+      .filter((item) => item.cartNum)
+      .map((item) => item.cartNum);
+
+    console.log("장바구니 상품들:", orderItems);
+    console.log("장바구니 번호 목록:", cartNumList);
 
     if (cartNumList.length > 0) {
-      axios.post('/api/buy/cart', {
+      const cartBuyData = {
         cartNumList: cartNumList,
         memId: loginInfo.memId,
         imp_uid: paymentData.imp_uid,
         merchant_uid: paymentData.merchant_uid,
-        paid_amount: paymentData.paid_amount
-      })
-      .then(() => {
-        alert('결제가 완료되었습니다!');
-        nav('/mypage/order-list');
-      })
-      .catch(e => {
-        console.log(e);
-        alert('결제 검증 실패: ' + (e.response?.data || '오류가 발생했습니다.'));
-      });
+        paid_amount: paymentData.paid_amount,
+      };
+
+      console.log("장바구니 구매 요청 데이터:", cartBuyData);
+
+      axios
+        .post("/api/buy/cart", cartBuyData)
+        .then((response) => {
+          console.log("장바구니 구매 성공:", response.data);
+          alert("결제가 완료되었습니다!");
+          nav("/mypage/buy-list", { replace: true });
+        })
+        .catch((e) => {
+          console.error("장바구니 구매 실패:", e);
+          console.error("에러 응답:", e.response);
+          alert(
+            "결제 검증 실패: " + (e.response?.data || "오류가 발생했습니다.")
+          );
+        });
     } else {
-      alert('결제할 상품 정보가 올바르지 않습니다.');
+      console.error("장바구니 번호 목록이 비어있음:", {
+        orderItems,
+        cartNumList,
+      });
+      alert("결제할 상품 정보가 올바르지 않습니다.");
     }
   };
 
@@ -338,6 +372,46 @@ const Paymentpage = () => {
         )}
       </div>
 
+      {/* PG사 선택 */}
+      <div className={styles.section}>
+        <h2 className={styles.sectionTitle}>결제 서비스</h2>
+        <div className={styles.paymentMethods}>
+          <label className={styles.radioLabel}>
+            <Input
+              type="radio"
+              name="pg"
+              value="tosspayments"
+              size="10px"
+              checked={selectedPG === "tosspayments"}
+              onChange={(e) => setSelectedPG(e.target.value)}
+            />
+            <span>토스페이먼츠</span>
+          </label>
+          <label className={styles.radioLabel}>
+            <Input
+              type="radio"
+              name="pg"
+              value="mobilians"
+              size="10px"
+              checked={selectedPG === "mobilians"}
+              onChange={(e) => setSelectedPG(e.target.value)}
+            />
+            <span>모빌리언스</span>
+          </label>
+          <label className={styles.radioLabel}>
+            <Input
+              type="radio"
+              name="pg"
+              value="kakaopay"
+              size="10px"
+              checked={selectedPG === "kakaopay"}
+              onChange={(e) => setSelectedPG(e.target.value)}
+            />
+            <span>카카오페이</span>
+          </label>
+        </div>
+      </div>
+
       {/* 결제 수단 */}
       <div className={styles.section}>
         <h2 className={styles.sectionTitle}>결제 수단</h2>
@@ -347,7 +421,7 @@ const Paymentpage = () => {
               type="radio"
               name="payment"
               value="creditCard"
-              size='10px'
+              size="10px"
               checked={paymentMethod === "creditCard"}
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
@@ -358,7 +432,7 @@ const Paymentpage = () => {
               type="radio"
               name="payment"
               value="bankTransfer"
-              size='10px'
+              size="10px"
               checked={paymentMethod === "bankTransfer"}
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
@@ -369,7 +443,7 @@ const Paymentpage = () => {
               type="radio"
               name="payment"
               value="mobilePayment"
-              size='10px'
+              size="10px"
               checked={paymentMethod === "mobilePayment"}
               onChange={(e) => setPaymentMethod(e.target.value)}
             />

@@ -66,6 +66,7 @@ function App() {
           <Route path="/mypage/memdel" element={<Memberdel />} />
           <Route path="shop-cart" element={<ShopCart />} />
           <Route path="buy-list" element={<BuyList />} />
+          <Route path="order-list" element={<BuyList />} />
           <Route path="/mypage/delivery" element={<Deliverypage />} />
           <Route path="/mypage/review-list" element={<UserReviewList />} />
           <Route path="/mypage/Qna" element={<UserQna />} />
