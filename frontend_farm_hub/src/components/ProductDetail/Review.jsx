@@ -78,7 +78,7 @@ const Review = () => {
   const [expandedRowId, setExpandedRowId] = useState(null);
   const [closingRowId, setClosingRowId] = useState(null);
   
-  // 리뷰 행 클릭 핸들러 (옵션 3: 중간에 열기)
+  // 리뷰 행 클릭 핸들러 
   const handleRowClick = (reviewNum) => {
     if (expandedRowId === reviewNum) {
       // 같은 행 클릭 시 닫기
