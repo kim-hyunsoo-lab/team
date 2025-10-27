@@ -26,7 +26,7 @@ const fanControl = () => {
   //지정 공기질 저장 버튼 클릭 시 실행함수
   const regAir = () => {
     console.log(1);
-    axios.post()
+    axios.post(`${SERVER_URL}/decideAir/${airQuality}`)
     .then(res => alert('공기질이 저장되었습니다.'))
     .catch((e) => console.log(e));
   }
