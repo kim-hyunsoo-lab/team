@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "fetch": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-fetch"
+      ],
+      "env": {},
+      "disabled": true,
+      "autoApprove": []
+    },
+    "jetbrains": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@jetbrains/mcp-proxy"
+      ],
+      "disabled": false,
+      "autoApprove": [
+        "list_directory_tree_in_folder",
+        "get_file_text_by_path",
+        "list_files_in_folder",
+        "get_open_in_editor_file_text"
+      ]
+    }
+  }
+}
