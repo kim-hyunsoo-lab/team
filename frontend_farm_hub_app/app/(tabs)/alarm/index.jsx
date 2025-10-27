@@ -20,6 +20,12 @@ const AlarmScreen = () => {
         </Pressable>
         <Pressable onPress={()=>{router.push('/auth/join')}}>
           <Text>회원가입 페이지로 이동</Text>
+        </Pressable>  
+        <Pressable onPress={()=>{router.push('/auth/forgotPw')}}>
+          <Text>비밀번호 찾기</Text>
+        </Pressable>  
+        <Pressable onPress={()=>{router.push('/auth/renewalPw')}}>
+          <Text>비밀번호 변경</Text>
         </Pressable>        
       </SafeAreaView>
     </TouchableWithoutFeedback>

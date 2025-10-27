@@ -299,7 +299,7 @@ const ProductDetail = () => {
         )}
         {activeTab === 'review' && (
           <View style={styles.detailContent}>
-            <Review />
+            <Review itemDetail={itemDetail} />
           </View>
         )}
         {activeTab === 'qna' && (

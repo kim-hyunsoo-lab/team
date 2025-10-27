@@ -101,7 +101,7 @@ const login = () => {
       <SafeAreaView style={styles.container}>
         <PageTitle title='로그인' />
         <View style={styles.content}>  
-          <View style={{ marginBottom: 16 }}>           
+          <View>           
             <Input 
               name="memId" 
               value={loginData.memId} 
@@ -152,7 +152,7 @@ const login = () => {
           onPress={()=>{if (router.canDismiss()) {
           router.dismissAll();}
           router.replace('/product');}}>
-            <Text style={styles.joinText}>홈페이지</Text>
+            <Text style={styles.joinText}>메인화면</Text>
           </Pressable>
         </View>        
       </SafeAreaView>
@@ -163,12 +163,15 @@ export default login
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1, 
+    backgroundColor: '#fff', 
+    paddingRight: 15,
+    paddingLeft: 15,
   },
   content: {
     paddingRight: 15,
     paddingLeft: 15, 
-
+    marginTop: 10
   },
   joinLink: {
     alignItems: 'flex-end',
