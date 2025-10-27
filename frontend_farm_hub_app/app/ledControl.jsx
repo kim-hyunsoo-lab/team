@@ -20,8 +20,8 @@ const ledControl = () => {
 
   //지정 조도 저장 버튼 클릭 시 실행함수
   const regIll = ()=> {
-    console.log();
-    axios.post()
+    console.log(1);
+    axios.post(`${SERVER_URL}/decideIll/${illuminance}`)
     .then(res => alert('조도가 저장되었습니다.'))
     .catch((e) => console.log(e));
   }
