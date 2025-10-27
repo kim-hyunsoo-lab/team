@@ -4,13 +4,27 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { TouchableWithoutFeedback } from 'react-native'
 import Button from '../components/common/Button'
 import Input from '../components/common/Input'
+import axios from 'axios'
+import { SERVER_URL } from '../constants/appConst'
 
 const ledControl = () => {
+
+  //지정 조도를 저장할 state 변수
+  const [illuminance, setIlluminance] = useState('');
+
   //스위치의 on/off 상태를 관리하는 state 변수
     const [isEnabled, setIsEnabled] = useState(false);
   
-    //스위치를 누를 때마다 현재 상태를 반전시키는 함수
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  //스위치를 누를 때마다 현재 상태를 반전시키는 함수
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+  //지정 조도 저장 버튼 클릭 시 실행함수
+  const regIll = ()=> {
+    console.log();
+    axios.post()
+    .then(res => alert('조도가 저장되었습니다.'))
+    .catch((e) => console.log(e));
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -21,10 +35,18 @@ const ledControl = () => {
           <Text style={styles.label}>LED를 킬 조도를 입력해주세요.</Text>
           <View style={styles.inputRow}>
             <View style={styles.inputWrapper}>
-              <Input placeholder="조도 (lux)" />
+              <Input 
+                placeholder="조도 (lux)" 
+                value={illuminance}
+                onChangeText={(text) => setIlluminance(text)}
+              />
             </View>
             <View style={styles.buttonWrapper}>
-              <Button title='저장' style={styles.button} />
+              <Button 
+                title='저장' 
+                style={styles.button} 
+                onPress={() => regIll()}  
+              />
             </View>
           </View>
         </View>
@@ -90,6 +112,7 @@ const styles = StyleSheet.create({
   },
   inputRow: {
     flexDirection: 'row',
+    alignItems: 'center',
     gap: 12,
   },
   inputWrapper: {
