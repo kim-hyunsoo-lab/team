@@ -55,6 +55,13 @@ const TabLayout = () => {
       {/* 소비자 알림 기능 */}
       
       {/* 소비자 마이페이지 */}
+      <Tabs.Screen
+        name='my-page'
+        options={{
+          title : 'My Page',
+          tabBarIcon : () => <FontAwesome name='user' size={24} color="black" />
+        }}
+      />
 
 
     </Tabs>

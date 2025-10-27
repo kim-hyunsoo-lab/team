@@ -13,7 +13,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import { Ionicons } from '@expo/vector-icons';
 import { SERVER_URL } from '../../../../constants/appConst';
 import { colors } from '../../../../constants/colorConstant';
@@ -35,10 +35,10 @@ const ProductDetail = () => {
   const [activeTab, setActiveTab] = useState('intro');
   const [loading, setLoading] = useState(true);
 
-  // 로그인 체크 공통 함수
+  // 로그인 체크 공통 함수 (SecureStore 사용)
   const checkLogin = async (message = '로그인이 필요한 서비스입니다.') => {
     try {
-      const loginData = await AsyncStorage.getItem('loginInfo');
+      const loginData = await SecureStore.getItemAsync('loginInfo');
       if (!loginData || JSON.parse(loginData) === null) {
         Alert.alert('알림', message, [
           {
@@ -60,7 +60,7 @@ const ProductDetail = () => {
     if (!(await checkLogin('장바구니는 로그인이 필요한 서비스입니다.'))) return;
 
     try {
-      const loginData = await AsyncStorage.getItem('loginInfo');
+      const loginData = await SecureStore.getItemAsync('loginInfo');
       const memId = JSON.parse(loginData).memId;
 
       const response = await axios.post(`${SERVER_URL}/carts`, {
@@ -97,7 +97,7 @@ const ProductDetail = () => {
         text: '확인',
         onPress: async () => {
           try {
-            const loginData = await AsyncStorage.getItem('loginInfo');
+            const loginData = await SecureStore.getItemAsync('loginInfo');
             const memId = JSON.parse(loginData).memId;
 
             await axios.post(`${SERVER_URL}/buy`, {
