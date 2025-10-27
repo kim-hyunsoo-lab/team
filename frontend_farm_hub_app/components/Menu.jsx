@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   menuItem: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 23,
     paddingVertical: 12,
     borderBottomWidth: 3,
     borderBottomColor: 'transparent',
