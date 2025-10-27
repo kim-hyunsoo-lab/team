@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
   },
   inputRow: {
     flexDirection: 'row',
+    alignItems: 'center',
     gap: 12,
   },
   inputWrapper: {
