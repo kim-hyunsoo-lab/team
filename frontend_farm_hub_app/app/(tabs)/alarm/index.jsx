@@ -27,6 +27,9 @@ const AlarmScreen = () => {
         <Pressable onPress={()=>{router.push('/auth/renewalPw')}}>
           <Text>비밀번호 변경</Text>
         </Pressable>        
+        <Pressable onPress={()=>{router.push('/product/product-detail/shop')}}>
+          <Text>장바구니 페이지로 이동</Text>
+        </Pressable>        
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )

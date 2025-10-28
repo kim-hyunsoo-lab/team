@@ -77,7 +77,7 @@ const ProductDetail = () => {
           { text: '취소', style: 'cancel' },
           {
             text: '확인',
-            onPress: () => navigation.navigate('ShopCart'),
+            onPress: () => router.push('/product/product-detail/shop'),
           },
         ]
       );

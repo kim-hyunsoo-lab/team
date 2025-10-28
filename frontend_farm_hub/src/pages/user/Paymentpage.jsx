@@ -31,13 +31,12 @@ const Paymentpage = () => {
   // 결제 수단
   const [paymentMethod, setPaymentMethod] = useState("creditCard");
 
-  // PG사 선택
+  // PG사 선택 (포트원 형식: "PG사코드.상점아이디")
   const [selectedPG, setSelectedPG] = useState("tosspayments");
 
   // 금액 계산
   const [priceInfo, setPriceInfo] = useState({
     totalProductPrice: 0,
-    deliveryFee: 3000,
     finalPrice: 0,
   });
 
@@ -113,13 +112,9 @@ const Paymentpage = () => {
       0
     );
 
-    // 50,000원 이상 무료배송
-    const deliveryFee = totalProductPrice >= 50000 ? 0 : 3000;
-
     setPriceInfo({
       totalProductPrice,
-      deliveryFee,
-      finalPrice: totalProductPrice + deliveryFee,
+      finalPrice: totalProductPrice 
     });
   }, [orderItems]);
 
@@ -169,16 +164,22 @@ const Paymentpage = () => {
     // 결제 수단 매핑
     const payMethodMap = {
       creditCard: "card",
-      bankTransfer: "trans",
+      bankTransfer: "vbank", // 무통장입금 (trans는 실시간 계좌이체)
       mobilePayment: "phone",
-      kakaopay: "kakaopay",
-      payco: "payco",
+    };
+
+    // PG사별 설정 (포트원 형식: "PG사코드.MID")
+    // 주의: 실제 상점아이디(MID)는 PG사 가입 후 발급받은 값으로 교체해야 합니다
+    const pgConfig = {
+      tosspayments: "tosspayments.iamporttest_3", // 토스페이먼츠 (테스트 모드에서는 PG사 코드만 사용 가능)
+      mobilians: "mobilians.170622040674", // 모빌리언스 (실제 MID로 교체 필요: "mobilians.MID")
+      kakaopay: "kakaopay", // 카카오페이
     };
 
     // 포트원 결제 요청
     IMP.request_pay(
       {
-        pg: selectedPG, // 선택된 PG사
+        pg: pgConfig[selectedPG], // PG사 설정
         pay_method: payMethodMap[paymentMethod],
         merchant_uid: merchant_uid,
         name: itemName,
@@ -189,6 +190,10 @@ const Paymentpage = () => {
         buyer_addr: customerInfo.memAddr,
         buyer_postcode: "",
         m_redirect_url: window.location.origin + "/payment/complete", // 모바일 결제 후 리다이렉트
+        // 무통장입금 설정
+        vbank_due: paymentMethod === "bankTransfer"
+          ? new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0].replace(/-/g, '') // 7일 후 입금 마감 (YYYYMMDD)
+          : undefined,
       },
       (rsp) => {
         if (rsp.success) {
@@ -206,6 +211,10 @@ const Paymentpage = () => {
   const verifyPayment = (paymentData) => {
     console.log("결제 성공 데이터:", paymentData);
 
+    // 배송 요청사항 결정 (직접입력 선택 시 customRequest 사용)
+    const finalDeliveryRequest =
+      deliveryRequest === "직접입력" ? customRequest : deliveryRequest;
+
     // ProductDetail에서 직접 구매한 경우
     if (itemNum && itemDetail && buyCnt) {
       const buyData = {
@@ -215,6 +224,18 @@ const Paymentpage = () => {
         imp_uid: paymentData.imp_uid,
         merchant_uid: paymentData.merchant_uid,
         paid_amount: paymentData.paid_amount,
+        pay_method: paymentData.pay_method, // 결제 수단
+        pg_provider: paymentData.pg_provider, // PG사
+        deliveryRequest: finalDeliveryRequest, // 배송 요청사항
+        deliveryAddr: customerInfo.memAddr, // 배송 주소
+        deliveryAddrDetail: customerInfo.addrDetail, // 상세 주소
+        receiverName: customerInfo.memName, // 수령인
+        receiverTel: customerInfo.memTel, // 수령인 연락처
+        // 무통장입금인 경우 가상계좌 정보
+        vbank_num: paymentData.vbank_num, // 가상계좌 번호
+        vbank_name: paymentData.vbank_name, // 은행명
+        vbank_date: paymentData.vbank_date, // 입금 마감 기한
+        vbank_holder: paymentData.vbank_holder, // 예금주
       };
 
       console.log("개별 상품 구매 요청 데이터:", buyData);
@@ -223,7 +244,22 @@ const Paymentpage = () => {
         .post("/api/buy", buyData)
         .then((response) => {
           console.log("개별 상품 구매 성공:", response.data);
-          alert("결제가 완료되었습니다!");
+
+          // 무통장입금인 경우 가상계좌 정보 표시
+          if (paymentData.pay_method === "vbank") {
+            alert(
+              `결제 요청이 완료되었습니다!\n\n` +
+              `[가상계좌 정보]\n` +
+              `은행: ${paymentData.vbank_name}\n` +
+              `계좌번호: ${paymentData.vbank_num}\n` +
+              `예금주: ${paymentData.vbank_holder}\n` +
+              `입금기한: ${new Date(paymentData.vbank_date * 1000).toLocaleString('ko-KR')}\n\n` +
+              `입금 확인 후 주문이 처리됩니다.`
+            );
+          } else {
+            alert("결제가 완료되었습니다!");
+          }
+
           nav("/mypage/buy-list", { replace: true });
         })
         .catch((e) => {
@@ -251,6 +287,18 @@ const Paymentpage = () => {
         imp_uid: paymentData.imp_uid,
         merchant_uid: paymentData.merchant_uid,
         paid_amount: paymentData.paid_amount,
+        pay_method: paymentData.pay_method, // 결제 수단
+        pg_provider: paymentData.pg_provider, // PG사
+        deliveryRequest: finalDeliveryRequest, // 배송 요청사항
+        deliveryAddr: customerInfo.memAddr, // 배송 주소
+        deliveryAddrDetail: customerInfo.addrDetail, // 상세 주소
+        receiverName: customerInfo.memName, // 수령인
+        receiverTel: customerInfo.memTel, // 수령인 연락처
+        // 무통장입금인 경우 가상계좌 정보
+        vbank_num: paymentData.vbank_num, // 가상계좌 번호
+        vbank_name: paymentData.vbank_name, // 은행명
+        vbank_date: paymentData.vbank_date, // 입금 마감 기한
+        vbank_holder: paymentData.vbank_holder, // 예금주
       };
 
       console.log("장바구니 구매 요청 데이터:", cartBuyData);
@@ -259,7 +307,22 @@ const Paymentpage = () => {
         .post("/api/buy/cart", cartBuyData)
         .then((response) => {
           console.log("장바구니 구매 성공:", response.data);
-          alert("결제가 완료되었습니다!");
+
+          // 무통장입금인 경우 가상계좌 정보 표시
+          if (paymentData.pay_method === "vbank") {
+            alert(
+              `결제 요청이 완료되었습니다!\n\n` +
+              `[가상계좌 정보]\n` +
+              `은행: ${paymentData.vbank_name}\n` +
+              `계좌번호: ${paymentData.vbank_num}\n` +
+              `예금주: ${paymentData.vbank_holder}\n` +
+              `입금기한: ${new Date(paymentData.vbank_date * 1000).toLocaleString('ko-KR')}\n\n` +
+              `입금 확인 후 주문이 처리됩니다.`
+            );
+          } else {
+            alert("결제가 완료되었습니다!");
+          }
+
           nav("/mypage/buy-list", { replace: true });
         })
         .catch((e) => {
@@ -462,13 +525,7 @@ const Paymentpage = () => {
           </div>
           <div className={styles.priceRow}>
             <span>배송비</span>
-            <span>
-              {priceInfo.deliveryFee === 0 ? (
-                <span className={styles.freeDelivery}>무료배송</span>
-              ) : (
-                `${priceInfo.deliveryFee.toLocaleString()}원`
-              )}
-            </span>
+            
           </div>
           <div className={styles.divider}></div>
           <div className={`${styles.priceRow} ${styles.finalPrice}`}>
@@ -479,13 +536,6 @@ const Paymentpage = () => {
           </div>
         </div>
 
-        {priceInfo.totalProductPrice > 0 &&
-          priceInfo.totalProductPrice < 50000 && (
-            <p className={styles.deliveryNotice}>
-              * {(50000 - priceInfo.totalProductPrice).toLocaleString()}원 더
-              구매하시면 무료배송!
-            </p>
-          )}
       </div>
 
       {/* 결제 버튼 */}
