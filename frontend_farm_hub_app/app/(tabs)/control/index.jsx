@@ -1,9 +1,30 @@
+import axios from 'axios'
 import { useRouter } from 'expo-router'
+import { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { PYTHOM_URL } from '../../../constants/appConst'
 
 const ControlScreen = () => {
+
+  //조회된 지정 데이터를 저장할 state 변수
+  const [sensorData, setSensorData] = useState({
+    'temp' : null,
+    'air' : null,
+    'ill' : null
+  });
+
   const router = useRouter();
+
+  //컴포넌트 마운트 시 데이터 조회
+  useEffect(() => {
+    axios.get(`${PYTHOM_URL}/selectAllData`)
+    .then(res => {
+      setSensorData(res.data);
+      console.log(res.data);
+    })
+    .catch(e => console.log(e));
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -24,12 +45,12 @@ const ControlScreen = () => {
           <View style={styles.cardContent}>
             <View style={styles.infoRow}>
               <Text style={styles.label}>현재 지정 온도</Text>
-              <Text style={styles.value}>24°C</Text>
+              <Text style={styles.value}>{sensorData.temp}</Text>
             </View>
             <View style={styles.divider} />
             <View style={styles.infoRow}>
               <Text style={styles.label}>현재 지정 공기질</Text>
-              <Text style={styles.value}>양호</Text>
+              <Text style={styles.value}>{sensorData.air}</Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -48,7 +69,7 @@ const ControlScreen = () => {
           <View style={styles.cardContentCentered}>
             <View style={styles.infoRowSpaced}>
               <Text style={styles.label}>현재 지정 조도</Text>
-              <Text style={styles.value}>500 lux</Text>
+              <Text style={styles.value}>{sensorData.ill}</Text>
             </View>
           </View>
         </TouchableOpacity>
