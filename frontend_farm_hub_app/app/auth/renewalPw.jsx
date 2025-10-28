@@ -17,7 +17,7 @@ const renewalPw = () => {
   const { memId } = useLocalSearchParams();
 
   useEffect(() => {
-    if (!memId) {
+    if (!memId) { 
       Alert.alert('오류', '잘못된 접근입니다', [
         {
           text: '확인',

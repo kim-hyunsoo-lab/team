@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as SecureStore from 'expo-secure-store';
 import { useRouter } from 'expo-router';
-import { colors } from '../../../constants/colorConstant';
+import { colors } from '@/constants/colorConstant';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
@@ -54,20 +54,20 @@ const MyPageScreen = () => {
     ]);
   };
 
-  // 메뉴 아이템 데이터
+// 메뉴 아이템 데이터
   const menuItems = [
-    { id: 1, icon: <Ionicons name="receipt-outline" size={24} color="black" />, title: '주문목록', route: '/my-page/orders' },
-    { id: 2, icon: <Ionicons name="cart-outline" size={24} color="black" />, title: '장바구니', route: '/my-page/cart' },
-    { id: 3, icon: <Ionicons name="person-outline" size={24} color="black" />, title: '회원정보 수정', route: '/my-page/profile-edit' },
-    { id: 4, icon: <Ionicons name="location-outline" size={24} color="black" />, title: '배송지관리', route: '/my-page/address' },
-    { id: 5, icon: <AntDesign name="question-circle" size={24} color="black" />, title: '문의목록', route: '/my-page/qna' },
-    { id: 6, icon: <AntDesign name="message" size={24} color="black" />, title: '상품후기', route: '/my-page/reviews' },
+    { id: 1, icon: <Ionicons name="receipt-outline" size={24} color="black" />, title: '주문목록', route: '/my-page/orders', disabled: false }, 
+    { id: 2, icon: <Ionicons name="cart-outline" size={24} color="black" />, title: '장바구니', route: '/my-page/cart', disabled: true }, 
+    { id: 3, icon: <Ionicons name="person-outline" size={24} color="black" />, title: '회원정보 수정', route: '/my-page/profile-edit', disabled: true },
+    { id: 4, icon: <Ionicons name="location-outline" size={24} color="black" />, title: '배송지관리', route: '/my-page/address', disabled: true },
+    { id: 5, icon: <AntDesign name="question-circle" size={24} color="black" />, title: '문의목록', route: '/my-page/qna', disabled: false },
+    { id: 6, icon: <AntDesign name="message" size={24} color="black" />, title: '상품후기', route: '/my-page/reviews', disabled: false },
   ];
 
   // 메뉴 클릭 핸들러
   const handleMenuPress = (route) => {
-    Alert.alert('알림', `${route} 페이지로 이동합니다.\n(준비중)`);
-    // router.push(route);
+    // Alert.alert('알림', `${route} 페이지로 이동합니다.\n(준비중)`);
+    router.push(route);
   };
 
   return (
