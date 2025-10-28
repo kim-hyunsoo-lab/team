@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {
   ScrollView,
@@ -10,6 +10,7 @@ import { Picker } from "@react-native-picker/picker";
 import axios from "axios";
 import dayjs from "dayjs";
 import { SERVER_URL } from '../../../constants/appConst';
+import { useFocusEffect } from 'expo-router';
 
 const { width } = Dimensions.get("window");
 
@@ -38,77 +39,130 @@ const HomeScreen = () => {
   const [illuminanceDateRange, setIlluminanceDateRange] = useState("7");
   const [airQualityDateRange, setAirQualityDateRange] = useState("7");
 
-  //온도 데이터 가져오기
-  useEffect(() => {
-    const rangeArray = days.slice(0, parseInt(dateRange));
-    axios
-      .get(`${SERVER_URL}/farms/temperature`, { params: { each: rangeArray } })
-      .then((res) => {
-        console.log(res.data);
-        setTemperatureData(res.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, [dateRange]);
+  //온도 데이터 실시간으로 가져오기
+  useFocusEffect(
+    useCallback(() => {
+      console.log('🟢 useFocusEffect 실행됨!');
+      const fetchTemp = () => {
+        console.log('🌡️ fetchTemp 함수 호출됨!');
+        const rangeArray = days.slice(0, parseInt(dateRange));
+        axios
+        .get(`${SERVER_URL}/farms/temperature`, { params: { each: rangeArray } })
+        .then((res) => {
+          console.log('온도 데이터 : ', res.data);
+          setTemperatureData(res.data);
+        })
+        .catch((e) => {
+          console.log("온도 에러:", e);
+        });
+      };
 
-  //setTimeout사용, 1000 -> 1초
-  const timer1 = setTimeout(() => {
-    const rangeArray = days.slice(0, parseInt(dateRange));
-    axios
-      .get(`${SERVER_URL}/farms/temperature`, { params: { each: rangeArray } })
-      .then((res) => {
-        console.log(res.data);
-        setTemperatureData(res.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, 10000);
+      fetchTemp(); //즉시 실행
 
-  clearTimeout(timer1);
+      const tempTimer = setInterval(fetchTemp, 10000) //10초마다 반복
+      console.log('⏱️ 타이머 설정 완료');
 
-  // 습도 데이터 가져오기
-  useEffect(() => {
-    const rangeArray = days.slice(0, parseInt(humidityDateRange));
-    axios
-      .get(`${SERVER_URL}/farms/humidity`, { params: { each: rangeArray } })
-      .then((res) => {
-        console.log(res.data);
-        setHumidityData(res.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, [humidityDateRange]);
+      //다른 페이지로 이동하면 자동 중단
+      return () => {
+        console.log('🔴 cleanup 실행 - 타이머 중단');
+        clearInterval(tempTimer);
+      }
 
-  // 조도 데이터 가져오기
-  useEffect(() => {
-    const rangeArray = days.slice(0, parseInt(illuminanceDateRange));
-    axios
-      .get(`${SERVER_URL}/farms/illuminance`, { params: { each: rangeArray } })
-      .then((res) => {
-        console.log(res.data);
-        setIlluminanceData(res.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, [illuminanceDateRange]);
+    }, [dateRange])
+  );
 
-  // 공기질 데이터 가져오기
-  useEffect(() => {
-    const rangeArray = days.slice(0, parseInt(airQualityDateRange));
-    axios
-      .get(`${SERVER_URL}/farms/air-quality`, { params: { each: rangeArray } })
-      .then((res) => {
-        console.log("공기질 데이터:", res.data);
-        setAirQualityData(res.data);
-      })
-      .catch((e) => {
-        console.log("공기질 에러:", e);
-      });
-  }, [airQualityDateRange]);
+  // 습도 데이터 실시간으로 가져오기
+  useFocusEffect(
+    useCallback(() => {
+      console.log('🟢 useFocusEffect 실행됨!');
+      const fetchHum = () => {
+        console.log('fetchHum 함수 호출됨!');
+        const rangeArray = days.slice(0, parseInt(humidityDateRange));
+        axios
+        .get(`${SERVER_URL}/farms/humidity`, { params: { each: rangeArray } })
+        .then((res) => {
+          console.log('습도 데이터 : ', res.data);
+          setHumidityData(res.data);
+        })
+        .catch((e) => {
+          console.log("습도 에러:", e);
+        });
+      };
+
+      fetchHum(); //즉시 실행
+
+      const humTimer = setInterval(fetchHum, 10000) //10초마다 반복
+      console.log('⏱️ 타이머 설정 완료');
+
+      //다른 페이지로 이동하면 자동 중단
+      return () => {
+        console.log('🔴 cleanup 실행 - 타이머 중단');
+        clearInterval(humTimer);
+      }
+    }, [humidityDateRange])
+  );
+
+  // 조도 데이터 실시간으로 가져오기
+  useFocusEffect(
+    useCallback(() => {
+      console.log('🟢 useFocusEffect 실행됨!');
+      const fetchIll = () => {
+        console.log('fetchIll 함수 호출됨!');
+        const rangeArray = days.slice(0, parseInt(illuminanceDateRange));
+        axios
+        .get(`${SERVER_URL}/farms/illuminance`, { params: { each: rangeArray } })
+        .then((res) => {
+          console.log('조도 데이터 : ', res.data);
+          setIlluminanceData(res.data);
+        })
+        .catch((e) => {
+          console.log("조도 에러:", e);
+        });
+      };
+
+      fetchIll(); //즉시 실행
+
+      const illTimer = setInterval(fetchIll, 10000) //10초마다 반복
+      console.log('⏱️ 타이머 설정 완료');
+
+      //다른 페이지로 이동하면 자동 중단
+      return () => {
+        console.log('🔴 cleanup 실행 - 타이머 중단');
+        clearInterval(illTimer);
+      }
+    }, [illuminanceDateRange])
+  );
+
+  // 공기질 데이터 실시간으로 가져오기
+  useFocusEffect(
+    useCallback(() => {
+      console.log('🟢 useFocusEffect 실행됨!');
+      const fetchAir = () => {
+        console.log('fetchAir 함수 호출됨!');
+        const rangeArray = days.slice(0, parseInt(airQualityDateRange));
+        axios
+        .get(`${SERVER_URL}/farms/air-quality`, { params: { each: rangeArray } })
+        .then((res) => {
+          console.log("공기질 데이터:", res.data);
+          setAirQualityData(res.data);
+        })
+        .catch((e) => {
+          console.log("공기질 에러:", e);
+        });
+      };
+
+      fetchAir(); //즉시 실행
+
+      const airTimer = setInterval(fetchAir, 10000) //10초마다 반복
+      console.log('⏱️ 타이머 설정 완료');
+
+      //다른 페이지로 이동하면 자동 중단
+      return () => {
+        console.log('🔴 cleanup 실행 - 타이머 중단');
+        clearInterval(airTimer);
+      }
+    }, [airQualityDateRange])
+  );
   
   // 온도 차트 데이터 포맷팅
   const maxTempData = temperatureData.length > 0 ? temperatureData.map((e, index) => ({
