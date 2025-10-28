@@ -21,6 +21,9 @@ const AlarmScreen = () => {
         <Pressable onPress={()=>{router.push('/auth/join')}}>
           <Text>회원가입 페이지로 이동</Text>
         </Pressable>        
+        <Pressable onPress={()=>{router.push('/product/product-detail/shop')}}>
+          <Text>장바구니 페이지로 이동</Text>
+        </Pressable>        
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )
