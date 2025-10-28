@@ -6,7 +6,50 @@
 <mapper namespace="com.craft.backend_farm_hub.dibs.mapper.DibsMapper">
 	<resultMap id="dibs" type="com.craft.backend_farm_hub.dibs.dto.DibsDTO">
     <id column="DIBS_NUM" property="dibsNum" />
+    <result column="MEM_ID" property="memId" />
+    <result column="ITEM_NUM" property="itemNum" />
+    <result column="DIBS_DATE" property="dibsDate" />
+    <association property="itemDTO" resultMap="com.craft.backend_farm_hub.item.mapper.ItemMapper.items" />
   </resultMap>
+
+  <!--찜한상품을 추가하는 쿼리-->
+  <insert id="addDibs">
+    INSERT INTO DIBS (
+      MEM_ID
+      , ITEM_NUM
+    ) VALUES (
+      #{memId}
+      , #{itemNum}
+    )
+  </insert>
+
+  <!--찜한상품 목록 조회 쿼리-->
+  <select id="getDibs" resultMap="dibs">
+    SELECT
+      DIBS_NUM
+      , D.ITEM_NUM
+      , ITEM_NAME
+      , PRICE
+      , DIBS_DATE
+      , ATTACHED_IMG_NAME
+    FROM dibs D
+    INNER JOIN item I
+    ON D.ITEM_NUM = I.ITEM_NUM
+    INNER JOIN item_img IG
+    ON I.ITEM_NUM = IG.ITEM_NUM
+    WHERE IS_MAIN = 'Y'
+    ORDER BY DIBS_DATE;
+  </select>
+  <!--찜 리스트 하나 삭제-->
+  <delete id="removeDibs">
+    DELETE FROM DIBS
+    WHERE DIBS_NUM = #{dibsNum}
+  </delete>
+  <!--선택한 찜 리스트 삭제-->
+  <delete id="removeSelectedDibs">
+    DELETE FROM DIBS
+    WHERE
+  </delete>
 </mapper>
 
 

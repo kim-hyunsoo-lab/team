@@ -28,7 +28,9 @@ const MypageSide = () => {
             </span>
             취소/반품/교환 내역
           </li>
-          <li>
+          <li
+            onClick={e => nav('/mypage/dibs')}
+          >
             <span>
               <i className="bi bi-file-earmark-text-fill"></i>
             </span>
