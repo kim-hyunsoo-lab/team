@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import Button from '../components/common/Button'
 import Input from '../components/common/Input'
 import axios from 'axios'
-import { SERVER_URL } from '../constants/appConst'
+import { PYTHON_URL, SERVER_URL } from '../constants/appConst'
 
 
 const fanControl = () => {
@@ -18,7 +18,7 @@ const fanControl = () => {
   //지정 온도 저장 버튼 클릭 시 실행함수
   const regTemp = () => {
     console.log(1)
-    axios.post(`${SERVER_URL}/decideTemp/${temperature}`)
+    axios.post(`${PYTHON_URL}/decideTemp/${temperature}`)
     .then(res => alert('온도가 저장되었습니다.'))
     .catch((e) => console.log(e));
   }
@@ -26,7 +26,7 @@ const fanControl = () => {
   //지정 공기질 저장 버튼 클릭 시 실행함수
   const regAir = () => {
     console.log(1);
-    axios.post(`${SERVER_URL}/decideAir/${airQuality}`)
+    axios.post(`${PYTHON_URL}/decideAir/${airQuality}`)
     .then(res => alert('공기질이 저장되었습니다.'))
     .catch((e) => console.log(e));
   }

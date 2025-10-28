@@ -5,7 +5,7 @@ import { TouchableWithoutFeedback } from 'react-native'
 import Button from '../components/common/Button'
 import Input from '../components/common/Input'
 import axios from 'axios'
-import { SERVER_URL } from '../constants/appConst'
+import { PYTHON_URL } from '../constants/appConst'
 
 const ledControl = () => {
 
@@ -21,7 +21,7 @@ const ledControl = () => {
   //지정 조도 저장 버튼 클릭 시 실행함수
   const regIll = ()=> {
     console.log(1);
-    axios.post(`${SERVER_URL}/decideIll/${illuminance}`)
+    axios.post(`${PYTHON_URL}/decideIll/${illuminance}`)
     .then(res => alert('조도가 저장되었습니다.'))
     .catch((e) => console.log(e));
   }

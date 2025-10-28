@@ -52,6 +52,22 @@ const HomeScreen = () => {
       });
   }, [dateRange]);
 
+  //setTimeout사용, 1000 -> 1초
+  const timer1 = setTimeout(() => {
+    const rangeArray = days.slice(0, parseInt(dateRange));
+    axios
+      .get(`${SERVER_URL}/farms/temperature`, { params: { each: rangeArray } })
+      .then((res) => {
+        console.log(res.data);
+        setTemperatureData(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, 10000);
+
+  clearTimeout(timer1);
+
   // 습도 데이터 가져오기
   useEffect(() => {
     const rangeArray = days.slice(0, parseInt(humidityDateRange));
