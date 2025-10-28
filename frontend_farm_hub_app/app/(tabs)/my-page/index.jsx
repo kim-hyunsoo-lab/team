@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as SecureStore from 'expo-secure-store';
 import { useRouter } from 'expo-router';
-import { colors } from '../../../constants/colorConstant';
+import { colors } from '@/constants/colorConstant';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
@@ -54,7 +54,7 @@ const MyPageScreen = () => {
     ]);
   };
 
-  // 메뉴 아이템 데이터
+// 메뉴 아이템 데이터
   const menuItems = [
     { id: 1, icon: <Ionicons name="receipt-outline" size={24} color="black" />, title: '주문목록', route: '/my-page/orders' },
     { id: 2, icon: <Ionicons name="cart-outline" size={24} color="black" />, title: '장바구니', route: '/my-page/cart' },
@@ -68,8 +68,8 @@ const MyPageScreen = () => {
 
   // 메뉴 클릭 핸들러
   const handleMenuPress = (route) => {
-    Alert.alert('알림', `${route} 페이지로 이동합니다.\n(준비중)`);
-    // router.push(route);
+    // Alert.alert('알림', `${route} 페이지로 이동합니다.\n(준비중)`);
+    router.push(route);
   };
 
   return (
