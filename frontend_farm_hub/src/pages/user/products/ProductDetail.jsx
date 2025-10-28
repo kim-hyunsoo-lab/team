@@ -5,7 +5,7 @@ import styles from './ProductDetail.module.css'
 import axios from 'axios'
 import Button from '../../../common/Button'
 import Input from '../../../common/Input'
-import Login from '../../../components/login'
+import Login from '../../../components/Login'
 
 const ProductDetail = () => {
   const nav = useNavigate();
@@ -90,6 +90,24 @@ useEffect(()=>{
 
   const [reviewList, setReviewList] = useState([]) 
 
+  const addDibs = () => {
+    if (!checkLogin()) return;
+    const confirmDibs = confirm('찜한 상품에 담으시겠습니까?')
+    if(!confirmDibs) return;
+    axios.post('/api/dibs', {
+      memId : JSON.parse(loginData).memId,
+      itemNum
+    })
+    .then(res => {
+      alert("찜한 상품에 담았습니다.")
+    })
+    .catch(e => {
+      console.log(e);
+      alert(e.response.data)
+    })
+  }
+
+
   return (
     <div className={styles.container}>
       <PageTitle title={'상품 상세정보'} size='250px' />
@@ -153,6 +171,7 @@ useEffect(()=>{
               title='찜한상품'
               color='gray'
               size='100%'
+              onClick={e => addDibs()}
             />
             <Button
               title='장바구니'

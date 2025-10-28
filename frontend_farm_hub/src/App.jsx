@@ -36,6 +36,7 @@ import UserQna from "./pages/user/products/UserQna";
 import ScrollToTop from "./common/ScrollToTop";
 import SurveyResult from "./pages/admin/products/SurveyResult";
 import Paymentpage from "./pages/user/Paymentpage";
+import Dibs from "./pages/user/products/dibs";
 
 function App() {
   return (
@@ -71,6 +72,7 @@ function App() {
           <Route path="/mypage/review-list" element={<UserReviewList />} />
           <Route path="/mypage/Qna" element={<UserQna />} />
           <Route path="/mypage/payment" element={<Paymentpage />} />
+          <Route path="/mypage/dibs" element={ <Dibs /> } />
         </Route>
 
         {/* 관리자 페이지 */}
