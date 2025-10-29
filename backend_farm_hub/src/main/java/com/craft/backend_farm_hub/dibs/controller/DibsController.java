@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("dibs")
+@RequestMapping("/dibs")
 public class DibsController {
   private final DibsService dibsService;
 
@@ -31,9 +31,14 @@ public class DibsController {
   }
 
   @GetMapping("")
-  public ResponseEntity<?> getDibs () {
+  public ResponseEntity<?> getDibs (@RequestParam(required = false) String memId) {
     try {
-      List<DibsDTO> dibsList = dibsService.getDibs();
+      if (memId == null || memId.isEmpty()) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body("회원 ID가 필요합니다.");
+      }
+      List<DibsDTO> dibsList = dibsService.getDibs(memId);
       return ResponseEntity
               .status(HttpStatus.OK)
               .body(dibsList);
@@ -42,6 +47,38 @@ public class DibsController {
       return ResponseEntity
               .status(HttpStatus.INTERNAL_SERVER_ERROR)
               .body("찜 한 상품을 불러오지 못 했습니다.");
+    }
+  }
+
+  // 개별 찜 삭제
+  @DeleteMapping("/{dibsNum}")
+  public ResponseEntity<?> removeDibs (@PathVariable int dibsNum) {
+    try {
+      dibsService.removeDibs(dibsNum);
+      return ResponseEntity
+              .status(HttpStatus.OK)
+              .build();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("삭제하지 못 했습니다.");
+    }
+  }
+
+  // 여러 개 찜 삭제
+  @DeleteMapping("")
+  public ResponseEntity<?> removeSelectedDibs (@RequestParam List<Integer> dibsNumList) {
+    try {
+      dibsService.removeSelectedDibs(dibsNumList);
+      return ResponseEntity
+              .status(HttpStatus.OK)
+              .build();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("삭제하지 못 했습니다.");
     }
   }
 }

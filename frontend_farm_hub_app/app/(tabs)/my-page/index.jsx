@@ -58,7 +58,7 @@ const MyPageScreen = () => {
   const menuItems = [
     { id: 1, icon: <Ionicons name="receipt-outline" size={24} color="black" />, title: '주문목록', route: '/my-page/orders' },
     { id: 2, icon: <Ionicons name="cart-outline" size={24} color="black" />, title: '장바구니', route: '/product/product-detail/shop' },
-    { id: 3, icon: <Ionicons name="heart-outline" size={24} color="black" />, title: '찜한상품', route: '/my-page/wishlist' },
+    { id: 3, icon: <Ionicons name="heart-outline" size={24} color="black" />, title: '찜한상품', route: '/my-page/dibs' },
     { id: 4, icon: <Ionicons name="person-outline" size={24} color="black" />, title: '회원정보 수정', route: '/my-page/profile-edit' },
     { id: 5, icon: <Ionicons name="location-outline" size={24} color="black" />, title: '배송지관리', route: '/my-page/address' },
     { id: 6, icon: <Ionicons name="notifications-outline" size={24} color="black" />, title: '알림설정', route: '/my-page/notifications' },

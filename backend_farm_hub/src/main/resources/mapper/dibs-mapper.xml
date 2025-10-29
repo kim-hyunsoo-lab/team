@@ -38,7 +38,8 @@
     INNER JOIN item_img IG
     ON I.ITEM_NUM = IG.ITEM_NUM
     WHERE IS_MAIN = 'Y'
-    ORDER BY DIBS_DATE;
+    AND D.MEM_ID = #{memId}
+    ORDER BY DIBS_DATE DESC;
   </select>
   <!--찜 리스트 하나 삭제-->
   <delete id="removeDibs">
@@ -48,7 +49,10 @@
   <!--선택한 찜 리스트 삭제-->
   <delete id="removeSelectedDibs">
     DELETE FROM DIBS
-    WHERE
+    WHERE DIBS_NUM IN
+    <foreach collection="list" item="dibsNum" open="(" separator="," close=")">
+      #{dibsNum}
+    </foreach>
   </delete>
 </mapper>
 
