@@ -15,55 +15,53 @@ const ControlScreen = () => {
 
   const router = useRouter();
 
+  // 데이터 가져오기 함수 분리
+  const fetchSensorData = async () => {
+    try {
+      console.log("데이터 요청 시작...");
+      console.log("요청 URL:", `${PYTHON_URL}/selectAllData`);
+
+      const response = await axios.get(`${PYTHON_URL}/selectAllData`);
+
+      console.log("서버 응답 성공:", response.data);
+
+      // 응답 데이터 검증
+      if (response.data && typeof response.data === "object") {
+        setSensorData(response.data);
+      } else {
+        console.log("응답 데이터가 유효하지 않음:", response.data);
+        alert("서버에서 유효하지 않은 데이터를 받았습니다.");
+      }
+    } catch (error) {
+      console.log("=== 에러 상세 정보 ===");
+      console.log("요청 URL:", `${PYTHON_URL}/selectAllData`);
+      console.log("에러 전체:", error);
+
+      if (error.response) {
+        console.log("응답 상태:", error.response.status);
+        console.log("응답 데이터:", error.response.data);
+        alert(
+          `서버 오류: ${error.response.status}\n${
+            error.response.data || "알 수 없는 오류"
+          }`
+        );
+      } else if (error.request) {
+        console.log("네트워크 에러 - 요청:", error.request);
+        console.log("네트워크 에러 - 코드:", error.code);
+        alert(
+          `Python 서버 연결 실패\nURL: ${PYTHON_URL}\n서버가 실행 중인지 확인해주세요.`
+        );
+      } else {
+        console.log("설정 에러:", error.message);
+        alert("데이터 요청 중 오류가 발생했습니다.");
+      }
+    }
+  };
+
   //컴포넌트 마운트 시 데이터 조회
   useEffect(() => {
-    console.log("데이터 요청 시작...");
-    console.log("요청 URL:", `${PYTHON_URL}/selectAllData`);
-
-    axios
-      .get(`${PYTHON_URL}/selectAllData`)
-      .then((res) => {
-        console.log("서버 응답 성공:", res.data);
-        console.log("응답 상태:", res.status);
-        console.log("응답 헤더:", res.headers);
-
-        // 응답 데이터 검증
-        if (res.data && typeof res.data === "object") {
-          setSensorData(res.data);
-        } else {
-          console.log("응답 데이터가 유효하지 않음:", res.data);
-          alert("서버에서 유효하지 않은 데이터를 받았습니다.");
-        }
-      })
-      .catch((error) => {
-        console.log("=== 에러 상세 정보 ===");
-        console.log("요청 URL:", `${PYTHON_URL}/selectAllData`);
-        console.log("에러 전체:", error);
-        console.log("에러 메시지:", error.message);
-
-        if (error.response) {
-          // 서버가 응답을 반환한 경우 (4xx, 5xx)
-          console.log("응답 상태:", error.response.status);
-          console.log("응답 데이터:", error.response.data);
-          alert(
-            `서버 오류: ${error.response.status}\n${
-              error.response.data || "알 수 없는 오류"
-            }`
-          );
-        } else if (error.request) {
-          // 요청은 전송되었지만 응답을 받지 못한 경우
-          console.log("네트워크 에러 - 요청:", error.request);
-          console.log("네트워크 에러 - 코드:", error.code);
-          alert(
-            `Python 서버 연결 실패\nURL: ${PYTHON_URL}\n서버가 실행 중인지 확인해주세요.`
-          );
-        } else {
-          // 요청 설정 중 에러가 발생한 경우
-          console.log("설정 에러:", error.message);
-          alert("데이터 요청 중 오류가 발생했습니다.");
-        }
-      });
-  }, [sensorData]);
+    fetchSensorData();
+  }, []); 
 
   return (
     <SafeAreaView style={styles.container}>
