@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Alert, Pressable } from 'react-native';
 import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as SecureStore from 'expo-secure-store';
@@ -46,7 +46,7 @@ const MyPageScreen = () => {
           Alert.alert('알림', '로그아웃되었습니다.', [
             {
               text: '확인',
-              onPress: () => router.push('/auth/login'),
+              onPress: () => router.replace('/product'),
             },
           ]);
         },
@@ -57,7 +57,7 @@ const MyPageScreen = () => {
 // 메뉴 아이템 데이터
   const menuItems = [
     { id: 1, icon: <Ionicons name="receipt-outline" size={24} color="black" />, title: '주문목록', route: '/my-page/orders' },
-    { id: 2, icon: <Ionicons name="cart-outline" size={24} color="black" />, title: '장바구니', route: '/my-page/cart' },
+    { id: 2, icon: <Ionicons name="cart-outline" size={24} color="black" />, title: '장바구니', route: '/product/product-detail/shop' },
     { id: 3, icon: <Ionicons name="heart-outline" size={24} color="black" />, title: '찜한상품', route: '/my-page/wishlist' },
     { id: 4, icon: <Ionicons name="person-outline" size={24} color="black" />, title: '회원정보 수정', route: '/my-page/profile-edit' },
     { id: 5, icon: <Ionicons name="location-outline" size={24} color="black" />, title: '배송지관리', route: '/my-page/address' },
@@ -87,7 +87,14 @@ const MyPageScreen = () => {
                 <Text style={styles.userEmail}>{userInfo.memId}</Text>
               </>
             ) : (
-              <Text style={styles.userName}>로그인이 필요합니다</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>                
+                <Pressable onPress={() => router.push('/auth/login')}>
+                  <Text style={[styles.userName, { textDecorationLine: 'underline' }]}>
+                    로그인
+                  </Text>
+                </Pressable>
+                <Text style={styles.userName}>이 필요합니다</Text>
+              </View>
             )}
           </View>
         </View>

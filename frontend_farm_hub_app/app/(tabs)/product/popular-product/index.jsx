@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import axios from 'axios'
 import { router } from 'expo-router'
-import { SERVER_URL } from '../../../../constants/appConst'
-import Menu from '../../../../components/Menu'
-import { colors } from '../../../../constants/colorConstant'
-import PageTitle from '../../../../components/common/PageTitle'
+import { SERVER_URL } from '@/constants/appConst'
+import Menu from '@/components/Menu'
+import { colors } from '@/constants/colorConstant'
+import PageTitle from '@/components/common/PageTitle'
 
 const PopularProductList = () => {
   const [productList, setProductList] = useState([])

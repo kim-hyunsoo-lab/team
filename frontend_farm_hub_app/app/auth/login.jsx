@@ -17,7 +17,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const login = () => {
+const Login = () => {
   const router = useRouter();
 
   // 로그인 정보
@@ -27,6 +27,10 @@ const login = () => {
   });
 
   const loginNow = async () => {
+    if (!loginData.memId.trim() || !loginData.memPw.trim()) {
+      Alert.alert('알림', '아이디와 비밀번호를 입력해주세요');
+      return;
+    }
     try {
       const res = await axios.get(`${SERVER_URL}/members/login`, {
         params: loginData,
@@ -91,20 +95,6 @@ const login = () => {
     }
   };
 
-  // 로그아웃 함수
-  const logout = async () => {
-    // SecureStore에 저장된 로그인 정보 삭제
-    await SecureStore.deleteItemAsync("loginInfo");
-
-    // 모든 스택 제거
-    if (router.canDismiss()) {
-      router.dismissAll();
-    }
-
-    // 첫 페이지로 이동
-    router.replace("/product");
-  };
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -119,7 +109,6 @@ const login = () => {
               onChangeText={(text) => {
                 setLoginData({ ...loginData, memId: text });
               }}
-              onSubmitEditing={() => {}}
               returnKeyType="next"
               autoCapitalize="none"
               autoCorrect={false}
@@ -185,7 +174,7 @@ const login = () => {
     </TouchableWithoutFeedback>
   );
 };
-export default login;
+export default Login;
 
 const styles = StyleSheet.create({
   container: {
