@@ -4,7 +4,7 @@ import * as SecureStore from "expo-secure-store";
 import { useEffect, useState } from "react";
 import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import PageTitle from "../../../../components/common/PageTitle";
+import PageTitle from "@/components/common/PageTitle";
 
 const CartScreen = () => {
   const router = useRouter();
