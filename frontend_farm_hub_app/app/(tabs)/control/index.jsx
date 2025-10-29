@@ -63,7 +63,7 @@ const ControlScreen = () => {
           alert("데이터 요청 중 오류가 발생했습니다.");
         }
       });
-  }, []);
+  }, [sensorData]);
 
   return (
     <SafeAreaView style={styles.container}>

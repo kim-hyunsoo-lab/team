@@ -42,17 +42,6 @@ const TabLayout = () => {
           tabBarIcon : () => <FontAwesome name="home" size={24} color="black" />
         }}
       />
-
-      {/* 소비자 상품 검색 */}
-      <Tabs.Screen 
-        name='search'
-        options={{
-          title : 'Search',
-          tabBarIcon : () => <FontAwesome name="search" size={24} color="black" />
-        }}
-      />
-
-      {/* 소비자 알림 기능 */}
       
       {/* 소비자 마이페이지 */}
       <Tabs.Screen
