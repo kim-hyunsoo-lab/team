@@ -15,12 +15,12 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import { Ionicons } from '@expo/vector-icons';
-import { SERVER_URL } from '../../../../constants/appConst';
-import { colors } from '../../../../constants/colorConstant';
-import Input from '../../../../components/common/Input';
-import Button from '../../../../components/common/Button';
+import { SERVER_URL } from '@/constants/appConst';
+import { colors } from '@/constants/colorConstant';
+import Input from '@/components/common/Input';
+import Button from '@/components/common/Button';
 import { router, useLocalSearchParams } from 'expo-router';
-import PageTitle from '../../../../components/common/PageTitle';
+import PageTitle from '@/components/common/PageTitle';
 import Info from './info';
 import Review from './review';
 import Qna from './qna';
@@ -32,7 +32,8 @@ const ProductDetail = () => {
   const [itemDetail, setItemDetail] = useState({});
   const [cnt, setCnt] = useState('1');
   const [activeTab, setActiveTab] = useState('intro');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); 
+  const [reload, setReload] = useState(0);
 
   // 로그인 체크 공통 함수 (SecureStore 사용)
   const checkLogin = async (message = '로그인이 필요한 서비스입니다.') => {
@@ -135,7 +136,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     getItem();
-  }, [itemNum]);
+  }, [itemNum, reload]);
 
   // 메인 이미지 찾기
   const getMainImage = () => {
@@ -298,7 +299,15 @@ const ProductDetail = () => {
           )}
           {activeTab === 'review' && (
             <View style={styles.detailContent}>
-              <Review itemDetail={itemDetail} />
+              <Review 
+                itemDetail={itemDetail}
+                onReviewUpdate={() => {
+                  console.log('🔔 index.jsx onReviewUpdate 호출됨');
+                  console.log('현재 reload 값:', reload);
+                  setReload(reload + 1);
+                  console.log('새 reload 값:', reload + 1);
+                }} 
+              />
             </View>
           )}
           {activeTab === 'qna' && (

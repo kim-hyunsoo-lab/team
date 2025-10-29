@@ -46,7 +46,7 @@ const MyPageScreen = () => {
           Alert.alert('알림', '로그아웃되었습니다.', [
             {
               text: '확인',
-              onPress: () => router.push('/auth/login'),
+              onPress: () => router.replace('/product'),
             },
           ]);
         },

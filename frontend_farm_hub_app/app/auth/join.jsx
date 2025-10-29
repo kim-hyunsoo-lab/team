@@ -23,9 +23,9 @@ import { SERVER_URL } from '@/constants/appConst';
 import { Picker } from '@react-native-picker/picker';
 import { colors } from '@/constants/colorConstant';
 import Postcode from 'react-native-daum-postcode';
+import handleErrorMsg from '@/validate/joinValidate'
 
-
-const join = () => {
+const Join = () => {
   const router = useRouter();
   
   const [pwQ, setPwQ] = useState([])
@@ -89,14 +89,42 @@ const join = () => {
     });
   };
 
-  const handleErrorMsg = (name, value, shopMember) => {
-    // 에러 메시지 처리 로직
-    return '';
+    const checkId = async () => {
+    if (!newShopMember.memId) {
+      Alert.alert('알림', '아이디를 입력하세요');
+      return;
+    }
+
+    try {
+      const res = await axios.get(`${SERVER_URL}/members/check-id/${newShopMember.memId}`);
+      if (res.data.available) {
+        Alert.alert('확인', '사용 가능한 아이디입니다');
+      } else {
+        Alert.alert('확인', '이미 사용 중인 아이디입니다');
+      }
+    } catch (error) {
+      console.error('ID 확인 에러:', error);
+      Alert.alert('오류', 'ID 확인에 실패했습니다');
+    }
   };
 
-  const checkId = () => {
-    // ID 중복 확인 로직
-  };
+  // 폼 검증 useEffect 추가
+  useEffect(() => {
+    const isValid = 
+      newShopMember.memId &&
+      newShopMember.memPw &&
+      newShopMember.memPw === newShopMember.confirmPw &&
+      newShopMember.memName &&
+      newShopMember.pwKey &&
+      newShopMember.pwAnswer &&
+      !errorMsg.memId &&
+      !errorMsg.memPw &&
+      !errorMsg.confirmPw &&
+      !errorMsg.pwKey &&
+      !errorMsg.pwAnswer;
+    
+    setIsDisabledBtn(!isValid);
+  }, [newShopMember, errorMsg]);
 
   const getAddressBook = () => {
     setIsModalVisible(true);
@@ -548,4 +576,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default join
+export default Join
