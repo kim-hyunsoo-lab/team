@@ -2,12 +2,16 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Stack } from 'expo-router'
 
-const SearchLayout = () => {
+const CartLayout = () => {
   return (
-    <Stack screenOptions={{headerShown : false}}/>
+    <Stack
+      screenOptions={{
+        headerShown : false
+      }}
+    />
   )
 }
 
-export default SearchLayout
+export default CartLayout
 
 const styles = StyleSheet.create({})

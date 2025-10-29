@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState , useCallback } from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,12 +12,12 @@ import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import dayjs from 'dayjs';
-import Button from '../../../../../components/common/Button';
-import { SERVER_URL } from '../../../../../constants/appConst';
-import { colors } from '../../../../../constants/colorConstant';
+import Button from '@/components/common/Button';
+import { SERVER_URL } from '@/constants/appConst';
+import { colors } from '@/constants/colorConstant';
 import RegReviewScreen from './regReview';
 
-const Review = () => {
+const Review = ({ itemDetail, onReviewUpdate }) => {
   // URL 파라미터에서 itemNum 가져오기
   const { itemNum } = useLocalSearchParams();
 
@@ -117,22 +117,6 @@ const Review = () => {
     );
   }
 
-  //로그인 정보 여부 확인
-  //마운트되거나, 화면에 focus가 잡히면 실행
-
-    useCallback(() => {
-      const getLoginInfo = async () => {
-        //SecureStore에 저장된 로그인 정보를 가져옴
-        const loginInfo = await SecureStore.getItemAsync('loginInfo');
-
-        //가져온 데이터를 원래 형태인 객체로 변환
-        const result = JSON.parse(loginInfo);
-
-        console.log('로그인 데이터 = ', result);
-      }
-    }
-  )
-
   return (
     <ScrollView style={styles.container}>
       {/* 헤더 영역 */}
@@ -225,11 +209,18 @@ const Review = () => {
       <RegReviewScreen
         itemNum={itemNum}
         isOpenRegReview={modalVisible}
-        onClose={() => {
+        onClose={(isUpdated) => { 
+          console.log('🔔 review.jsx onClose 호출됨, isUpdated:', isUpdated);
           setModalVisible(false);
-          setReload(Date.now());
+          if (isUpdated) {
+            console.log('✅ 리뷰 목록 갱신 시작');
+            setReload(Date.now()); 
+            console.log('✅ onReviewUpdate 호출 시도');
+            onReviewUpdate?.(); 
+            console.log('✅ onReviewUpdate 호출 완료');
+          }
         }}
-      />
+/>
     </ScrollView>
   );
 };
