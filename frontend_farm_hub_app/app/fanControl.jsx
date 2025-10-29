@@ -8,6 +8,8 @@ import { PYTHON_URL, SERVER_URL } from '../constants/appConst'
 
 
 const fanControl = () => {
+  //on / off 데이터를 저장할 state 변수
+  const [controlData, setControlData] = useState(); 
 
   //지정 온도를 저장할 state 변수
   const [temperature, setTemperature] = useState('');
