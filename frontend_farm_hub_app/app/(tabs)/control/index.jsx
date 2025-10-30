@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { PYTHON_URL } from "../../../constants/appConst";
 
@@ -64,7 +64,7 @@ const ControlScreen = () => {
   }, []); 
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} contentContainerStyle={{ flexGrow: 1 }}>
       <Text style={styles.title}>축사 기기 제어</Text>
 
       <View style={styles.control}>
@@ -110,6 +110,12 @@ const ControlScreen = () => {
             </View>
           </View>
         </TouchableOpacity>
+      </View>
+      <View style={styles.imageSection}>  
+        <Image 
+          source={require('@/assets/images/adminHeader.png')} 
+          style={styles.image}
+        />
       </View>
     </SafeAreaView>
   );
@@ -213,5 +219,13 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: "#eeeeee",
     marginVertical: 4,
+  },
+  imageSection: {
+    marginTop: 'auto'
+  },
+  image: {
+    width: '100%',
+    height: 250, 
+    resizeMode: 'cover'
   },
 });

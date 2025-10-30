@@ -5,13 +5,11 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  TextInput,
   Alert,
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import { Ionicons } from '@expo/vector-icons';
@@ -26,11 +24,10 @@ import Review from './review';
 import Qna from './qna';
 
 const ProductDetail = () => {
-  const navigation = useNavigation();
   const { itemNum } = useLocalSearchParams();
 
   const [itemDetail, setItemDetail] = useState({});
-  const [cnt, setCnt] = useState('1');
+  const [cnt, setCnt] = useState(1); // 숫자로 변경
   const [activeTab, setActiveTab] = useState('intro');
   const [loading, setLoading] = useState(true); 
   const [reload, setReload] = useState(0);
@@ -41,7 +38,7 @@ const ProductDetail = () => {
     return Math.floor(price * (1 - discountRate / 100));
   };
 
-  // 로그인 체크 공통 함수 (SecureStore 사용)
+  // 로그인 체크 공통 함수
   const checkLogin = async (message = '로그인이 필요한 서비스입니다.') => {
     try {
       const loginData = await SecureStore.getItemAsync('loginInfo');
@@ -56,7 +53,7 @@ const ProductDetail = () => {
       }
       return true;
     } catch (error) {
-      console.log(error);
+      console.error('로그인 체크 에러:', error);
       return false;
     }
   };
@@ -71,7 +68,7 @@ const ProductDetail = () => {
 
       const response = await axios.post(`${SERVER_URL}/carts`, {
         itemNum,
-        cartCnt: parseInt(cnt),
+        cartCnt: cnt, // 이미 숫자
         memId,
       });
 
@@ -88,8 +85,9 @@ const ProductDetail = () => {
         ]
       );
     } catch (error) {
-      console.log(error);
-      Alert.alert('오류', error.response?.data || '장바구니 추가 실패');
+      console.error('장바구니 추가 에러:', error);
+      const errorMsg = error.response?.data?.message || error.response?.data || '장바구니 추가에 실패했습니다';
+      Alert.alert('오류', errorMsg);
     }
   };
 
@@ -161,18 +159,19 @@ const ProductDetail = () => {
             await axios.post(`${SERVER_URL}/buy`, {
               itemNum,
               memId,
-              buyCnt: parseInt(cnt),
+              buyCnt: cnt, 
             });
 
             Alert.alert('구매 완료', '구매가 완료되었습니다.', [
               {
                 text: '확인',
-                onPress: () => navigation.navigate('BuyList'),
+                onPress: () => router.push('/my-page/orders'), 
               },
             ]);
           } catch (error) {
-            console.log(error);
-            Alert.alert('오류', error.response?.data || '구매 실패');
+            console.error('구매 에러:', error);
+            const errorMsg = error.response?.data?.message || error.response?.data || '구매에 실패했습니다';
+            Alert.alert('오류', errorMsg);
           }
         },
       },
@@ -187,7 +186,7 @@ const ProductDetail = () => {
       setItemDetail(response.data);
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error('상품 정보 조회 에러:', error);
       setLoading(false);
     }
   };
@@ -219,12 +218,11 @@ const ProductDetail = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.container}>
-        {/* 상품 정보 영역 */}
         <View style={styles.itemInfo}>
           <View style={styles.titleDiv}>
             <PageTitle title='상품 상세정보' titleSize={180} />
           </View>
-          {/* 메인 이미지 */}
+          
           <View style={styles.mainImgDiv}>
             {getMainImage() ? (
               <Image source={{ uri: getMainImage() }} style={styles.mainImg} />
@@ -235,7 +233,6 @@ const ProductDetail = () => {
             )}
           </View>
 
-          {/* 상품 소개 */}
           <View style={styles.itemIntro}>
             <Text style={styles.itemTitle}>{itemDetail.itemName}</Text>
 
@@ -293,21 +290,20 @@ const ProductDetail = () => {
               </View>
             </View>
 
-            {/* 수량 입력 */}
             <View style={styles.cartCnt}>
               <Input
                 keyboardType="number-pad"
-                value={cnt}
-                onChangeText={setCnt}
+                value={String(cnt)}
+                onChangeText={(text) => setCnt(parseInt(text) || 1)}
               />
             </View>
 
-            {/* 버튼들 */}
             <View style={styles.btns}>
               {/* 찜한상품 버튼 - 찜 상태에 따라 색상 변경 */}
               <Button
                 bgColor={isDibbed ? '#FF6B6B' : colors.GRAY_500}
                 style={styles.button}
+              />
                 onPress={toggleDibs}
               >
                 <Ionicons 
@@ -326,7 +322,6 @@ const ProductDetail = () => {
                 onPress={insertCart}
                 style={styles.button}
               />
-              {/* 구매하기 버튼 - 녹색 */}
               <Button
                 title='구매하기'
                 bgColor={colors.GREEN}
@@ -337,7 +332,6 @@ const ProductDetail = () => {
           </View>
         </View>
 
-        {/* 탭 메뉴 */}
         <View style={styles.detailMenuDiv}>
           <TouchableOpacity
             style={[styles.tabButton, activeTab === 'intro' && styles.activeTab]}
@@ -383,7 +377,6 @@ const ProductDetail = () => {
           </TouchableOpacity>
         </View>
 
-        {/* 상세 내용 */}
         <View style={styles.details}>
           {activeTab === 'intro' && (
             <View style={styles.detailContent}>
@@ -395,10 +388,7 @@ const ProductDetail = () => {
               <Review 
                 itemDetail={itemDetail}
                 onReviewUpdate={() => {
-                  console.log('🔔 index.jsx onReviewUpdate 호출됨');
-                  console.log('현재 reload 값:', reload);
                   setReload(reload + 1);
-                  console.log('새 reload 값:', reload + 1);
                 }} 
               />
             </View>
@@ -512,13 +502,6 @@ const styles = StyleSheet.create({
   },
   cartCnt: {
     marginBottom: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#cccccc',
-    borderRadius: 4,
-    padding: 12,
-    fontSize: 16,
   },
   btns: {
     flexDirection: 'row',

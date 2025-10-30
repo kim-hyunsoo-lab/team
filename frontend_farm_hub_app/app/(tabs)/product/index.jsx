@@ -194,6 +194,12 @@ const ProductScreen = () => {
         {/* 할인상품 섹션: 처음 5개 상품 표시 */}
         {renderSection('할인상품', discountProductList, 'discount-product')}
       </ScrollView>
+      <View style={styles.imageSection}>            
+        <Image 
+          source={require('@/assets/images/header0.png')} 
+          style={styles.image}
+        />
+      </View>
     </SafeAreaView>
   )
 }
@@ -352,5 +358,14 @@ const styles = StyleSheet.create({
     color: '#fff', // 흰색
     fontSize: 12,
     fontWeight: 'bold',
+  },
+  imageSection: {
+    paddingTop: 5,
+    marginTop: 'auto'
+  },
+  image: {
+    width: '100%',
+    height: 50, 
+    resizeMode: 'cover',
   },
 })

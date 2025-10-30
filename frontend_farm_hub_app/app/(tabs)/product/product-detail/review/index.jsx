@@ -7,8 +7,9 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  Pressable,
 } from 'react-native';
-import { useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import dayjs from 'dayjs';
@@ -38,6 +39,8 @@ const Review = ({ itemDetail, onReviewUpdate }) => {
 
   //모달창 보이기 여부
   const [modalVisible, setModalVisible] = useState(false);
+
+  const router = useRouter();
 
   // 로그인 정보 가져오기 (SecureStore 사용)
   useEffect(() => {
@@ -131,7 +134,14 @@ const Review = ({ itemDetail, onReviewUpdate }) => {
           />
         ) : (
           <Text style={styles.loginRequiredText}>
-            리뷰를 쓰려면 먼저 로그인을 해야 합니다
+            리뷰를 쓰려면 먼저{' '} 
+            <Text 
+              style={[styles.loginRequiredText, { textDecorationLine: 'underline' }]}
+              onPress={() => router.push('/auth/login')}
+            >
+              로그인
+            </Text>
+            해야 합니다
           </Text>
         )}
       </View>
