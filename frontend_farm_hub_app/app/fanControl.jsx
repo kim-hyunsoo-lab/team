@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
+  Alert,
   Keyboard,
   StyleSheet,
   Switch,
@@ -76,10 +78,8 @@ const fanControl = () => {
       }));
 
       // 실제 API 호출 (Python 서버에 해당 엔드포인트 추가 필요)
-      /*
       const response = await axios.post(`${PYTHON_URL}/fanMode/${newMode}`);
-      console.log('모드 변경 성공:', response.data);
-      */
+      console.log("모드 변경 성공:", response.data);
 
       Alert.alert(
         "모드 변경",
@@ -105,10 +105,8 @@ const fanControl = () => {
       console.log(`팬 ${action} 요청 중...`);
 
       // 임시로 상태만 변경 (실제 API 연동 시 주석 해제)
-      /*
       const response = await axios.post(`${PYTHON_URL}/fanControl/${action}`);
-      console.log('팬 제어 성공:', response.data);
-      */
+      console.log("팬 제어 성공:", response.data);
 
       // 상태 업데이트
       setIsEnabled(newState);
