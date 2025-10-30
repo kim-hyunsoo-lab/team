@@ -100,7 +100,7 @@ const Login = () => {
       <SafeAreaView style={styles.container}>
         <PageTitle title="로그인" />
         <View style={styles.content}>
-          <View>
+          <View style={{ marginBottom: 13}}>
             <Input
               name="memId"
               value={loginData.memId}
@@ -115,7 +115,7 @@ const Login = () => {
             />
           </View>
 
-          <View style={{ marginBottom: 12 }}>
+          <View style={{ marginBottom: 9 }}>
             <Input
               name="memPw"
               value={loginData.memPw}
@@ -132,7 +132,7 @@ const Login = () => {
             />
           </View>
 
-          <View style={{ marginBottom: 8 }}>
+          <View style={{ marginBottom: 7 }}>
             <Button onPress={loginNow} title="로그인" />
           </View>
 
@@ -186,7 +186,8 @@ const styles = StyleSheet.create({
   content: {
     paddingRight: 15,
     paddingLeft: 15,
-    marginTop: 10,
+    marginTop: 11,
+
   },
   joinLink: {
     alignItems: "flex-end",

@@ -162,17 +162,16 @@ const Join = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <SafeAreaView style={styles.container}>
-      <PageTitle title='회원가입' />
-      
+      <PageTitle title='회원가입' />      
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1 }}
-      >
-        
+        style={{ flex: 1 }}        
+      >        
           <ScrollView 
-            contentContainerStyle={{ paddingBottom: 20 }}
+            contentContainerStyle={{ paddingBottom: 0 }}  
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
+            style={{marginTop: 17, marginBottom: 0}} 
           >
 
              <View style={[styles.addressContainer, { marginTop: 12 }]}>
@@ -448,9 +447,8 @@ const Join = () => {
               {errorMsg.pwAnswer && <Text style={styles.errorText}>{errorMsg.pwAnswer}</Text>}
             </View>
           </ScrollView>
-
           
-            <View style={{ marginTop: 8, marginBottom: 5 }}>
+            <View style={{ marginTop: 0, marginBottom: 5 }}>
               <Button 
                 disabled={isDisabledBtn} 
                 onPress={regNewShopMember} 
@@ -483,7 +481,7 @@ const Join = () => {
             </Pressable>      
 
           
-      </KeyboardAvoidingView>
+      </KeyboardAvoidingView >
     </SafeAreaView>
     </TouchableWithoutFeedback>
   )
@@ -573,7 +571,7 @@ const styles = StyleSheet.create({
   },
   postcode: {
     flex: 1,
-  }
-})
+  },
+});
 
 export default Join
