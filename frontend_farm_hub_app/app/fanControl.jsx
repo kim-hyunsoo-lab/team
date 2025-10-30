@@ -5,7 +5,6 @@ import {
   Alert,
   Keyboard,
   StyleSheet,
-  Alert,
   Switch,
   Text,
   TouchableWithoutFeedback,
@@ -33,7 +32,7 @@ const fanControl = () => {
   const [fanStatus, setFanStatus] = useState({
     isOn: false,
     mode: "auto", // 'auto' | 'manual'
-    lastUpdate: null
+    lastUpdate: null,
   });
 
   //현재 팬 상태를 저장하는 함수
@@ -42,7 +41,7 @@ const fanControl = () => {
   const [currentSettings, setCurrentSettings] = useState({
     temp: 0,
     air: 0,
-    ill: 0
+    ill: 0,
   });
 
   //컴포넌트 마운트 시 현재 상태 가져오기

@@ -1,35 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import Button from "@/components/common/Button";
+import Input from "@/components/common/Input";
+import PageTitle from "@/components/common/PageTitle";
+import { SERVER_URL } from "@/constants/appConst";
+import { colors } from "@/constants/colorConstant";
+import { Ionicons } from "@expo/vector-icons";
+import axios from "axios";
+import { router, useLocalSearchParams } from "expo-router";
+import * as SecureStore from "expo-secure-store";
+import { useEffect, useState } from "react";
 import {
-  View,
-  Text,
+  ActivityIndicator,
+  Alert,
   Image,
   ScrollView,
-  TouchableOpacity,
-  Alert,
   StyleSheet,
-  ActivityIndicator,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import axios from 'axios';
-import * as SecureStore from 'expo-secure-store';
-import { Ionicons } from '@expo/vector-icons';
-import { SERVER_URL } from '@/constants/appConst';
-import { colors } from '@/constants/colorConstant';
-import Input from '@/components/common/Input';
-import Button from '@/components/common/Button';
-import { router, useLocalSearchParams } from 'expo-router';
-import PageTitle from '@/components/common/PageTitle';
-import Info from './info';
-import Review from './review';
-import Qna from './qna';
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Info from "./info";
+import Qna from "./qna";
+import Review from "./review";
 
 const ProductDetail = () => {
   const { itemNum } = useLocalSearchParams();
 
   const [itemDetail, setItemDetail] = useState({});
   const [cnt, setCnt] = useState(1); // 숫자로 변경
-  const [activeTab, setActiveTab] = useState('intro');
-  const [loading, setLoading] = useState(true); 
+  const [activeTab, setActiveTab] = useState("intro");
+  const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(0);
   const [isDibbed, setIsDibbed] = useState(false); // 찜 여부 상태
 
@@ -39,31 +39,31 @@ const ProductDetail = () => {
   };
 
   // 로그인 체크 공통 함수
-  const checkLogin = async (message = '로그인이 필요한 서비스입니다.') => {
+  const checkLogin = async (message = "로그인이 필요한 서비스입니다.") => {
     try {
-      const loginData = await SecureStore.getItemAsync('loginInfo');
+      const loginData = await SecureStore.getItemAsync("loginInfo");
       if (!loginData || JSON.parse(loginData) === null) {
-        Alert.alert('알림', message, [
+        Alert.alert("알림", message, [
           {
-            text: '확인',
-            onPress: () => router.push('/auth/login'),
+            text: "확인",
+            onPress: () => router.push("/auth/login"),
           },
         ]);
         return false;
       }
       return true;
     } catch (error) {
-      console.error('로그인 체크 에러:', error);
+      console.error("로그인 체크 에러:", error);
       return false;
     }
   };
 
   // 장바구니 버튼 클릭
   const insertCart = async () => {
-    if (!(await checkLogin('장바구니는 로그인이 필요한 서비스입니다.'))) return;
+    if (!(await checkLogin("장바구니는 로그인이 필요한 서비스입니다."))) return;
 
     try {
-      const loginData = await SecureStore.getItemAsync('loginInfo');
+      const loginData = await SecureStore.getItemAsync("loginInfo");
       const memId = JSON.parse(loginData).memId;
 
       const response = await axios.post(`${SERVER_URL}/carts`, {
@@ -74,38 +74,41 @@ const ProductDetail = () => {
 
       console.log(response.data);
       Alert.alert(
-        '장바구니',
-        '장바구니에 상품을 담았습니다.\n장바구니 페이지로 이동할까요?',
+        "장바구니",
+        "장바구니에 상품을 담았습니다.\n장바구니 페이지로 이동할까요?",
         [
-          { text: '취소', style: 'cancel' },
+          { text: "취소", style: "cancel" },
           {
-            text: '확인',
-            onPress: () => router.push('/product/product-detail/shop'),
+            text: "확인",
+            onPress: () => router.push("/product/product-detail/shop"),
           },
         ]
       );
     } catch (error) {
-      console.error('장바구니 추가 에러:', error);
-      const errorMsg = error.response?.data?.message || error.response?.data || '장바구니 추가에 실패했습니다';
-      Alert.alert('오류', errorMsg);
+      console.error("장바구니 추가 에러:", error);
+      const errorMsg =
+        error.response?.data?.message ||
+        error.response?.data ||
+        "장바구니 추가에 실패했습니다";
+      Alert.alert("오류", errorMsg);
     }
   };
 
   // 찜하기 토글 (추가/삭제)
   const toggleDibs = async () => {
-    if (!(await checkLogin('찜하기는 로그인이 필요한 서비스입니다.'))) return;
+    if (!(await checkLogin("찜하기는 로그인이 필요한 서비스입니다."))) return;
 
     try {
-      const loginData = await SecureStore.getItemAsync('loginInfo');
+      const loginData = await SecureStore.getItemAsync("loginInfo");
       const memId = JSON.parse(loginData).memId;
 
       if (isDibbed) {
         // 이미 찜한 상품 -> 삭제
         await axios.delete(`${SERVER_URL}/dibs/item`, {
-          params: { memId, itemNum }
+          params: { memId, itemNum },
         });
         setIsDibbed(false);
-        Alert.alert('찜하기', '찜 목록에서 제거되었습니다.');
+        Alert.alert("찜하기", "찜 목록에서 제거되었습니다.");
       } else {
         // 찜하지 않은 상품 -> 추가
         await axios.post(`${SERVER_URL}/dibs`, {
@@ -113,65 +116,68 @@ const ProductDetail = () => {
           memId,
         });
         setIsDibbed(true);
-        Alert.alert('찜하기', '찜 목록에 추가되었습니다!', [
-          { text: '확인', style: 'default' },
+        Alert.alert("찜하기", "찜 목록에 추가되었습니다!", [
+          { text: "확인", style: "default" },
           {
-            text: '찜 목록 보기',
-            onPress: () => router.push('/my-page/dibs'),
+            text: "찜 목록 보기",
+            onPress: () => router.push("/my-page/dibs"),
           },
         ]);
       }
     } catch (error) {
       console.log(error);
-      Alert.alert('오류', error.response?.data || '찜하기 실패');
+      Alert.alert("오류", error.response?.data || "찜하기 실패");
     }
   };
 
   // 찜 여부 확인
   const checkDibsStatus = async () => {
     try {
-      const loginData = await SecureStore.getItemAsync('loginInfo');
+      const loginData = await SecureStore.getItemAsync("loginInfo");
       if (!loginData) return;
-      
+
       const memId = JSON.parse(loginData).memId;
       const response = await axios.get(`${SERVER_URL}/dibs/check`, {
-        params: { memId, itemNum }
+        params: { memId, itemNum },
       });
       setIsDibbed(response.data);
     } catch (error) {
-      console.log('찜 여부 확인 오류:', error);
+      console.log("찜 여부 확인 오류:", error);
     }
   };
 
   // 구매 버튼 클릭
   const buyItem = async () => {
-    if (!(await checkLogin('로그인해 주세요.'))) return;
+    if (!(await checkLogin("로그인해 주세요."))) return;
 
-    Alert.alert('구매 확인', '상품을 구매하시겠습니까?', [
-      { text: '취소', style: 'cancel' },
+    Alert.alert("구매 확인", "상품을 구매하시겠습니까?", [
+      { text: "취소", style: "cancel" },
       {
-        text: '확인',
+        text: "확인",
         onPress: async () => {
           try {
-            const loginData = await SecureStore.getItemAsync('loginInfo');
+            const loginData = await SecureStore.getItemAsync("loginInfo");
             const memId = JSON.parse(loginData).memId;
 
             await axios.post(`${SERVER_URL}/buy`, {
               itemNum,
               memId,
-              buyCnt: cnt, 
+              buyCnt: cnt,
             });
 
-            Alert.alert('구매 완료', '구매가 완료되었습니다.', [
+            Alert.alert("구매 완료", "구매가 완료되었습니다.", [
               {
-                text: '확인',
-                onPress: () => router.push('/my-page/orders'), 
+                text: "확인",
+                onPress: () => router.push("/my-page/orders"),
               },
             ]);
           } catch (error) {
-            console.error('구매 에러:', error);
-            const errorMsg = error.response?.data?.message || error.response?.data || '구매에 실패했습니다';
-            Alert.alert('오류', errorMsg);
+            console.error("구매 에러:", error);
+            const errorMsg =
+              error.response?.data?.message ||
+              error.response?.data ||
+              "구매에 실패했습니다";
+            Alert.alert("오류", errorMsg);
           }
         },
       },
@@ -186,7 +192,7 @@ const ProductDetail = () => {
       setItemDetail(response.data);
       setLoading(false);
     } catch (error) {
-      console.error('상품 정보 조회 에러:', error);
+      console.error("상품 정보 조회 에러:", error);
       setLoading(false);
     }
   };
@@ -199,10 +205,8 @@ const ProductDetail = () => {
   // 메인 이미지 찾기
   const getMainImage = () => {
     if (itemDetail.imgList) {
-      const mainImg = itemDetail.imgList.find((img) => img.isMain === 'Y');
-      return mainImg
-        ? `${SERVER_URL}/upload/${mainImg.attachedImgName}`
-        : null;
+      const mainImg = itemDetail.imgList.find((img) => img.isMain === "Y");
+      return mainImg ? `${SERVER_URL}/upload/${mainImg.attachedImgName}` : null;
     }
     return null;
   };
@@ -220,9 +224,9 @@ const ProductDetail = () => {
       <ScrollView style={styles.container}>
         <View style={styles.itemInfo}>
           <View style={styles.titleDiv}>
-            <PageTitle title='상품 상세정보' titleSize={180} />
+            <PageTitle title="상품 상세정보" titleSize={180} />
           </View>
-          
+
           <View style={styles.mainImgDiv}>
             {getMainImage() ? (
               <Image source={{ uri: getMainImage() }} style={styles.mainImg} />
@@ -259,7 +263,8 @@ const ProductDetail = () => {
                         {calculateDiscountedPrice(
                           itemDetail.price,
                           itemDetail.discountRate
-                        ).toLocaleString()}원
+                        ).toLocaleString()}
+                        원
                       </Text>
                     </>
                   ) : (
@@ -301,29 +306,28 @@ const ProductDetail = () => {
             <View style={styles.btns}>
               {/* 찜한상품 버튼 - 찜 상태에 따라 색상 변경 */}
               <Button
-                bgColor={isDibbed ? '#FF6B6B' : colors.GRAY_500}
+                bgColor={isDibbed ? "#FF6B6B" : colors.GRAY_500}
                 style={styles.button}
-              />
                 onPress={toggleDibs}
               >
-                <Ionicons 
-                  name={isDibbed ? "heart" : "heart-outline"} 
-                  size={18} 
-                  color="white" 
+                <Ionicons
+                  name={isDibbed ? "heart" : "heart-outline"}
+                  size={18}
+                  color="white"
                 />
                 <Text style={styles.buttonText}>
-                  {isDibbed ? '찜 완료' : '찜하기'}
+                  {isDibbed ? "찜 완료" : "찜하기"}
                 </Text>
               </Button>
               {/* 장바구니 버튼 - 갈색 */}
               <Button
-                title='장바구니'
+                title="장바구니"
                 bgColor={colors.BROWN}
                 onPress={insertCart}
                 style={styles.button}
               />
               <Button
-                title='구매하기'
+                title="구매하기"
                 bgColor={colors.GREEN}
                 onPress={buyItem}
                 style={styles.button}
@@ -334,13 +338,16 @@ const ProductDetail = () => {
 
         <View style={styles.detailMenuDiv}>
           <TouchableOpacity
-            style={[styles.tabButton, activeTab === 'intro' && styles.activeTab]}
-            onPress={() => setActiveTab('intro')}
+            style={[
+              styles.tabButton,
+              activeTab === "intro" && styles.activeTab,
+            ]}
+            onPress={() => setActiveTab("intro")}
           >
             <Text
               style={[
                 styles.tabText,
-                activeTab === 'intro' && styles.activeTabText,
+                activeTab === "intro" && styles.activeTabText,
               ]}
             >
               상품정보
@@ -349,27 +356,27 @@ const ProductDetail = () => {
           <TouchableOpacity
             style={[
               styles.tabButton,
-              activeTab === 'review' && styles.activeTab,
+              activeTab === "review" && styles.activeTab,
             ]}
-            onPress={() => setActiveTab('review')}
+            onPress={() => setActiveTab("review")}
           >
             <Text
               style={[
                 styles.tabText,
-                activeTab === 'review' && styles.activeTabText,
+                activeTab === "review" && styles.activeTabText,
               ]}
             >
               이용후기
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.tabButton, activeTab === 'qna' && styles.activeTab]}
-            onPress={() => setActiveTab('qna')}
+            style={[styles.tabButton, activeTab === "qna" && styles.activeTab]}
+            onPress={() => setActiveTab("qna")}
           >
             <Text
               style={[
                 styles.tabText,
-                activeTab === 'qna' && styles.activeTabText,
+                activeTab === "qna" && styles.activeTabText,
               ]}
             >
               상품문의
@@ -378,22 +385,22 @@ const ProductDetail = () => {
         </View>
 
         <View style={styles.details}>
-          {activeTab === 'intro' && (
+          {activeTab === "intro" && (
             <View style={styles.detailContent}>
               <Info itemDetail={itemDetail} />
             </View>
           )}
-          {activeTab === 'review' && (
+          {activeTab === "review" && (
             <View style={styles.detailContent}>
-              <Review 
+              <Review
                 itemDetail={itemDetail}
                 onReviewUpdate={() => {
                   setReload(reload + 1);
-                }} 
+                }}
               />
             </View>
           )}
-          {activeTab === 'qna' && (
+          {activeTab === "qna" && (
             <View style={styles.detailContent}>
               <Qna />
             </View>
@@ -407,127 +414,127 @@ const ProductDetail = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   container: {
     flex: 1,
   },
   loadingContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   itemInfo: {
     padding: 20,
   },
   mainImgDiv: {
-    width: '100%',
+    width: "100%",
     height: 350,
     marginBottom: 20,
   },
   mainImg: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
     borderRadius: 8,
   },
   noImage: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#eeeeee',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#eeeeee",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 8,
   },
   itemIntro: {
-    width: '100%',
+    width: "100%",
   },
   itemTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
-    color: '#333',
+    color: "#333",
   },
   discountBadge: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#FF4444',
+    alignSelf: "flex-start",
+    backgroundColor: "#FF4444",
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 6,
     marginBottom: 15,
   },
   discountBadgeText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   infoTable: {
     marginBottom: 20,
   },
   infoRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     borderTopWidth: 1,
-    borderTopColor: '#cccccc',
+    borderTopColor: "#cccccc",
     paddingVertical: 15,
   },
   infoLabel: {
-    width: '30%',
+    width: "30%",
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
   },
   infoValue: {
-    width: '70%',
+    width: "70%",
     fontSize: 16,
-    color: '#666',
+    color: "#666",
   },
   priceContainer: {
-    width: '70%',
+    width: "70%",
   },
   originalPrice: {
     fontSize: 14,
-    color: '#999',
-    textDecorationLine: 'line-through',
+    color: "#999",
+    textDecorationLine: "line-through",
     marginBottom: 4,
   },
   discountedPrice: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FF4444',
+    fontWeight: "bold",
+    color: "#FF4444",
   },
   ratingRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '70%',
+    flexDirection: "row",
+    alignItems: "center",
+    width: "70%",
   },
   cartCnt: {
     marginBottom: 20,
   },
   btns: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 10,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   button: {
     flex: 1,
     height: 45,
   },
   detailMenuDiv: {
-    flexDirection: 'row',
+    flexDirection: "row",
     borderTopWidth: 1,
-    borderTopColor: '#cccccc',
+    borderTopColor: "#cccccc",
     marginTop: 20,
   },
   tabButton: {
     flex: 1,
     paddingVertical: 15,
-    backgroundColor: '#eeeeee',
+    backgroundColor: "#eeeeee",
     borderBottomWidth: 2,
     borderBottomColor: colors.BROWN,
-    alignItems: 'center',
+    alignItems: "center",
   },
   activeTab: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderTopWidth: 2,
     borderLeftWidth: 2,
     borderRightWidth: 2,
@@ -541,7 +548,7 @@ const styles = StyleSheet.create({
     color: colors.BROWN,
   },
   activeTabText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   details: {
     padding: 20,
@@ -554,9 +561,9 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: 14.5,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
 
