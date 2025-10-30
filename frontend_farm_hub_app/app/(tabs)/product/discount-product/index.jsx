@@ -3,44 +3,25 @@ import { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import axios from 'axios'
 import { router } from 'expo-router'
-import { SERVER_URL } from '@/constants/appConst'
-import Menu from '@/components/Menu'
-import { colors } from '@/constants/colorConstant'
-import PageTitle from '@/components/common/PageTitle'
+import { SERVER_URL } from '../../../../constants/appConst'
+import Menu from '../../../../components/Menu'
+import { colors } from '../../../../constants/colorConstant'
+import PageTitle from '../../../../components/common/PageTitle'
 
-const PopularProductList = () => {
+const DiscountProductList = () => {
   const [productList, setProductList] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // 서버에서 상품 데이터 가져오기
-    axios.get(`${SERVER_URL}/items`)
+    // 서버에서 할인 상품 데이터 가져오기
+    axios.get(`${SERVER_URL}/items/on-sale`)
       .then(res => {
-        // reviewAvg 기준으로 정렬 (복합 조건)
-        const sortedProducts = [...res.data].sort((a, b) => {
-          const avgA = a.reviewAvg || 0
-          const avgB = b.reviewAvg || 0
-          const cntA = a.reviewCnt || 0
-          const cntB = b.reviewCnt || 0
-
-          // 1순위: 평점 높은 순
-          if (avgB !== avgA) {
-            return avgB - avgA
-          }
-
-          // 2순위: 리뷰 개수 많은 순
-          if (cntB !== cntA) {
-            return cntB - cntA
-          }
-
-          // 3순위: 가격 낮은 순
-          return a.price - b.price
-        })
-        setProductList(sortedProducts)
+        console.log('할인 상품 API 응답:', res.data)
+        setProductList(res.data)
         setLoading(false)
       })
       .catch(e => {
-        console.log(e)
+        console.log('할인 상품 조회 오류:', e)
         setLoading(false)
       })
   }, [])
@@ -56,7 +37,7 @@ const PopularProductList = () => {
       ? `${SERVER_URL}/upload/${item.imgList[0].attachedImgName}`
       : null
 
-    const discountedPrice = calculateDiscountedPrice(item.price, item.discountRate || 0)
+    const discountedPrice = calculateDiscountedPrice(item.price, item.discountRate)
 
     return (
       <TouchableOpacity
@@ -93,10 +74,13 @@ const PopularProductList = () => {
               <Text style={styles.productPrice}>{item.price?.toLocaleString()}원</Text>
             )}
           </View>
-          {item.reviewAvg > 0 && (
+          {/* 평점 표시 */}
+          {item.reviewAvg > 0 ? (
             <Text style={styles.rating}>
               ⭐ {item.reviewAvg.toFixed(1)} ({item.reviewCnt || 0})
             </Text>
+          ) : (
+            <Text style={styles.noReview}>리뷰 없음</Text>
           )}
         </View>
       </TouchableOpacity>
@@ -106,7 +90,8 @@ const PopularProductList = () => {
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
-        <Menu activeMenu="popular-product" />
+        <Menu activeMenu="discount-product" />
+
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.BROWN} />
         </View>
@@ -114,11 +99,26 @@ const PopularProductList = () => {
     )
   }
 
+  // 할인 상품이 없을 때
+  if (productList.length === 0) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Menu activeMenu="discount-product" />
+        <View style={styles.titleWrapper}>
+          <PageTitle title='할인 상품' />
+        </View>
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>현재 할인 중인 상품이 없습니다.</Text>
+        </View>
+      </SafeAreaView>
+    )
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <Menu activeMenu="popular-product" />
+      <Menu activeMenu="discount-product" />
       <View style={styles.titleWrapper}>
-        <PageTitle title='인기상품' />
+        <PageTitle title='할인 상품' />
       </View>
       <FlatList
         data={productList}
@@ -132,7 +132,7 @@ const PopularProductList = () => {
   )
 }
 
-export default PopularProductList
+export default DiscountProductList
 
 const styles = StyleSheet.create({
   container: {
@@ -143,6 +143,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  emptyText: {
+    fontSize: 18,
+    color: '#888',
+    textAlign: 'center',
   },
   listContainer: {
     padding: 10,
@@ -217,11 +228,16 @@ const styles = StyleSheet.create({
   productPrice: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'brown',
+    color: '#FF4444',
   },
   rating: {
     fontSize: 12,
     color: '#666',
+    marginTop: 4,
+  },
+  noReview: {
+    fontSize: 12,
+    color: '#999',
     marginTop: 4,
   },
   titleWrapper: {

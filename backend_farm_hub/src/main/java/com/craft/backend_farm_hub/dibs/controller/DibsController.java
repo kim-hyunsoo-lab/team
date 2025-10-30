@@ -30,14 +30,21 @@ public class DibsController {
     }
   }
 
+  /**
+   * 찜 목록 조회
+   * @param memId 회원 ID (앱에서 전달, 웹에서는 세션에서 가져올 수도 있음)
+   * @return 찜 목록
+   */
   @GetMapping("")
   public ResponseEntity<?> getDibs (@RequestParam(required = false) String memId) {
     try {
+      // memId가 없으면 에러 응답
       if (memId == null || memId.isEmpty()) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body("회원 ID가 필요합니다.");
       }
+      
       List<DibsDTO> dibsList = dibsService.getDibs(memId);
       return ResponseEntity
               .status(HttpStatus.OK)
@@ -50,11 +57,58 @@ public class DibsController {
     }
   }
 
-  // 개별 찜 삭제
+  /**
+   * 찜 여부 확인
+   * @param memId 회원 ID
+   * @param itemNum 상품 번호
+   * @return 찜 여부 (true/false)
+   */
+  @GetMapping("/check")
+  public ResponseEntity<?> checkDibs (
+          @RequestParam String memId,
+          @RequestParam int itemNum
+  ) {
+    try {
+      boolean isDibbed = dibsService.checkDibs(memId, itemNum);
+      return ResponseEntity
+              .status(HttpStatus.OK)
+              .body(isDibbed);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body(false);
+    }
+  }
+
+  // 개별 찜 삭제 (dibsNum으로)
   @DeleteMapping("/{dibsNum}")
   public ResponseEntity<?> removeDibs (@PathVariable int dibsNum) {
     try {
       dibsService.removeDibs(dibsNum);
+      return ResponseEntity
+              .status(HttpStatus.OK)
+              .build();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body("삭제하지 못 했습니다.");
+    }
+  }
+
+  /**
+   * 찜 삭제 (memId와 itemNum으로)
+   * @param memId 회원 ID
+   * @param itemNum 상품 번호
+   */
+  @DeleteMapping("/item")
+  public ResponseEntity<?> removeDibsByItem (
+          @RequestParam String memId,
+          @RequestParam int itemNum
+  ) {
+    try {
+      dibsService.removeDibsByItem(memId, itemNum);
       return ResponseEntity
               .status(HttpStatus.OK)
               .build();

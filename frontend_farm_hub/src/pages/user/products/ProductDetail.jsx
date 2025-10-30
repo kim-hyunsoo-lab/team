@@ -23,6 +23,9 @@ const ProductDetail = () => {
   //로그인 데이터
   const loginData = sessionStorage.getItem('loginInfo');
 
+  // 찜 상태 관리
+  const [isDibbed, setIsDibbed] = useState(false);
+
   //로그인 체크 공통 함수
   const checkLogin = (message = '로그인이 필요한 서비스입니다.') => {
     if (JSON.parse(loginData) === null) {
@@ -69,44 +72,121 @@ const ProductDetail = () => {
     })
   }
 
-const fetchItem = () =>{
-  axios.get(`/api/items/${itemNum}`)
-  .then(res => {
-    console.log(res.data);
-    setItemDetail(res.data);
-  })
-  .catch(e => console.log(e));};
-
-useEffect(()=>{
-  fetchItem();
-  const reviewAvgUpdate = () =>{
-    fetchItem();};
-
-  window.addEventListener('reviewUpdated', reviewAvgUpdate);
-
-  return() => {
-    window.removeEventListener('reviewUpdated', reviewAvgUpdate);}
-}, [itemNum])
-
-  const [reviewList, setReviewList] = useState([]) 
-
-  const addDibs = () => {
-    if (!checkLogin()) return;
-    const confirmDibs = confirm('찜한 상품에 담으시겠습니까?')
-    if(!confirmDibs) return;
-    axios.post('/api/dibs', {
-      memId : JSON.parse(loginData).memId,
-      itemNum
-    })
+  const fetchItem = () =>{
+    axios.get(`/api/items/${itemNum}`)
     .then(res => {
-      alert("찜한 상품에 담았습니다.")
+      console.log(res.data);
+      setItemDetail(res.data);
+    })
+    .catch(e => console.log(e));
+  };
+
+  useEffect(()=>{
+    fetchItem();
+    const reviewAvgUpdate = () =>{
+      fetchItem();
+    };
+
+    window.addEventListener('reviewUpdated', reviewAvgUpdate);
+
+    return() => {
+      window.removeEventListener('reviewUpdated', reviewAvgUpdate);
+    }
+  }, [itemNum])
+
+  const [reviewList, setReviewList] = useState([]);
+
+  // 할인가 계산 함수
+  const calculateDiscountedPrice = (price, discountRate) => {
+    return Math.floor(price * (1 - discountRate / 100));
+  };
+
+  // 찜 상태 확인
+  useEffect(() => {
+    // 로그인하지 않았거나 itemNum이 없으면 확인하지 않음
+    if (!loginData || JSON.parse(loginData) === null || !itemNum) {
+      return;
+    }
+
+    const memId = JSON.parse(loginData).memId;
+    
+    // 방법 1: Path Variable 방식 (추천)
+    axios.get(`/api/dibs/check/${memId}/${itemNum}`)
+    .then(res => {
+      setIsDibbed(res.data); // true or false
     })
     .catch(e => {
-      console.log(e);
-      alert(e.response.data)
-    })
-  }
+      console.log('찜 상태 확인 에러:', e);
+      // 404나 다른 에러는 찜하지 않은 것으로 간주
+      setIsDibbed(false);
+    });
 
+    /* 방법 2: Query Parameter 방식
+    axios.get('/api/dibs/check', {
+      params: {
+        memId: memId,
+        itemNum: itemNum
+      }
+    })
+    .then(res => {
+      setIsDibbed(res.data);
+    })
+    .catch(e => {
+      console.log('찜 상태 확인 에러:', e);
+      setIsDibbed(false);
+    });
+    */
+  }, [itemNum, loginData]);
+
+  // 찜 토글 함수
+  const toggleDibs = () => {
+    if (!checkLogin()) return;
+
+    const memId = JSON.parse(loginData).memId;
+
+    if (isDibbed) {
+      // 찜 삭제
+      const confirmRemove = confirm('찜한 상품에서 제거하시겠습니까?');
+      if (!confirmRemove) return;
+
+      // DELETE 요청 - data 속성으로 body 전달
+      axios.delete('/api/dibs/item', {
+        params: {
+          memId: memId,
+          itemNum: itemNum
+        }
+      })
+      .then(res => {
+        alert('찜한 상품에서 제거되었습니다.');
+        setIsDibbed(false);
+      })
+      .catch(e => {
+        console.log('찜 삭제 에러:', e);
+        console.log('에러 응답:', e.response);
+        alert(e.response?.data || '오류가 발생했습니다.');
+      });
+
+    } else {
+      // 찜 추가
+
+      axios.post('/api/dibs', {
+        memId: memId,
+        itemNum: itemNum
+      })
+      .then(res => {
+        alert('찜한 상품에 담았습니다.');
+        setIsDibbed(true);
+        const moveToDibs = confirm('찜한 상품으로 이동할까요?');
+        if (moveToDibs) {
+          nav('/mypage/dibs');
+        }
+      })
+      .catch(e => {
+        console.log(e);
+        alert(e.response?.data || '오류가 발생했습니다.');
+      });
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -134,10 +214,29 @@ useEffect(()=>{
             <tbody>
               <tr>
                 <td>판매가</td>
-                <td>{
-                  itemDetail.price &&
-                  itemDetail.price.toLocaleString()
-                }원</td>
+                <td>
+                  {itemDetail.price && (
+                    <div className={styles.price_info}>
+                      {itemDetail.isOnSale && itemDetail.discountRate > 0 ? (
+                        <>
+                          <span className={styles.discount_badge_detail}>
+                            {itemDetail.discountRate}% 할인
+                          </span>
+                          <div className={styles.price_container_detail}>
+                            <span className={styles.original_price_detail}>
+                              {itemDetail.price.toLocaleString()}원
+                            </span>
+                            <span className={styles.discount_price_detail}>
+                              {calculateDiscountedPrice(itemDetail.price, itemDetail.discountRate).toLocaleString()}원
+                            </span>
+                          </div>
+                        </>
+                      ) : (
+                        <span>{itemDetail.price.toLocaleString()}원</span>
+                      )}
+                    </div>
+                  )}
+                </td>
               </tr>              
               <tr>
                 <td>부위</td>
@@ -167,12 +266,10 @@ useEffect(()=>{
             />
           </div>
           <div className={styles.btns}>
-            <Button
-              title='찜한상품'
-              color='gray'
-              size='100%'
-              onClick={e => addDibs()}
-            />
+            <Button color={isDibbed ? 'red' : 'gray'} size='100%' onClick={e => toggleDibs()}>
+              <i className={isDibbed ? "bi bi-heart-fill" : "bi bi-heart"}></i>
+              {' '}{isDibbed ? '찜 완료' : '찜하기'}
+            </Button>
             <Button
               title='장바구니'
               size='100%'
