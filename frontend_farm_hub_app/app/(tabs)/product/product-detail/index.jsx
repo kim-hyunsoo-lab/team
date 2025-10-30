@@ -34,6 +34,12 @@ const ProductDetail = () => {
   const [activeTab, setActiveTab] = useState('intro');
   const [loading, setLoading] = useState(true); 
   const [reload, setReload] = useState(0);
+  const [isDibbed, setIsDibbed] = useState(false); // 찜 여부 상태
+
+  // 할인가 계산 함수
+  const calculateDiscountedPrice = (price, discountRate) => {
+    return Math.floor(price * (1 - discountRate / 100));
+  };
 
   // 로그인 체크 공통 함수 (SecureStore 사용)
   const checkLogin = async (message = '로그인이 필요한 서비스입니다.') => {
@@ -87,6 +93,58 @@ const ProductDetail = () => {
     }
   };
 
+  // 찜하기 토글 (추가/삭제)
+  const toggleDibs = async () => {
+    if (!(await checkLogin('찜하기는 로그인이 필요한 서비스입니다.'))) return;
+
+    try {
+      const loginData = await SecureStore.getItemAsync('loginInfo');
+      const memId = JSON.parse(loginData).memId;
+
+      if (isDibbed) {
+        // 이미 찜한 상품 -> 삭제
+        await axios.delete(`${SERVER_URL}/dibs/item`, {
+          params: { memId, itemNum }
+        });
+        setIsDibbed(false);
+        Alert.alert('찜하기', '찜 목록에서 제거되었습니다.');
+      } else {
+        // 찜하지 않은 상품 -> 추가
+        await axios.post(`${SERVER_URL}/dibs`, {
+          itemNum,
+          memId,
+        });
+        setIsDibbed(true);
+        Alert.alert('찜하기', '찜 목록에 추가되었습니다!', [
+          { text: '확인', style: 'default' },
+          {
+            text: '찜 목록 보기',
+            onPress: () => router.push('/my-page/dibs'),
+          },
+        ]);
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert('오류', error.response?.data || '찜하기 실패');
+    }
+  };
+
+  // 찜 여부 확인
+  const checkDibsStatus = async () => {
+    try {
+      const loginData = await SecureStore.getItemAsync('loginInfo');
+      if (!loginData) return;
+      
+      const memId = JSON.parse(loginData).memId;
+      const response = await axios.get(`${SERVER_URL}/dibs/check`, {
+        params: { memId, itemNum }
+      });
+      setIsDibbed(response.data);
+    } catch (error) {
+      console.log('찜 여부 확인 오류:', error);
+    }
+  };
+
   // 구매 버튼 클릭
   const buyItem = async () => {
     if (!(await checkLogin('로그인해 주세요.'))) return;
@@ -136,6 +194,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     getItem();
+    checkDibsStatus(); // 찜 여부 확인
   }, [itemNum, reload]);
 
   // 메인 이미지 찾기
@@ -180,13 +239,38 @@ const ProductDetail = () => {
           <View style={styles.itemIntro}>
             <Text style={styles.itemTitle}>{itemDetail.itemName}</Text>
 
+            {/* 할인율 배지 */}
+            {itemDetail.isOnSale && itemDetail.discountRate > 0 && (
+              <View style={styles.discountBadge}>
+                <Text style={styles.discountBadgeText}>
+                  {itemDetail.discountRate}% 할인
+                </Text>
+              </View>
+            )}
+
             {/* 상품 정보 테이블 */}
             <View style={styles.infoTable}>
               <View style={styles.infoRow}>
                 <Text style={styles.infoLabel}>판매가</Text>
-                <Text style={styles.infoValue}>
-                  {itemDetail.price?.toLocaleString()}원
-                </Text>
+                <View style={styles.priceContainer}>
+                  {itemDetail.isOnSale && itemDetail.discountRate > 0 ? (
+                    <>
+                      <Text style={styles.originalPrice}>
+                        {itemDetail.price?.toLocaleString()}원
+                      </Text>
+                      <Text style={styles.discountedPrice}>
+                        {calculateDiscountedPrice(
+                          itemDetail.price,
+                          itemDetail.discountRate
+                        ).toLocaleString()}원
+                      </Text>
+                    </>
+                  ) : (
+                    <Text style={styles.infoValue}>
+                      {itemDetail.price?.toLocaleString()}원
+                    </Text>
+                  )}
+                </View>
               </View>
               <View style={styles.infoRow}>
                 <Text style={styles.infoLabel}>부위</Text>
@@ -220,12 +304,21 @@ const ProductDetail = () => {
 
             {/* 버튼들 */}
             <View style={styles.btns}>
-              {/* 찜한상품 버튼 - 회색 */}
+              {/* 찜한상품 버튼 - 찜 상태에 따라 색상 변경 */}
               <Button
-                title='찜한상품'
-                bgColor={colors.GRAY_500}
+                bgColor={isDibbed ? '#FF6B6B' : colors.GRAY_500}
                 style={styles.button}
-              />
+                onPress={toggleDibs}
+              >
+                <Ionicons 
+                  name={isDibbed ? "heart" : "heart-outline"} 
+                  size={18} 
+                  color="white" 
+                />
+                <Text style={styles.buttonText}>
+                  {isDibbed ? '찜 완료' : '찜하기'}
+                </Text>
+              </Button>
               {/* 장바구니 버튼 - 갈색 */}
               <Button
                 title='장바구니'
@@ -362,8 +455,21 @@ const styles = StyleSheet.create({
   itemTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 10,
     color: '#333',
+  },
+  discountBadge: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#FF4444',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+    marginBottom: 15,
+  },
+  discountBadgeText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
   infoTable: {
     marginBottom: 20,
@@ -384,6 +490,20 @@ const styles = StyleSheet.create({
     width: '70%',
     fontSize: 16,
     color: '#666',
+  },
+  priceContainer: {
+    width: '70%',
+  },
+  originalPrice: {
+    fontSize: 14,
+    color: '#999',
+    textDecorationLine: 'line-through',
+    marginBottom: 4,
+  },
+  discountedPrice: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FF4444',
   },
   ratingRow: {
     flexDirection: 'row',
@@ -449,6 +569,11 @@ const styles = StyleSheet.create({
   },
   titleDiv: {
     marginBottom: 15,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 14.5,
+    fontWeight: '600',
   },
 });
 

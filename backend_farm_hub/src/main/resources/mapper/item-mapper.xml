@@ -16,6 +16,9 @@
         <!--판매자(임시)-->
         <result column="SELLER" property="seller" />
         <result column="REVIEW_CNT" property="reviewCnt"/>
+        <!--할인 관련 필드-->
+        <result column="DISCOUNT_RATE" property="discountRate"/>
+        <result column="IS_ON_SALE" property="isOnSale"/>
         <!--상품 하나에 이미지는 여러개-->
         <collection property="imgList" resultMap="itemImg" />
     </resultMap>
@@ -60,6 +63,8 @@
         , REG_DATE
         , REVIEW_AVG
         , COALESCE(REVIEW_CNT, 0) AS REVIEW_CNT
+        , DISCOUNT_RATE
+        , IS_ON_SALE
         , (
         SELECT MEM_NAME
         FROM SHOP_MEMBER
@@ -92,6 +97,8 @@
             , ITEM_INTRO
             , REG_DATE
             , REVIEW_AVG
+            , DISCOUNT_RATE
+            , IS_ON_SALE
         <!--판매자이름(임시로 관리자 이름으로 지정해 놓음)-->
             , (
                 SELECT MEM_NAME
@@ -103,4 +110,45 @@
         ON item.ITEM_NUM = IMG.ITEM_NUM
         WHERE item.ITEM_NUM = #{itemNum}
     </select>
+
+    <!--할인 상품 목록 조회-->
+    <select id="getSaleItems" resultMap="items">
+        SELECT
+            ITEM.ITEM_NUM
+            , ITEM_NAME
+            , PRICE
+            , ATTACHED_IMG_NAME
+            , REG_DATE
+            , REVIEW_AVG
+            , DISCOUNT_RATE
+            , IS_ON_SALE
+            , COALESCE(REVIEW_CNT, 0) AS REVIEW_CNT
+            , (
+                SELECT MEM_NAME
+                FROM SHOP_MEMBER
+                WHERE MEM_ROLE = 'ADMIN'
+                AND MEM_ID = 'admin'
+            ) SELLER
+        FROM item INNER JOIN item_img IMG
+        ON item.ITEM_NUM = IMG.ITEM_NUM
+        LEFT JOIN (
+            SELECT
+                ITEM_NUM,
+                COUNT(*) AS REVIEW_CNT
+            FROM review
+            GROUP BY ITEM_NUM
+        ) R ON ITEM.ITEM_NUM = R.ITEM_NUM
+        WHERE IS_MAIN = 'Y'
+        AND IS_ON_SALE = TRUE
+        AND DISCOUNT_RATE > 0
+        ORDER BY DISCOUNT_RATE DESC, REG_DATE DESC
+    </select>
+
+    <!--할인율 설정 (관리자)-->
+    <update id="updateDiscount">
+        UPDATE ITEM
+        SET DISCOUNT_RATE = #{discountRate},
+            IS_ON_SALE = #{isOnSale}
+        WHERE ITEM_NUM = #{itemNum}
+    </update>
 </mapper>

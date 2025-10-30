@@ -27,11 +27,18 @@ const NewProductList = () => {
       })
   }, [])
 
+  // 할인가 계산 함수
+  const calculateDiscountedPrice = (price, discountRate) => {
+    return Math.floor(price * (1 - discountRate / 100))
+  }
+
   // 상품 카드 렌더링
   const renderProductCard = ({ item }) => {
     const imageUrl = item.imgList?.[0]?.attachedImgName
       ? `${SERVER_URL}/upload/${item.imgList[0].attachedImgName}`
       : null
+
+    const discountedPrice = calculateDiscountedPrice(item.price, item.discountRate || 0)
 
     return (
       <TouchableOpacity
@@ -47,11 +54,27 @@ const NewProductList = () => {
               <Text style={{ color: '#999' }}>이미지 없음</Text>
             </View>
           )}
+          {/* 할인율 배지 */}
+          {item.isOnSale && item.discountRate > 0 && (
+            <View style={styles.discountBadge}>
+              <Text style={styles.discountBadgeText}>{item.discountRate}% 할인</Text>
+            </View>
+          )}
         </View>
         {/* 상품 정보 */}
         <View style={styles.productInfo}>
           <Text style={styles.productName} numberOfLines={2}>{item.itemName}</Text>
-          <Text style={styles.productPrice}>{item.price?.toLocaleString()}원</Text>
+          {/* 할인가와 원가 표시 */}
+          <View style={styles.priceContainer}>
+            {item.isOnSale && item.discountRate > 0 ? (
+              <>
+                <Text style={styles.originalPrice}>{item.price?.toLocaleString()}원</Text>
+                <Text style={styles.productPrice}>{discountedPrice.toLocaleString()}원</Text>
+              </>
+            ) : (
+              <Text style={styles.productPrice}>{item.price?.toLocaleString()}원</Text>
+            )}
+          </View>
           {item.reviewAvg > 0 && (
             <Text style={styles.rating}>
               ⭐ {item.reviewAvg.toFixed(1)} ({item.reviewCnt || 0})
@@ -128,6 +151,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 12,
     overflow: 'hidden',
     backgroundColor: '#f5f5f5',
+    position: 'relative',
   },
   productImage: {
     width: '100%',
@@ -140,6 +164,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  discountBadge: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    backgroundColor: '#FF4444',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+  },
+  discountBadgeText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
   productInfo: {
     padding: 12,
   },
@@ -150,11 +188,19 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     height: 40,
   },
+  priceContainer: {
+    marginBottom: 4,
+  },
+  originalPrice: {
+    fontSize: 12,
+    color: '#999',
+    textDecorationLine: 'line-through',
+    marginBottom: 2,
+  },
   productPrice: {
     fontSize: 16,
     fontWeight: 'bold',
     color: 'brown',
-    marginBottom: 4,
   },
   rating: {
     fontSize: 12,

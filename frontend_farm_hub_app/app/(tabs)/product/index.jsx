@@ -51,12 +51,25 @@ const ProductScreen = () => {
       });
       setPopularProductList(sortedProducts.slice(0, 8));
 
-      const sortedByPrice = [...allData].sort((a, b) => a.price - b.price);
-      setDiscountProductList(sortedByPrice.slice(0, 5));
+      // 할인 상품 API 호출
+      axios.get(`${SERVER_URL}/items/on-sale`)
+        .then(saleRes => {
+          setDiscountProductList(saleRes.data.slice(0, 8));
+        })
+        .catch(e => {
+          console.log('할인 상품 조회 오류:', e);
+          // 할인 상품 API 오류 시 빈 배열 설정
+          setDiscountProductList([]);
+        });
 
     })
     .catch(e => console.log(e)); // 에러 발생 시 콘솔에 출력
   }, []); // 빈 배열: 컴포넌트가 처음 마운트될 때만 실행
+
+  // 할인가 계산 함수
+  const calculateDiscountedPrice = (price, discountRate) => {
+    return Math.floor(price * (1 - discountRate / 100))
+  }
 
   // 개별 상품 카드를 그리는 함수
   // product: 상품 하나의 데이터 (itemNum, itemName, price, imgList 등의 정보를 가진 객체)
@@ -66,6 +79,9 @@ const ProductScreen = () => {
     const imageUrl = product.imgList?.[0]?.attachedImgName
       ? `${SERVER_URL}/upload/${product.imgList[0].attachedImgName}`
       : null;
+
+    // 할인가 계산
+    const discountedPrice = calculateDiscountedPrice(product.price, product.discountRate || 0);
 
     // 디버깅: 이미지 URL 콘솔 출력
     console.log('상품:', product.itemName, '| 이미지:', imageUrl);
@@ -93,21 +109,32 @@ const ProductScreen = () => {
               <Text style={{ color: '#999' }}>이미지 없음</Text>
             </View>
           )}
+          {/* 할인율 배지 */}
+          {product.isOnSale && product.discountRate > 0 && (
+            <View style={styles.discountBadgeImage}>
+              <Text style={styles.discountBadgeText}>{product.discountRate}% 할인</Text>
+            </View>
+          )}
         </View>
         {/* 상품 정보 영역 (상품명, 가격, 평점) */}
         <View style={styles.productInfo}>
           {/* 상품명: 최대 2줄까지만 표시 */}
           <Text style={styles.productName} numberOfLines={2}>{product.itemName}</Text>
-          <Text style={styles.productPrice}>{product.price?.toLocaleString()}원</Text>
+          {/* 할인가와 원가 표시 */}
+          <View style={styles.priceContainer}>
+            {product.isOnSale && product.discountRate > 0 ? (
+              <>
+                <Text style={styles.originalPrice}>{product.price?.toLocaleString()}원</Text>
+                <Text style={styles.productPrice}>{discountedPrice.toLocaleString()}원</Text>
+              </>
+            ) : (
+              <Text style={styles.productPrice}>{product.price?.toLocaleString()}원</Text>
+            )}
+          </View>
           {product.reviewAvg > 0 && (
             <Text style={styles.rating}>
               ⭐ {product.reviewAvg.toFixed(1)} ({product.reviewCnt || 0})
             </Text>
-          )}
-          {product.discount && (
-            <View style={styles.discountBadge}>
-              <Text style={styles.discountText}>{product.discount}%</Text>
-            </View>
           )}
         </View>
       </TouchableOpacity>
@@ -252,6 +279,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 12,
     overflow: 'hidden', // 둥근 모서리 밖으로 이미지 넘치지 않게
     backgroundColor: '#f5f5f5', // 이미지 로딩 전 배경색
+    position: 'relative', // 할인 배지를 위한 상대 위치
   },
   // 상품 이미지 스타일
   productImage: {
@@ -259,10 +287,24 @@ const styles = StyleSheet.create({
     height: '100%',
     resizeMode: 'cover', // 이미지를 컨테이너에 꽉 차게 표시
   },
+  // 이미지 위 할인 배지 스타일
+  discountBadgeImage: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    backgroundColor: '#FF4444',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+  },
+  discountBadgeText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
   // 상품 정보(이름, 가격) 영역 스타일
   productInfo: {
     padding: 12,
-    position: 'relative', // 할인 뱃지 절대 위치 지정을 위함
   },
   // 상품명 텍스트 스타일
   productName: {
@@ -272,12 +314,22 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     height: 40, // 2줄 고정 높이
   },
+  // 가격 컨테이너
+  priceContainer: {
+    marginBottom: 4,
+  },
+  // 원가 스타일
+  originalPrice: {
+    fontSize: 12,
+    color: '#999',
+    textDecorationLine: 'line-through',
+    marginBottom: 2,
+  },
   // 가격 텍스트 스타일
   productPrice: {
     fontSize: 16,
     fontWeight: 'bold',
     color: 'brown',
-    marginBottom: 4,
   },
   // 평점 텍스트 스타일
   rating: {
@@ -285,7 +337,7 @@ const styles = StyleSheet.create({
     color: '#666',
     marginTop: 4,
   },
-  // 할인 뱃지 스타일
+  // 할인 뱃지 스타일 (하위 호환성을 위해 유지)
   discountBadge: {
     position: 'absolute', // 절대 위치
     top: 12,

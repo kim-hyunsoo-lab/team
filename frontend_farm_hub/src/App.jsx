@@ -15,6 +15,7 @@ import ProductIntro from "./components/ProductDetail/ProductIntro";
 import QnA from "./components/ProductDetail/QnA";
 import Review from "./components/ProductDetail/Review";
 import RegProduct from "./pages/admin/products/RegProduct";
+import DiscountManagement from "./pages/admin/products/DiscountManagement";
 import RegReview from "./components/ProductDetail/RegReview";
 import axios from "axios";
 import MemberList from "./pages/admin/MemberList";
@@ -80,6 +81,7 @@ function App() {
           <Route path="" element={<AdminHome />} />
           <Route path="sales-list" element={<SalesList />} />
           <Route path="reg-product" element={<RegProduct />} />
+          <Route path="discount-management" element={<DiscountManagement />} />
           <Route path="member-list" element={<MemberList />} />
           <Route path="survey-result" element={<SurveyResult />} />
           <Route path="qna-reply" element={<Reply />} />
