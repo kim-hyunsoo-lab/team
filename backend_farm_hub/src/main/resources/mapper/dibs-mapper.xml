@@ -50,9 +50,24 @@
   <delete id="removeSelectedDibs">
     DELETE FROM DIBS
     WHERE DIBS_NUM IN
-    <foreach collection="list" item="dibsNum" open="(" separator="," close=")">
+    <foreach collection="dibsNumList" item="dibsNum" open="(" separator="," close=")">
       #{dibsNum}
     </foreach>
+  </delete>
+
+  <!--찜 여부 확인-->
+  <select id="checkDibs" resultType="int">
+    SELECT COUNT(*)
+    FROM DIBS
+    WHERE MEM_ID = #{memId}
+    AND ITEM_NUM = #{itemNum}
+  </select>
+
+  <!--찜 삭제 (memId와 itemNum으로)-->
+  <delete id="removeDibsByItem">
+    DELETE FROM DIBS
+    WHERE MEM_ID = #{memId}
+    AND ITEM_NUM = #{itemNum}
   </delete>
 </mapper>
 

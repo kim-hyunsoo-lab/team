@@ -40,4 +40,25 @@ public class DibsService {
   public void removeSelectedDibs (List<Integer> dibsNumList) {
     dibsMapper.removeSelectedDibs(dibsNumList);
   }
+
+  /**
+   * 찜 여부 확인
+   * @param memId 회원 ID
+   * @param itemNum 상품 번호
+   * @return 찜 여부
+   */
+  @Transactional(readOnly = true)
+  public boolean checkDibs (String memId, int itemNum) {
+    Integer count = dibsMapper.checkDibs(memId, itemNum);
+    return count != null && count > 0;
+  }
+
+  /**
+   * 찜 삭제 (memId와 itemNum으로)
+   * @param memId 회원 ID
+   * @param itemNum 상품 번호
+   */
+  public void removeDibsByItem (String memId, int itemNum) {
+    dibsMapper.removeDibsByItem(memId, itemNum);
+  }
 }

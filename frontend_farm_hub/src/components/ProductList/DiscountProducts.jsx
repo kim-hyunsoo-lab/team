@@ -5,27 +5,31 @@ import PageTitle from '../../common/PageTitle';
 import { useLocation, useNavigate } from 'react-router';
 import Pagination from '../../common/Pagination';
 
-const NewProducts = () => {
+const DiscountProducts = () => {
   const nav = useNavigate();
 
   //url정보를 객체로 리턴하는 hook
   const urlInfo = useLocation();
 
   console.log(urlInfo.pathname);
-  
-  //신상품 목록을 저장할 state 변수
-  const [newProducts, setNewProducts] = useState([]);
 
-  //신상품 목록 조회
+  //할인 상품 목록을 저장할 state 변수
+  const [discountProducts, setDiscountProducts] = useState([]);
+
+  //할인 상품 목록 조회
   useEffect(() => {
-    axios.get('/api/items')
+    axios.get('/api/items/on-sale')
     .then(res => {
-      console.log(res.data);
-      setNewProducts(res.data);
+      console.log('할인 상품 API 응답:', res.data);
+      console.log('응답 데이터 길이:', res.data.length);
+      setDiscountProducts(res.data);
     })
-    .catch(e => console.log(e));
+    .catch(e => {
+      console.error('할인 상품 조회 오류:', e);
+      console.error('오류 응답:', e.response);
+    });
   }, []);
-  console.log(newProducts);
+  console.log('discountProducts state:', discountProducts);
 
   // 활성 페이지 세팅
   const [currentPage, setCurrentPage] = useState(0);
@@ -36,7 +40,7 @@ const NewProducts = () => {
   // 현재 페이지 보여줄 데이터 계산
   const startIndex = currentPage * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const viewNewProducts = newProducts.slice(startIndex, endIndex);
+  const viewDiscountProducts = discountProducts.slice(startIndex, endIndex);
 
   // 페이지를 변경시켜줄 함수
   const handlePageChange = selectedPage => {
@@ -50,54 +54,54 @@ const NewProducts = () => {
 
   return (
     <div>
-      <PageTitle title='신상품' />
+      <PageTitle title='할인 상품' />
       <div className={`${styles.grid_div}`}>
         {
           // Home컴포넌트에 있으면 상품목록을 8개까지 자르고, 그 외에는 모두 표시함
           (
             urlInfo.pathname === '/'
             ?
-            newProducts.slice(0,8)
+            discountProducts.slice(0,8)
             :
-            viewNewProducts
-          ).map((newProduct, i) => {
-            const discountedPrice = calculateDiscountedPrice(newProduct.price, newProduct.discountRate || 0);
+            viewDiscountProducts
+          ).map((product, i) => {
+            const discountedPrice = calculateDiscountedPrice(product.price, product.discountRate);
 
             return (
               <div
                 className={styles.grid_content}
                 key={i}
-                onClick={e => nav(`/product-detail/${newProduct.itemNum}/intro`)}
+                onClick={e => nav(`/product-detail/${product.itemNum}/intro`)}
               >
                 <div className={styles.grid_img}>
-                  <img src={`http://localhost:8080/upload/${newProduct.imgList[0].attachedImgName}`} />
+                  <img src={`http://localhost:8080/upload/${product.imgList[0].attachedImgName}`} />
                   {/* 할인율 배지 */}
-                  {newProduct.isOnSale && newProduct.discountRate > 0 && (
+                  {product.discountRate > 0 && (
                     <div className={styles.discount_badge}>
-                      {newProduct.discountRate}% 할인
+                      {product.discountRate}% 할인
                     </div>
                   )}
                 </div>
                 <div className={styles.grid_info}>
-                  <h3>{newProduct.itemName}</h3>
+                  <h3>{product.itemName}</h3>
                   {/* 할인가와 원가 표시 */}
                   <div className={styles.price_container}>
-                    {newProduct.isOnSale && newProduct.discountRate > 0 ? (
+                    {product.discountRate > 0 ? (
                       <>
-                        <p className={styles.original_price}>{newProduct.price.toLocaleString()}원</p>
+                        <p className={styles.original_price}>{product.price.toLocaleString()}원</p>
                         <p className={styles.product_price}>{discountedPrice.toLocaleString()}원</p>
                       </>
                     ) : (
-                      <p className={styles.product_price}>{newProduct.price.toLocaleString()}원</p>
+                      <p className={styles.product_price}>{product.price.toLocaleString()}원</p>
                     )}
                   </div>
                   {/* 평점이 있을 때만 표시 */}
                   {
-                    newProduct.reviewAvg
+                    product.reviewAvg
                     ?
                     (
                       <p className={styles.rating}>
-                        ⭐ {newProduct.reviewAvg.toFixed(1)} ({newProduct.reviewCnt || 0})
+                        ⭐ {product.reviewAvg.toFixed(1)} ({product.reviewCnt || 0})
                       </p>
                     )
                     :
@@ -110,10 +114,17 @@ const NewProducts = () => {
         }
       </div>
       {
-        urlInfo.pathname !== '/'
+        discountProducts.length === 0 && (
+          <div style={{textAlign: 'center', padding: '50px', fontSize: '18px', color: '#888'}}>
+            현재 할인 중인 상품이 없습니다.
+          </div>
+        )
+      }
+      {
+        urlInfo.pathname !== '/' && discountProducts.length > 0
         &&
         <Pagination
-          totalItems={newProducts.length}
+          totalItems={discountProducts.length}
           itemsPerPage={itemsPerPage}
           onPageChange={handlePageChange}
           currentPage={currentPage}
@@ -126,4 +137,4 @@ const NewProducts = () => {
   )
 }
 
-export default NewProducts
+export default DiscountProducts

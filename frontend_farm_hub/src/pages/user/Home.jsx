@@ -9,6 +9,7 @@ import NewProductList from './products/NewProductList'
 import Menu from '../../components/Menu'
 import NewProducts from '../../components/ProductList/NewProducts'
 import PopularProducts from '../../components/ProductList/PopularProducts'
+import DiscountProducts from '../../components/ProductList/DiscountProducts'
 
 const Home = () => {
   const nav = useNavigate();  
@@ -29,11 +30,8 @@ const Home = () => {
           <span onClick={e => nav('/popular-product-list')}>더보기</span>
         </p>
       </div>
-      <div className={styles.discount_product}>
-        <PageTitle title='할인상품' />
-        <div className={`${styles.grid_div}`}>
-          
-        </div>
+      <div className={styles.new_product}>
+        <DiscountProducts />
         <p className={`${styles.more}`}>
           <span onClick={e => nav('/discount-product-list')}>더보기</span>
         </p>
