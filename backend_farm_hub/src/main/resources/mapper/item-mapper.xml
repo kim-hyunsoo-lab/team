@@ -19,6 +19,7 @@
         <!--할인 관련 필드-->
         <result column="DISCOUNT_RATE" property="discountRate"/>
         <result column="IS_ON_SALE" property="isOnSale"/>
+        <result column="IS_GIFT_SET" property="isGiftSet"/>
         <!--상품 하나에 이미지는 여러개-->
         <collection property="imgList" resultMap="itemImg" />
     </resultMap>
@@ -34,9 +35,9 @@
 <!--    상품 등록-->
     <insert id="insertItem">
         INSERT INTO ITEM(
-        ITEM_NUM, ITEM_NAME, PRICE, ITEM_INTRO, PART, ORIGIN
+        ITEM_NUM, ITEM_NAME, PRICE, ITEM_INTRO, PART, ORIGIN, IS_GIFT_SET
         )
-        VALUES(#{itemNum}, #{itemName}, #{price}, #{itemIntro}, #{part}, #{origin})
+        VALUES(#{itemNum}, #{itemName}, #{price}, #{itemIntro}, #{part}, #{origin}, #{isGiftSet})
     </insert>
 
 <!--    상품 이미지 등록-->
@@ -65,6 +66,7 @@
         , COALESCE(REVIEW_CNT, 0) AS REVIEW_CNT
         , DISCOUNT_RATE
         , IS_ON_SALE
+        , IS_GIFT_SET
         , (
         SELECT MEM_NAME
         FROM SHOP_MEMBER
@@ -99,6 +101,8 @@
             , REVIEW_AVG
             , DISCOUNT_RATE
             , IS_ON_SALE
+            , IS_GIFT_SET
+
         <!--판매자이름(임시로 관리자 이름으로 지정해 놓음)-->
             , (
                 SELECT MEM_NAME
@@ -122,6 +126,7 @@
             , REVIEW_AVG
             , DISCOUNT_RATE
             , IS_ON_SALE
+            , IS_GIFT_SET
             , COALESCE(REVIEW_CNT, 0) AS REVIEW_CNT
             , (
                 SELECT MEM_NAME

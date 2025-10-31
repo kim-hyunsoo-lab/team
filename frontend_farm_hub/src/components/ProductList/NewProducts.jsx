@@ -16,12 +16,14 @@ const NewProducts = () => {
   //신상품 목록을 저장할 state 변수
   const [newProducts, setNewProducts] = useState([]);
 
-  //신상품 목록 조회
+  //신상품 목록 조회 (선물세트 제외)
   useEffect(() => {
     axios.get('/api/items')
     .then(res => {
       console.log(res.data);
-      setNewProducts(res.data);
+      // isGiftSet가 1이 아닌 상품만 필터링 (선물세트 제외, null/undefined 포함)
+      const filteredProducts = res.data.filter(item => item.isGiftSet !== 1);
+      setNewProducts(filteredProducts);
     })
     .catch(e => console.log(e));
   }, []);

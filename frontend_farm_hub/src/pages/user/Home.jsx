@@ -10,6 +10,7 @@ import Menu from '../../components/Menu'
 import NewProducts from '../../components/ProductList/NewProducts'
 import PopularProducts from '../../components/ProductList/PopularProducts'
 import DiscountProducts from '../../components/ProductList/DiscountProducts'
+import GiftSets from '../../components/ProductList/SetMenus'
 
 const Home = () => {
   const nav = useNavigate();  
@@ -34,6 +35,12 @@ const Home = () => {
         <DiscountProducts />
         <p className={`${styles.more}`}>
           <span onClick={e => nav('/discount-product-list')}>더보기</span>
+        </p>
+      </div>
+      <div className={styles.new_product}>
+        <GiftSets />
+        <p className={`${styles.more}`}>
+          <span onClick={e => nav('/gift-set')}>더보기</span>
         </p>
       </div>
     </div>

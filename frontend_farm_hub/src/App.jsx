@@ -38,6 +38,7 @@ import ScrollToTop from "./common/ScrollToTop";
 import SurveyResult from "./pages/admin/products/SurveyResult";
 import Paymentpage from "./pages/user/Paymentpage";
 import Dibs from "./pages/user/products/dibs";
+import GiftSet from "./pages/user/products/SetMenu";
 
 function App() {
   return (
@@ -60,6 +61,7 @@ function App() {
             path="discount-product-list"
             element={<DiscountProductList />}
           />
+          <Route path="gift-set" element={ <GiftSet /> } />
         </Route>
 
         {/* 일반사용자 개인페이지 */}

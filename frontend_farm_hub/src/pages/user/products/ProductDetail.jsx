@@ -109,9 +109,14 @@ const ProductDetail = () => {
     }
 
     const memId = JSON.parse(loginData).memId;
-    
-    // 방법 1: Path Variable 방식 (추천)
-    axios.get(`/api/dibs/check/${memId}/${itemNum}`)
+
+    // Query Parameter 방식으로 찜 상태 확인
+    axios.get('/api/dibs/check', {
+      params: {
+        memId: memId,
+        itemNum: itemNum
+      }
+    })
     .then(res => {
       setIsDibbed(res.data); // true or false
     })
@@ -120,22 +125,6 @@ const ProductDetail = () => {
       // 404나 다른 에러는 찜하지 않은 것으로 간주
       setIsDibbed(false);
     });
-
-    /* 방법 2: Query Parameter 방식
-    axios.get('/api/dibs/check', {
-      params: {
-        memId: memId,
-        itemNum: itemNum
-      }
-    })
-    .then(res => {
-      setIsDibbed(res.data);
-    })
-    .catch(e => {
-      console.log('찜 상태 확인 에러:', e);
-      setIsDibbed(false);
-    });
-    */
   }, [itemNum, loginData]);
 
   // 찜 토글 함수

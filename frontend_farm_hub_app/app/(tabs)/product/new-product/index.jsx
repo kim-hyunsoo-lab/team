@@ -7,17 +7,22 @@ import { SERVER_URL } from '../../../../constants/appConst'
 import Menu from '../../../../components/Menu'
 import { colors } from '../../../../constants/colorConstant'
 import PageTitle from '../../../../components/common/PageTitle'
+import { Ionicons } from '@expo/vector-icons'
 
 const NewProductList = () => {
   const [productList, setProductList] = useState([])
   const [loading, setLoading] = useState(true)
+  const [currentPage, setCurrentPage] = useState(0)
+  const itemsPerPage = 8
 
   useEffect(() => {
     // 서버에서 상품 데이터 가져오기
     axios.get(`${SERVER_URL}/items`)
       .then(res => {
+        // 세트상품 제외 (isGiftSet이 아닌 상품만)
+        const regularProducts = res.data.filter(item => !item.isGiftSet)
         // 최근 등록순으로 정렬 (regDate 기준 내림차순)
-        const sortedByDate = [...res.data].sort((a, b) => new Date(b.regDate) - new Date(a.regDate))
+        const sortedByDate = [...regularProducts].sort((a, b) => new Date(b.regDate) - new Date(a.regDate))
         setProductList(sortedByDate)
         setLoading(false)
       })
@@ -75,21 +80,65 @@ const NewProductList = () => {
               <Text style={styles.productPrice}>{item.price?.toLocaleString()}원</Text>
             )}
           </View>
-          {item.reviewAvg > 0 && (
+          {/* 평점 표시 */}
+          {item.reviewAvg > 0 ? (
             <Text style={styles.rating}>
               ⭐ {item.reviewAvg.toFixed(1)} ({item.reviewCnt || 0})
             </Text>
+          ) : (
+            <Text style={styles.noReview}>리뷰 없음</Text>
           )}
         </View>
       </TouchableOpacity>
     )
   }
 
+  // 페이지 변경 핸들러
+  const handlePageChange = (page) => {
+    setCurrentPage(page)
+  }
+
+  // 총 페이지 수
+  const totalPages = Math.ceil(productList.length / itemsPerPage)
+
+  // 페이지 번호 계산 (최대 5개만 표시)
+  const getPageNumbers = () => {
+    const maxButtons = 5
+    const pages = []
+
+    if (totalPages <= maxButtons) {
+      for (let i = 0; i < totalPages; i++) {
+        pages.push(i)
+      }
+    } else {
+      let start = Math.max(0, currentPage - 2)
+      let end = Math.min(totalPages - 1, currentPage + 2)
+
+      if (currentPage <= 2) {
+        end = maxButtons - 1
+      }
+      if (currentPage >= totalPages - 3) {
+        start = totalPages - maxButtons
+      }
+
+      for (let i = start; i <= end; i++) {
+        pages.push(i)
+      }
+    }
+
+    return pages
+  }
+
+  // 현재 페이지 데이터 계산
+  const startIndex = currentPage * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const currentProductList = productList.slice(startIndex, endIndex)
+
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
         <Menu activeMenu="new-product" />
-        
+
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.BROWN} />
         </View>
@@ -104,12 +153,62 @@ const NewProductList = () => {
         <PageTitle title='신상품' />
       </View>
       <FlatList
-        data={productList}
+        data={currentProductList}
         renderItem={renderProductCard}
         keyExtractor={item => item.itemNum.toString()}
         numColumns={2}
         contentContainerStyle={styles.listContainer}
         columnWrapperStyle={styles.row}
+        ListFooterComponent={
+          productList.length > 0 && totalPages > 1 ? (
+            <View style={styles.paginationContainer}>
+              {/* 이전 버튼 */}
+              <TouchableOpacity
+                style={[styles.pageButton, currentPage === 0 && styles.disabledButton]}
+                onPress={() => currentPage > 0 && handlePageChange(currentPage - 1)}
+                disabled={currentPage === 0}
+              >
+                <Ionicons
+                  name="chevron-back"
+                  size={20}
+                  color={currentPage === 0 ? '#999' : '#333'}
+                />
+              </TouchableOpacity>
+
+              {/* 페이지 번호 */}
+              {getPageNumbers().map((pageNum) => (
+                <TouchableOpacity
+                  key={pageNum}
+                  style={[
+                    styles.pageButton,
+                    currentPage === pageNum && styles.activePageButton
+                  ]}
+                  onPress={() => handlePageChange(pageNum)}
+                >
+                  <Text style={[
+                    styles.pageButtonText,
+                    currentPage === pageNum && styles.activePageText
+                  ]}>
+                    {pageNum + 1}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+
+              {/* 다음 버튼 */}
+              <TouchableOpacity
+                style={[styles.pageButton, currentPage === totalPages - 1 && styles.disabledButton]}
+                onPress={() => currentPage < totalPages - 1 && handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages - 1}
+              >
+                <Ionicons
+                  name="chevron-forward"
+                  size={20}
+                  color={currentPage === totalPages - 1 ? '#999' : '#333'}
+                />
+              </TouchableOpacity>
+            </View>
+          ) : null
+        }
       />
     </SafeAreaView>
   )
@@ -207,9 +306,48 @@ const styles = StyleSheet.create({
     color: '#666',
     marginTop: 4,
   },
+  noReview: {
+    fontSize: 12,
+    color: '#999',
+    marginTop: 4,
+  },
   titleWrapper: {
     paddingHorizontal: 20,
     paddingTop: 5,
     backgroundColor: '#fff',
+  },
+  paginationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 20,
+    gap: 8,
+  },
+  pageButton: {
+    width: 36,
+    height: 36,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    backgroundColor: '#fff',
+  },
+  activePageButton: {
+    backgroundColor: colors.BROWN,
+    borderColor: colors.BROWN,
+  },
+  disabledButton: {
+    backgroundColor: '#f5f5f5',
+    borderColor: '#ddd',
+  },
+  pageButtonText: {
+    fontSize: 14,
+    color: '#333',
+    fontWeight: '500',
+  },
+  activePageText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
 })
