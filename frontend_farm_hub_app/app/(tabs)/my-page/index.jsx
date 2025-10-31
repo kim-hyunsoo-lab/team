@@ -11,6 +11,7 @@ const MyPageScreen = () => {
   const router = useRouter();
   const [userInfo, setUserInfo] = useState(null);
 
+
   // 로그인 정보를 가져오는 함수
   const getLoginInfo = async () => {
     try {
@@ -42,13 +43,14 @@ const MyPageScreen = () => {
         onPress: async () => {
           try {
             await SecureStore.deleteItemAsync('loginInfo');
-            setUserInfo(null);
-            if (router.canDismiss()) {
-                  router.dismissAll();
-                }
-              router.replace('/product');
+            console.log('로그아웃 완료');          
+            if (setUserInfo) {
+              setUserInfo(null);
             }
-            catch (error) {
+            setTimeout(() => {
+              router.replace('/');
+            }, 50);
+          } catch (error) {
             console.error('로그아웃 에러:', error);
             Alert.alert('오류', '로그아웃에 실패했습니다.');
           }
