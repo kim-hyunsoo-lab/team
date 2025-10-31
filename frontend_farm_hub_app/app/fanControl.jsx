@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Switch,
   Text,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -22,8 +23,8 @@ const fanControl = () => {
   //지정 공기질을 저장할 state 변수
   const [airQuality, setAirQuality] = useState("");
 
-  //스위치의 on/off 상태를 관리하는 state 변수
-  const [isEnabled, setIsEnabled] = useState(false);
+  //팬 모드를 관리하는 state 변수 ('off' | 'ventilator' | 'fan')
+  const [fanMode, setFanMode] = useState("off");
 
   //스위치 동작 중 로딩 상태
   const [switchLoading, setSwitchLoading] = useState(false);
@@ -70,7 +71,7 @@ const fanControl = () => {
 
       // 자동 모드로 변경 시 수동 제어 스위치 끄기
       if (newMode === "auto") {
-        setIsEnabled(false);
+        setFanMode("off");
       }
 
       setFanStatus((prev) => ({
@@ -94,34 +95,32 @@ const fanControl = () => {
     }
   };
 
-  //스위치를 누를 때마다 현재 상태를 반전시키는 함수
-  const toggleSwitch = async () => {
-    if (switchLoading) return; // 이미 처리 중이면 무시
+  //팬 모드 변경 함수 ('off' | 'ventilator' | 'fan')
+  const changeFanMode = async (mode) => {
+    if (switchLoading || fanStatus.mode === "auto") return; // 로딩 중이거나 자동 모드면 무시
 
-    const newState = !isEnabled;
     setSwitchLoading(true);
 
     try {
-      // 팬 제어 API 호출 (Python 서버에 해당 엔드포인트 추가 필요)
-      const action = newState ? "on" : "off";
-      console.log(`팬 ${action} 요청 중...`);
+      console.log(`팬 모드 변경: ${mode}`);
 
-      // 임시로 상태만 변경 (실제 API 연동 시 주석 해제)
-      const response = await axios.post(`${PYTHON_URL}/fanControl/${action}`);
+      // 팬 제어 API 호출
+      const response = await axios.post(`${PYTHON_URL}/fanControl/${mode}`);
       console.log("팬 제어 성공:", response.data);
 
       // 상태 업데이트
-      setIsEnabled(newState);
+      setFanMode(mode);
       setFanStatus((prev) => ({
         ...prev,
-        isOn: newState,
+        isOn: mode !== "off",
         mode: "manual",
         lastUpdate: new Date().toLocaleTimeString(),
       }));
 
+      const modeText = mode === "off" ? "정지" : mode === "ventilator" ? "환풍기 모드" : "선풍기 모드";
       Alert.alert(
         "팬 제어",
-        `환기 팬이 ${newState ? "작동을 시작했습니다" : "정지했습니다"}.`,
+        `환기 팬이 ${modeText}로 변경되었습니다.`,
         [{ text: "확인" }]
       );
     } catch (error) {
@@ -283,40 +282,91 @@ const fanControl = () => {
         </View>
 
         <View style={styles.card}>
-          <View style={styles.switchRow}>
-            <View style={styles.switchTextContainer}>
-              <Text style={styles.sectionTitle}>환기 팬 수동 제어</Text>
-              <Text style={styles.switchSubtext}>
-                {fanStatus.mode === "auto"
-                  ? "자동 모드에서는 수동 제어가 비활성화됩니다"
-                  : switchLoading
-                  ? "처리 중..."
-                  : isEnabled
-                  ? "팬이 수동으로 작동 중입니다"
-                  : "팬이 수동으로 정지되어 있습니다"}
-              </Text>
-              <Text style={styles.switchNote}>
-                {fanStatus.mode === "auto"
-                  ? "위의 모드 스위치를 수동으로 변경하면 제어할 수 있습니다."
-                  : "수동 모드에서 팬을 직접 제어할 수 있습니다."}
-              </Text>
+          <Text style={styles.sectionTitle}>환기 팬 수동 제어</Text>
+          <Text style={styles.switchSubtext}>
+            {fanStatus.mode === "auto"
+              ? "자동 모드에서는 수동 제어가 비활성화됩니다"
+              : switchLoading
+              ? "처리 중..."
+              : fanMode === "off"
+              ? "팬이 정지되어 있습니다"
+              : fanMode === "ventilator"
+              ? "환풍기 모드로 작동 중입니다"
+              : "선풍기 모드로 작동 중입니다"}
+          </Text>
+          <Text style={styles.switchNote}>
+            {fanStatus.mode === "auto"
+              ? "위의 모드 스위치를 수동으로 변경하면 제어할 수 있습니다."
+              : "수동 모드에서 팬을 직접 제어할 수 있습니다."}
+          </Text>
+
+          {switchLoading ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="#be5050ff" />
             </View>
-            <View style={styles.switchContainer}>
-              {switchLoading ? (
-                <ActivityIndicator size="small" color="#be5050ff" />
-              ) : (
-                <Switch
-                  trackColor={{ false: "#d1d5db", true: "#be5050ff" }}
-                  thumbColor={isEnabled ? "#ffffff" : "#ffffff"}
-                  ios_backgroundColor="#d1d5db"
-                  onValueChange={toggleSwitch}
-                  value={isEnabled}
-                  style={styles.switch}
-                  disabled={switchLoading || fanStatus.mode === "auto"}
-                />
-              )}
+          ) : (
+            <View style={styles.fanModeContainer}>
+              <TouchableOpacity
+                style={[
+                  styles.fanModeButton,
+                  fanMode === "ventilator" && styles.fanModeButtonActive,
+                  fanStatus.mode === "auto" && styles.fanModeButtonDisabled,
+                ]}
+                onPress={() => changeFanMode("ventilator")}
+                disabled={fanStatus.mode === "auto"}
+              >
+                <Text
+                  style={[
+                    styles.fanModeButtonText,
+                    fanMode === "ventilator" && styles.fanModeButtonTextActive,
+                    fanStatus.mode === "auto" && styles.fanModeButtonTextDisabled,
+                  ]}
+                >
+                  환풍기
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.fanModeButton,
+                  fanMode === "off" && styles.fanModeButtonActive,
+                  fanStatus.mode === "auto" && styles.fanModeButtonDisabled,
+                ]}
+                onPress={() => changeFanMode("off")}
+                disabled={fanStatus.mode === "auto"}
+              >
+                <Text
+                  style={[
+                    styles.fanModeButtonText,
+                    fanMode === "off" && styles.fanModeButtonTextActive,
+                    fanStatus.mode === "auto" && styles.fanModeButtonTextDisabled,
+                  ]}
+                >
+                  OFF
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.fanModeButton,
+                  fanMode === "fan" && styles.fanModeButtonActive,
+                  fanStatus.mode === "auto" && styles.fanModeButtonDisabled,
+                ]}
+                onPress={() => changeFanMode("fan")}
+                disabled={fanStatus.mode === "auto"}
+              >
+                <Text
+                  style={[
+                    styles.fanModeButtonText,
+                    fanMode === "fan" && styles.fanModeButtonTextActive,
+                    fanStatus.mode === "auto" && styles.fanModeButtonTextDisabled,
+                  ]}
+                >
+                  선풍기
+                </Text>
+              </TouchableOpacity>
             </View>
-          </View>
+          )}
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
@@ -460,5 +510,46 @@ const styles = StyleSheet.create({
   },
   modeSwitchComponent: {
     transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
+  },
+  loadingContainer: {
+    paddingVertical: 30,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  fanModeContainer: {
+    flexDirection: "row",
+    marginTop: 16,
+    gap: 12,
+  },
+  fanModeButton: {
+    flex: 1,
+    paddingVertical: 16,
+    paddingHorizontal: 12,
+    borderRadius: 12,
+    backgroundColor: "#f3f4f6",
+    borderWidth: 2,
+    borderColor: "#e5e7eb",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  fanModeButtonActive: {
+    backgroundColor: "#be5050ff",
+    borderColor: "#be5050ff",
+  },
+  fanModeButtonDisabled: {
+    backgroundColor: "#f9fafb",
+    borderColor: "#e5e7eb",
+    opacity: 0.5,
+  },
+  fanModeButtonText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#4a5568",
+  },
+  fanModeButtonTextActive: {
+    color: "#ffffff",
+  },
+  fanModeButtonTextDisabled: {
+    color: "#9ca3af",
   },
 });
