@@ -18,16 +18,8 @@ const GiftSets = () => {
   useEffect(() => {
     axios.get('/api/items')
     .then(res => {
-      console.log('선물세트 페이지 - 전체 상품:', res.data);
-      console.log('각 상품의 isGiftSet 값:');
-      res.data.forEach(item => {
-        console.log(`${item.itemName}: isGiftSet = ${item.isGiftSet} (타입: ${typeof item.isGiftSet})`);
-      });
-
       // isGiftSet가 1인 상품만 필터링
       const filteredGiftSets = res.data.filter(item => item.isGiftSet === 1);
-      console.log('필터링된 선물세트 개수:', filteredGiftSets.length);
-      console.log('필터링된 선물세트:', filteredGiftSets);
       setGiftSets(filteredGiftSets);
     })
     .catch(e => console.log('선물세트 조회 에러:', e));
@@ -73,7 +65,7 @@ const GiftSets = () => {
               <div
                 className={styles.grid_content}
                 key={i}
-                onClick={e => nav(`/product-detail/${giftSet.itemNum}/intro`)}
+                onClick={() => nav(`/product-detail/${giftSet.itemNum}/intro`)}
               >
                 <div className={styles.grid_img}>
                   <img src={`http://localhost:8080/upload/${giftSet.imgList[0].attachedImgName}`} />

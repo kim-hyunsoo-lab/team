@@ -38,7 +38,7 @@ import ScrollToTop from "./common/ScrollToTop";
 import SurveyResult from "./pages/admin/products/SurveyResult";
 import Paymentpage from "./pages/user/Paymentpage";
 import Dibs from "./pages/user/products/dibs";
-import GiftSet from "./pages/user/products/SetMenu";
+import GiftSet from "./pages/user/products/GiftSet";
 
 function App() {
   return (

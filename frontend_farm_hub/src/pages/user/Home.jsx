@@ -10,7 +10,7 @@ import Menu from '../../components/Menu'
 import NewProducts from '../../components/ProductList/NewProducts'
 import PopularProducts from '../../components/ProductList/PopularProducts'
 import DiscountProducts from '../../components/ProductList/DiscountProducts'
-import GiftSets from '../../components/ProductList/SetMenus'
+import GiftSets from '../../components/ProductList/GiftSets'
 
 const Home = () => {
   const nav = useNavigate();  

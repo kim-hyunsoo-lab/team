@@ -1,6 +1,6 @@
 import React from 'react'
 import Menu from '../../../components/Menu'
-import GiftSets from '../../../components/ProductList/SetMenus'
+import GiftSets from '../../../components/ProductList/GiftSets'
 
 const GiftSet = () => {
   return (
