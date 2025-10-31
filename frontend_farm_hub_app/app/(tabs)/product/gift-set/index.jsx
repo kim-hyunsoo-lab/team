@@ -1,15 +1,15 @@
-import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import axios from 'axios'
 import { router } from 'expo-router'
-import { SERVER_URL } from '@/constants/appConst'
-import Menu from '@/components/Menu'
-import { colors } from '@/constants/colorConstant'
-import PageTitle from '@/components/common/PageTitle'
+import { useEffect, useState } from 'react'
+import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import PageTitle from '../../../../components/common/PageTitle'
+import Menu from '../../../../components/Menu'
+import { SERVER_URL } from '../../../../constants/appConst'
+import { colors } from '../../../../constants/colorConstant'
 import { Ionicons } from '@expo/vector-icons'
 
-const PopularProductList = () => {
+const GiftSetList = () => {
   const [productList, setProductList] = useState([])
   const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(0)
@@ -19,33 +19,21 @@ const PopularProductList = () => {
     // 서버에서 상품 데이터 가져오기
     axios.get(`${SERVER_URL}/items`)
       .then(res => {
-        // 세트상품 제외 (isGiftSet이 아닌 상품만)
-        const regularProducts = res.data.filter(item => !item.isGiftSet)
-        // reviewAvg 기준으로 정렬 (복합 조건)
-        const sortedProducts = [...regularProducts].sort((a, b) => {
-          const avgA = a.reviewAvg || 0
-          const avgB = b.reviewAvg || 0
-          const cntA = a.reviewCnt || 0
-          const cntB = b.reviewCnt || 0
-
-          // 1순위: 평점 높은 순
-          if (avgB !== avgA) {
-            return avgB - avgA
-          }
-
-          // 2순위: 리뷰 개수 많은 순
-          if (cntB !== cntA) {
-            return cntB - cntA
-          }
-
-          // 3순위: 가격 낮은 순
-          return a.price - b.price
+        console.log('선물세트 페이지 - 전체 상품:', res.data)
+        console.log('각 상품의 isGiftSet 값:')
+        res.data.forEach(item => {
+          console.log(`${item.itemName}: isGiftSet = ${item.isGiftSet} (타입: ${typeof item.isGiftSet})`)
         })
-        setProductList(sortedProducts)
+
+        // isGiftSet가 1 또는 true인 상품만 필터링
+        const filteredGiftSets = res.data.filter(item => item.isGiftSet === 1 || item.isGiftSet === true)
+        console.log('필터링된 선물세트 개수:', filteredGiftSets.length)
+        console.log('필터링된 선물세트:', filteredGiftSets)
+        setProductList(filteredGiftSets)
         setLoading(false)
       })
       .catch(e => {
-        console.log(e)
+        console.log('선물세트 조회 오류:', e)
         setLoading(false)
       })
   }, [])
@@ -155,7 +143,8 @@ const PopularProductList = () => {
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
-        <Menu activeMenu="popular-product" />
+        <Menu activeMenu="gift-set" />
+
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.BROWN} />
         </View>
@@ -163,11 +152,26 @@ const PopularProductList = () => {
     )
   }
 
+  // 선물세트가 없을 때
+  if (productList.length === 0) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Menu activeMenu="gift-set" />
+        <View style={styles.titleWrapper}>
+          <PageTitle title='선물세트' />
+        </View>
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>현재 등록된 선물세트가 없습니다.</Text>
+        </View>
+      </SafeAreaView>
+    )
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <Menu activeMenu="popular-product" />
+      <Menu activeMenu="gift-set" />
       <View style={styles.titleWrapper}>
-        <PageTitle title='인기상품' />
+        <PageTitle title='선물세트' />
       </View>
       <FlatList
         data={currentProductList}
@@ -231,7 +235,7 @@ const PopularProductList = () => {
   )
 }
 
-export default PopularProductList
+export default GiftSetList
 
 const styles = StyleSheet.create({
   container: {
@@ -242,6 +246,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  emptyText: {
+    fontSize: 18,
+    color: '#888',
+    textAlign: 'center',
   },
   listContainer: {
     padding: 10,

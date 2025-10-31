@@ -16,13 +16,15 @@ const DiscountProducts = () => {
   //할인 상품 목록을 저장할 state 변수
   const [discountProducts, setDiscountProducts] = useState([]);
 
-  //할인 상품 목록 조회
+  //할인 상품 목록 조회 (선물세트 제외)
   useEffect(() => {
     axios.get('/api/items/on-sale')
     .then(res => {
       console.log('할인 상품 API 응답:', res.data);
       console.log('응답 데이터 길이:', res.data.length);
-      setDiscountProducts(res.data);
+      // isGiftSet가 1이 아닌 상품만 필터링 (선물세트 제외, null/undefined 포함)
+      const filteredProducts = res.data.filter(item => item.isGiftSet !== 1);
+      setDiscountProducts(filteredProducts);
     })
     .catch(e => {
       console.error('할인 상품 조회 오류:', e);

@@ -1,5 +1,5 @@
-import { StyleSheet, Text, TouchableOpacity, ScrollView, View } from 'react-native'
 import { router } from 'expo-router'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { colors } from '../constants/colorConstant'
 
 const Menu = ({ activeMenu = 'new-product' }) => {
@@ -7,7 +7,7 @@ const Menu = ({ activeMenu = 'new-product' }) => {
     { id: 'new-product', title: '신상품', path: '/product/new-product' },
     { id: 'popular-product', title: '인기상품', path: '/product/popular-product' },
     { id: 'discount-product', title: '할인상품', path: '/product/discount-product' },
-    { id: 'special', title: '기획전', path: '/product/special' },
+    { id: 'special', title: '선물세트', path: '/product/gift-set' },
   ]
 
   return (

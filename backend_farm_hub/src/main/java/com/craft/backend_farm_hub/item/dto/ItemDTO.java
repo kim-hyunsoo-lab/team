@@ -30,6 +30,9 @@ public class ItemDTO {
   @JsonProperty("isOnSale")
   private Boolean isOnSale;          // 할인 여부 (Boolean wrapper class 사용)
 
+  //  세트메뉴 여부 필드
+  private Integer isGiftSet;          // 세트메뉴 여부 (0: 일반상품, 1: 세트상품)
+
   // 할인가 계산 메서드
   public int getDiscountPrice() {
     if (Boolean.TRUE.equals(isOnSale) && discountRate != null && discountRate > 0) {

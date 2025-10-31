@@ -5,49 +5,33 @@ import PageTitle from '../../common/PageTitle';
 import { useLocation, useNavigate } from 'react-router';
 import Pagination from '../../common/Pagination';
 
-const PopularProducts = () => {
+const GiftSets = () => {
   const nav = useNavigate();
 
   //url정보를 객체로 리턴하는 hook
   const urlInfo = useLocation();
 
-  console.log(urlInfo.pathname);
-  
-  //신상품 목록을 저장할 state 변수
-  const [newProducts, setNewProducts] = useState([]);
+  //선물세트 목록을 저장할 state 변수
+  const [giftSets, setGiftSets] = useState([]);
 
-  //인기상품 목록 조회 (선물세트 제외)
+  //선물세트 목록 조회 (isGiftSet가 1인 상품만)
   useEffect(() => {
     axios.get('/api/items')
     .then(res => {
-      console.log(res.data);
-      // isGiftSet가 1이 아닌 상품만 필터링 (선물세트 제외, null/undefined 포함)
-      const filteredProducts = res.data.filter(item => item.isGiftSet !== 1);
-      // reviewAvg 기준으로 정렬 (복합 조건)
-      const sortedProducts = filteredProducts.sort((a, b) => {
-        const avgA = a.reviewAvg || 0;
-        const avgB = b.reviewAvg || 0;
-        const cntA = a.reviewCnt || 0;
-        const cntB = b.reviewCnt || 0;
-        
-        // 1순위: 평점 높은 순
-        if (avgB !== avgA) {
-          return avgB - avgA;
-        }
-        
-        // 2순위: 평점이 같으면 리뷰 개수 많은 순
-        if (cntB !== cntA) {
-          return cntB - cntA;
-        }
-        
-        // 3순위: 평점과 리뷰 개수가 같으면 가격 낮은 순
-        return a.price - b.price;
+      console.log('선물세트 페이지 - 전체 상품:', res.data);
+      console.log('각 상품의 isGiftSet 값:');
+      res.data.forEach(item => {
+        console.log(`${item.itemName}: isGiftSet = ${item.isGiftSet} (타입: ${typeof item.isGiftSet})`);
       });
-      setNewProducts(sortedProducts);
+
+      // isGiftSet가 1인 상품만 필터링
+      const filteredGiftSets = res.data.filter(item => item.isGiftSet === 1);
+      console.log('필터링된 선물세트 개수:', filteredGiftSets.length);
+      console.log('필터링된 선물세트:', filteredGiftSets);
+      setGiftSets(filteredGiftSets);
     })
-    .catch(e => console.log(e));
+    .catch(e => console.log('선물세트 조회 에러:', e));
   }, []);
-  console.log(newProducts);
 
   // 활성 페이지 세팅
   const [currentPage, setCurrentPage] = useState(0);
@@ -58,7 +42,7 @@ const PopularProducts = () => {
   // 현재 페이지 보여줄 데이터 계산
   const startIndex = currentPage * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const viewNewProducts = newProducts.slice(startIndex, endIndex);
+  const viewGiftSets = giftSets.slice(startIndex, endIndex);
 
   // 페이지를 변경시켜줄 함수
   const handlePageChange = selectedPage => {
@@ -72,54 +56,54 @@ const PopularProducts = () => {
 
   return (
     <div>
-      <PageTitle title='인기상품' />
+      <PageTitle title='선물세트' />
       <div className={`${styles.grid_div}`}>
         {
           // Home컴포넌트에 있으면 상품목록을 8개까지 자르고, 그 외에는 모두 표시함
           (
             urlInfo.pathname === '/'
             ?
-            newProducts.slice(0,8)
+            giftSets.slice(0,8)
             :
-            viewNewProducts
-          ).map((newProduct, i) => {
-            const discountedPrice = calculateDiscountedPrice(newProduct.price, newProduct.discountRate || 0);
+            viewGiftSets
+          ).map((giftSet, i) => {
+            const discountedPrice = calculateDiscountedPrice(giftSet.price, giftSet.discountRate || 0);
 
             return (
               <div
                 className={styles.grid_content}
                 key={i}
-                onClick={e => nav(`/product-detail/${newProduct.itemNum}/intro`)}
+                onClick={e => nav(`/product-detail/${giftSet.itemNum}/intro`)}
               >
                 <div className={styles.grid_img}>
-                  <img src={`http://localhost:8080/upload/${newProduct.imgList[0].attachedImgName}`} />
+                  <img src={`http://localhost:8080/upload/${giftSet.imgList[0].attachedImgName}`} />
                   {/* 할인율 배지 */}
-                  {newProduct.isOnSale && newProduct.discountRate > 0 && (
+                  {giftSet.isOnSale && giftSet.discountRate > 0 && (
                     <div className={styles.discount_badge}>
-                      {newProduct.discountRate}% 할인
+                      {giftSet.discountRate}% 할인
                     </div>
                   )}
                 </div>
                 <div className={styles.grid_info}>
-                  <h3>{newProduct.itemName}</h3>
+                  <h3>{giftSet.itemName}</h3>
                   {/* 할인가와 원가 표시 */}
                   <div className={styles.price_container}>
-                    {newProduct.isOnSale && newProduct.discountRate > 0 ? (
+                    {giftSet.isOnSale && giftSet.discountRate > 0 ? (
                       <>
-                        <p className={styles.original_price}>{newProduct.price.toLocaleString()}원</p>
+                        <p className={styles.original_price}>{giftSet.price.toLocaleString()}원</p>
                         <p className={styles.product_price}>{discountedPrice.toLocaleString()}원</p>
                       </>
                     ) : (
-                      <p className={styles.product_price}>{newProduct.price.toLocaleString()}원</p>
+                      <p className={styles.product_price}>{giftSet.price.toLocaleString()}원</p>
                     )}
                   </div>
                   {/* 평점이 있을 때만 표시 */}
                   {
-                    newProduct.reviewAvg
+                    giftSet.reviewAvg
                     ?
                     (
                       <p className={styles.rating}>
-                        ⭐ {newProduct.reviewAvg.toFixed(1)} ({newProduct.reviewCnt || 0})
+                        ⭐ {giftSet.reviewAvg.toFixed(1)} ({giftSet.reviewCnt || 0})
                       </p>
                     )
                     :
@@ -132,10 +116,17 @@ const PopularProducts = () => {
         }
       </div>
       {
-        urlInfo.pathname !== '/'
+        giftSets.length === 0 && (
+          <div style={{textAlign: 'center', padding: '50px', fontSize: '18px', color: '#888'}}>
+            현재 등록된 선물세트가 없습니다.
+          </div>
+        )
+      }
+      {
+        urlInfo.pathname !== '/' && giftSets.length > 0
         &&
         <Pagination
-          totalItems={newProducts.length}
+          totalItems={giftSets.length}
           itemsPerPage={itemsPerPage}
           onPageChange={handlePageChange}
           currentPage={currentPage}
@@ -148,4 +139,4 @@ const PopularProducts = () => {
   )
 }
 
-export default PopularProducts
+export default GiftSets

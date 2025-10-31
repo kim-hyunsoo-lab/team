@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, FlatList } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import axios from 'axios';
 import { SERVER_URL } from '../../../constants/appConst';
-import { router, useRouter } from 'expo-router';
+import { router, useFocusEffect, useRouter } from 'expo-router';
 import Button from '@/components/common/Button';
 import * as SecureStore from 'expo-secure-store';
 import PageTitle from '@/components/common/PageTitle';
@@ -15,22 +15,27 @@ const ProductScreen = () => {
   const [newProductList, setNewProductList] = useState([]); // 신상품 목록
   const [popularProductList, setPopularProductList] = useState([]); // 인기상품 목록
   const [discountProductList, setDiscountProductList] = useState([]); // 할인상품 목록
+  const [giftSetList, setGiftSetList] =useState([]); //선물세트 목록
 
   // 컴포넌트가 처음 렌더링될 때 한 번만 실행되는 useEffect
   // 빈 배열 []을 두 번째 인자로 전달하면 컴포넌트 마운트 시 1회만 실행됨
-  useEffect(() => {
-    // axios를 사용해 서버에서 상품 데이터 가져오기
+  useFocusEffect(
+    useCallback(() => {
+      // axios를 사용해 서버에서 상품 데이터 가져오기
     axios.get(`${SERVER_URL}/items`)
     .then(res => {
       // 서버에서 받은 모든 상품 데이터를 allData 변수에 저장
       const allData = res.data;
 
+      // 세트상품 제외 (isGiftSet이 아닌 일반 상품만)
+      const regularProducts = allData.filter(item => !item.isGiftSet);
+
       // 신상품 섹션: 최근 등록순으로 정렬 (regDate 기준 내림차순)
-      const sortedByDate = [...allData].sort((a, b) => new Date(b.regDate) - new Date(a.regDate));
+      const sortedByDate = [...regularProducts].sort((a, b) => new Date(b.regDate) - new Date(a.regDate));
       setNewProductList(sortedByDate.slice(0, 8));
 
       // 인기상품 섹션: reviewAvg 기준으로 정렬 (복합 조건)
-      const sortedProducts = [...allData].sort((a, b) => {
+      const sortedProducts = [...regularProducts].sort((a, b) => {
         const avgA = a.reviewAvg || 0; // 평점이 없으면 0으로 처리
         const avgB = b.reviewAvg || 0;
         const cntA = a.reviewCnt || 0; // 리뷰 개수가 없으면 0으로 처리
@@ -51,9 +56,15 @@ const ProductScreen = () => {
       });
       setPopularProductList(sortedProducts.slice(0, 8));
 
+      // 선물세트 섹션: isGiftSet이 true인 상품만 필터링
+      const giftSets = allData.filter(item => item.isGiftSet);
+      setGiftSetList(giftSets.slice(0, 8));
+
       // 할인 상품 API 호출
       axios.get(`${SERVER_URL}/items/on-sale`)
         .then(saleRes => {
+          console.log('할인 상품 API 응답:', saleRes.data);
+          console.log('할인 상품 개수:', saleRes.data.length);
           setDiscountProductList(saleRes.data.slice(0, 8));
         })
         .catch(e => {
@@ -61,10 +72,10 @@ const ProductScreen = () => {
           // 할인 상품 API 오류 시 빈 배열 설정
           setDiscountProductList([]);
         });
-
     })
     .catch(e => console.log(e)); // 에러 발생 시 콘솔에 출력
-  }, []); // 빈 배열: 컴포넌트가 처음 마운트될 때만 실행
+    }, [])
+  ); // 빈 배열: 컴포넌트가 처음 마운트될 때만 실행
 
   // 할인가 계산 함수
   const calculateDiscountedPrice = (price, discountRate) => {
@@ -191,8 +202,11 @@ const ProductScreen = () => {
         {/* 인기상품 섹션: 평점 4점 이상 상품 표시 */}
         {renderSection('인기상품', popularProductList, 'popular-product')}
 
-        {/* 할인상품 섹션: 처음 5개 상품 표시 */}
+        {/* 할인상품 섹션 */}
         {renderSection('할인상품', discountProductList, 'discount-product')}
+
+        {/* 선물세트 섹션 */}
+        {renderSection('선물세트', giftSetList, 'gift-set')}
       </ScrollView>
       <View style={styles.imageSection}>            
         <Image 
