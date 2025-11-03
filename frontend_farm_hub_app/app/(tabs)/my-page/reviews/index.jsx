@@ -148,9 +148,8 @@ const ReviewMyPage = () => {
 
   return (
     <TouchableWithoutFeedback>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container}>        
         <PageTitle title='리뷰 목록'/>
-        
         <ScrollView style={styles.scrollView}>
           {loading ? (
             <View style={styles.loadingContainer}>
@@ -181,7 +180,7 @@ const ReviewMyPage = () => {
                     <TouchableOpacity 
                       style={styles.tableRow}
                       onPress={() => handleRowClick(e.reviewNum)}
-                    >
+                      >
                       <Text style={[styles.cell, styles.noCell]}>
                         {reviewList.length - (startIndex + i)}
                       </Text>
@@ -207,14 +206,14 @@ const ReviewMyPage = () => {
                           <View style={styles.imageContainer}>
                             {e.reviewImgList.map((img, idx) => (
                               <Image
-                                key={idx}
-                                source={{ 
-                                  uri: `${SERVER_URL}/reviewupload/${img.reviewAttachedImgName}?t=${reload}` 
-                                }}
-                                style={styles.reviewImage}
-                                onError={() => {
-                                  console.error('이미지 로드 실패:', img.reviewAttachedImgName);
-                                }}
+                              key={idx}
+                              source={{ 
+                                uri: `${SERVER_URL}/reviewupload/${img.reviewAttachedImgName}?t=${reload}` 
+                              }}
+                              style={styles.reviewImage}
+                              onError={() => {
+                                console.error('이미지 로드 실패:', img.reviewAttachedImgName);
+                              }}
                               />
                             ))}
                           </View>
@@ -235,23 +234,23 @@ const ReviewMyPage = () => {
                     style={[styles.pageButton, currentPage === 0 && styles.disabledButton]}
                     onPress={() => currentPage > 0 && handlePageChange(currentPage - 1)}
                     disabled={currentPage === 0}
-                  >
+                    >
                     <Ionicons 
                       name="chevron-back" 
                       size={20} 
                       color={currentPage === 0 ? '#999' : '#333'} 
-                    />
+                      />
                   </TouchableOpacity>
 
                   {/* 페이지 번호 */}
                   {getPageNumbers().map((pageNum) => (
                     <TouchableOpacity
-                      key={pageNum}
-                      style={[
-                        styles.pageButton,
-                        currentPage === pageNum && styles.activePageButton
-                      ]}
-                      onPress={() => handlePageChange(pageNum)}
+                    key={pageNum}
+                    style={[
+                      styles.pageButton,
+                      currentPage === pageNum && styles.activePageButton
+                    ]}
+                    onPress={() => handlePageChange(pageNum)}
                     >
                       <Text style={[
                         styles.pageButtonText,
@@ -267,18 +266,18 @@ const ReviewMyPage = () => {
                     style={[styles.pageButton, currentPage === totalPages - 1 && styles.disabledButton]}
                     onPress={() => currentPage < totalPages - 1 && handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages - 1}
-                  >
+                    >
                     <Ionicons 
                       name="chevron-forward" 
                       size={20} 
                       color={currentPage === totalPages - 1 ? '#999' : '#333'} 
-                    />
+                      />
                   </TouchableOpacity>
                 </View>
               )}
             </>
           )}
-        </ScrollView>
+        </ScrollView>    
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )

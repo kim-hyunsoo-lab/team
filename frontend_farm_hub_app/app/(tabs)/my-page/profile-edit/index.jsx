@@ -215,8 +215,8 @@ const ProfileEditPage = () => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{ flex: 1 }}
         >
-          <ScrollView style={styles.scrollView}>
             <PageTitle title="나의 정보" />
+          <View style={styles.scrollView}>
 
             {/* 안내 문구 */}
             <View style={styles.header}>
@@ -227,7 +227,7 @@ const ProfileEditPage = () => {
             </View>
 
             {/* 회원 정보 폼 */}
-            <View style={styles.formContainer}>
+            <ScrollView style={styles.formContainer}>
               {/* 이름 */}
               <View style={styles.row}>
                 <Text style={styles.label}>이름</Text>
@@ -370,7 +370,7 @@ const ProfileEditPage = () => {
                   />
                 </View>
               </View>
-            </View>
+            </ScrollView>
 
             {/* 버튼 */}
             <View style={styles.buttonContainer}>
@@ -381,7 +381,7 @@ const ProfileEditPage = () => {
                 <Button title="확인" onPress={handleConfirm} />
               </View>
             </View>
-          </ScrollView>
+          </View>
         </KeyboardAvoidingView>
       </SafeAreaView>
     </TouchableWithoutFeedback>

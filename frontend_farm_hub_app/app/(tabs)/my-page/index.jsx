@@ -6,11 +6,12 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import { colors } from '@/constants/colorConstant';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { useAuth } from '@/app/contexts/AuthContext';
 
 const MyPageScreen = () => {
   const router = useRouter();
   const [userInfo, setUserInfo] = useState(null);
-
+  const { logout } = useAuth();
 
   // 로그인 정보를 가져오는 함수
   const getLoginInfo = async () => {
@@ -42,14 +43,13 @@ const MyPageScreen = () => {
         text: '확인',
         onPress: async () => {
           try {
-            await SecureStore.deleteItemAsync('loginInfo');
-            console.log('로그아웃 완료');          
-            if (setUserInfo) {
-              setUserInfo(null);
-            }
-            setTimeout(() => {
-              router.replace('/');
-            }, 50);
+            console.log('🔴 마이페이지 로그아웃 시작');
+            
+            await logout(); // ✅ Context의 logout 사용
+            setUserInfo(null); // ✅ if 제거
+            
+            console.log('🔴 router.replace("/(tabs)/product") 호출');
+            router.replace('/(tabs)/product'); // ✅ 직접 product로
           } catch (error) {
             console.error('로그아웃 에러:', error);
             Alert.alert('오류', '로그아웃에 실패했습니다.');
@@ -57,7 +57,7 @@ const MyPageScreen = () => {
         },
       },
     ]);
-  };
+  };  
 
   // 메뉴 아이템 데이터
   const menuItems = [
