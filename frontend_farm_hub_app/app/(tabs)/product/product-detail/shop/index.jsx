@@ -272,14 +272,13 @@ const CartScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
         <View style={styles.header}>
           <PageTitle title="장바구니" titleSize={200} />
           {userInfo && (
             <Text style={styles.userText}>{userInfo.memName}님의 장바구니</Text>
           )}
         </View>
-
+      <ScrollView>
         {/* 테이블 헤더 */}
         <View style={styles.tableHeader}>
           <TouchableOpacity style={styles.headerCell} onPress={handleSelectAll}>
@@ -396,6 +395,7 @@ const CartScreen = () => {
           ))
         )}
 
+        </ScrollView>
         {/* 총 구매 가격 및 버튼 */}
         {cartList.length > 0 && (
           <View style={styles.totalPriceContainer}>
@@ -423,7 +423,6 @@ const CartScreen = () => {
             </View>
           </View>
         )}
-      </ScrollView>
     </SafeAreaView>
   );
 };

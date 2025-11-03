@@ -12,36 +12,33 @@ import dayjs from "dayjs";
 import { SERVER_URL } from '../../../constants/appConst';
 import { useFocusEffect, useRouter } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
+import { useAuth } from '@/app/contexts/AuthContext';
 
 const { width } = Dimensions.get("window");
 
 const HomeScreen = () => {
   const router = useRouter();
+  const { logout } = useAuth();
 
   // 관리자 로그아웃 함수 
- const handleLogout = async () => {
-  Alert.alert('로그아웃', '로그아웃 하시겠습니까?', [
-    { text: '취소', style: 'cancel' },
-    {
-      text: '확인',
-      onPress: async () => {
-        try {
-          await SecureStore.deleteItemAsync('loginInfo');
-          console.log('로그아웃 완료');
-          if (setUserInfo) {
-            setUserInfo(null);
+  const handleLogout = async () => {
+    Alert.alert('로그아웃', '로그아웃 하시겠습니까?', [
+      { text: '취소', style: 'cancel' },
+      {
+        text: '확인',
+        onPress: async () => {
+          try {
+            await logout(); 
+            router.replace('/(tabs)/product'); 
+          } catch (error) {
+            console.error('로그아웃 에러:', error);
+            Alert.alert('오류', '로그아웃에 실패했습니다.');
           }
-          setTimeout(() => {
-            router.replace('/');
-          }, 50);
-        } catch (error) {
-          console.error('로그아웃 에러:', error);
-          Alert.alert('오류', '로그아웃에 실패했습니다.');
-        }
+        },
       },
-    },
-  ]);
-};
+    ]);
+  };
+
 
   // 축사 온도 데이터를 받을 state 변수
   const [temperatureData, setTemperatureData] = useState([]);

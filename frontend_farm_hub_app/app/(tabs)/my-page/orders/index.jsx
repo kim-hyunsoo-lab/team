@@ -61,9 +61,8 @@ const BuyList = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container} >
+        <PageTitle title='주문목록' />
         <ScrollView>
-          <PageTitle title='주문목록' />
-
           {/* 테이블 헤더 */}
           <View style={styles.tableHeader}>
             <Text style={[styles.headerCell, styles.nameCell]}>상품명</Text>
