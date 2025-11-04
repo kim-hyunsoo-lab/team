@@ -123,7 +123,9 @@ const QnaMyPage = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
+        <View style={styles.topTitle}>
         <PageTitle title='문의 목록'/>
+        </View>
         
         <ScrollView style={styles.scrollView}>
           {loading ? (
@@ -249,6 +251,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  topTitle:{
+    marginBottom: 8   
   },
   scrollView: {
     flex: 1,

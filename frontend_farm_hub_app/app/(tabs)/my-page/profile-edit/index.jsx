@@ -400,8 +400,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   header: {
-    marginBottom: 20,
-    paddingBottom: 16,
+    marginBottom: 0,
+    paddingBottom: 7,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
   },
