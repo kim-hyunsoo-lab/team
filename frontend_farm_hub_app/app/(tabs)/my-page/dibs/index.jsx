@@ -225,49 +225,48 @@ const DibsScreen = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <PageTitle title="찜 목록" />
-      
-      <FlatList
-        data={dibsList}
-        keyExtractor={(item) => item.dibsNum.toString()}
-        renderItem={renderItem}
-        ListEmptyComponent={renderEmpty}
-        ListHeaderComponent={
-          dibsList.length > 0 ? (
-            <View style={styles.headerContainer}>
-              <View style={styles.selectAllContainer}>
-                <Checkbox
-                  value={checkedItems.length === dibsList.length && dibsList.length > 0}
-                  onValueChange={handleSelectAll}
-                  color={checkedItems.length === dibsList.length ? colors.BROWN : undefined}
-                />
-                <Text style={styles.selectAllText}>전체 선택</Text>
-              </View>
-              <Text style={styles.countText}>총 {dibsList.length}개</Text>
-            </View>
-          ) : null
-        }
-        ListFooterComponent={
-          dibsList.length > 0 && checkedItems.length > 0 ? (
-            <View style={styles.footer}>
-              <TouchableOpacity 
-                style={styles.deleteButtonLarge} 
-                onPress={handleDeleteSelected}
-              >
-                <Ionicons name="trash-outline" size={20} color="#fff" />
-                <Text style={styles.deleteButtonText}>
-                  선택 삭제 ({checkedItems.length})
-                </Text>
-              </TouchableOpacity>
-            </View>
-          ) : null
-        }
-        contentContainerStyle={styles.listContent}
-        showsVerticalScrollIndicator={false}
-      />
-    </SafeAreaView>
-  );
+  <SafeAreaView style={styles.safeArea}>
+    <PageTitle title="찜 목록" />
+    
+    {dibsList.length > 0 && (
+      <View style={styles.headerContainer}>
+        <View style={styles.selectAllContainer}>
+          <Checkbox
+            value={checkedItems.length === dibsList.length && dibsList.length > 0}
+            onValueChange={handleSelectAll}
+            color={checkedItems.length === dibsList.length ? colors.BROWN : undefined}
+          />
+          <Text style={styles.selectAllText}>전체 선택</Text>
+        </View>
+        <Text style={styles.countText}>총 {dibsList.length}개</Text>
+      </View>
+    )}
+    
+    <FlatList
+      data={dibsList}
+      keyExtractor={(item) => item.dibsNum.toString()}
+      renderItem={renderItem}
+      ListEmptyComponent={renderEmpty}
+      ListFooterComponent={
+        dibsList.length > 0 && checkedItems.length > 0 ? (
+          <View style={styles.footer}>
+            <TouchableOpacity 
+              style={styles.deleteButtonLarge} 
+              onPress={handleDeleteSelected}
+            >
+              <Ionicons name="trash-outline" size={20} color="#fff" />
+              <Text style={styles.deleteButtonText}>
+                선택 삭제 ({checkedItems.length})
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : null
+      }
+      contentContainerStyle={styles.listContent}
+      showsVerticalScrollIndicator={false}
+    />
+  </SafeAreaView>
+);
 };
 
 export default DibsScreen;

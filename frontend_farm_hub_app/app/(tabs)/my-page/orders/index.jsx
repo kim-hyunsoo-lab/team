@@ -60,9 +60,10 @@ const BuyList = () => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView style={styles.container} >
+      <SafeAreaView style={styles.container}>
         <PageTitle title='주문목록' />
-        <ScrollView>
+        
+        <ScrollView style={styles.scrollView}>
           {/* 테이블 헤더 */}
           <View style={styles.tableHeader}>
             <Text style={[styles.headerCell, styles.nameCell]}>상품명</Text>
@@ -105,19 +106,19 @@ const BuyList = () => {
               </View>
             ))
           )}
-
-          {/* 총 금액 */}
-          {buyList.length > 0 && (
-            <View style={styles.totalSummary}>
-              <View style={styles.totalBox}>
-                <Text style={styles.totalLabel}>총 주문 금액</Text>
-                <Text style={styles.totalAmount}>
-                  {getTotalAmount().toLocaleString()}원
-                </Text>
-              </View>
-            </View>
-          )}
         </ScrollView>
+
+        {/* 총 금액 - 고정 */}
+        {buyList.length > 0 && (
+          <View style={styles.totalSummary}>
+            <View style={styles.totalBox}>
+              <Text style={styles.totalLabel}>총 주문 금액</Text>
+              <Text style={styles.totalAmount}>
+                {getTotalAmount().toLocaleString()}원
+              </Text>
+            </View>
+          </View>
+        )}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -237,5 +238,8 @@ const styles = StyleSheet.create({
     fontSize: 10, 
     color: '#fff',
     fontWeight: '600',
+  },
+  scrollView: {
+    flex: 1,
   },
 });
