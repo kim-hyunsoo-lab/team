@@ -8,6 +8,8 @@ import dayjs from 'dayjs'
 const BuyList = () => {
   const loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'));
 
+  const [reload, setReload] = useState(0);
+
   //구매목록을 받을 state 변수
   const [buyList, setBuyList] = useState([]);
 
@@ -22,12 +24,28 @@ const BuyList = () => {
       console.log(e);
       alert(e.response.data)
     });
-  }, []);
+  }, [reload]);
 
   //총 구매 금액 계산
   const getTotalAmount = () => {
     return buyList.reduce((sum, item) => sum + item.totalPrice, 0);
   };
+
+  //주문 취소
+  const deleteBuy = (buyNum) => {
+    if (!confirm('해당 주문을 취소하시겠습니까?')) {
+      return;
+    }
+    axios.delete(`/api/buy/${buyNum}`)
+    .then(()=>{
+      alert('주문이 취소되었습니다.');      
+      setReload(reload+1)})    
+    .catch(e => {
+      console.log(e);
+      alert(e.response.data)
+    });
+  }
+
 
   return (
     <div className={styles.container}>
@@ -62,7 +80,7 @@ const BuyList = () => {
                   <td>{e.totalPrice.toLocaleString()}원</td>
                   <td>{dayjs(e.buyDate).format('YYYY년 MM월 DD일')}</td>
                   <td>
-                    <Button title='주문취소' color='gray' size='90px' />
+                    <Button onClick={() =>{deleteBuy(e.buyNum)}} title='주문취소' color='gray' size='90px' />
                   </td>
                 </tr>
               )
