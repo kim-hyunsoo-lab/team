@@ -5,11 +5,13 @@ import * as SecureStore from "expo-secure-store";
 import { useEffect, useState } from "react";
 import {
   Alert,
+  Keyboard,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -223,7 +225,8 @@ const CartScreen = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <PageTitle title="장바구니" titleSize={200} />
           {userInfo && (
@@ -258,6 +261,7 @@ const CartScreen = () => {
             <Text style={styles.headerText}>구매</Text>
           </View>
         </View>
+        <ScrollView>
         {cartList.length === 0 ? (
           <View style={styles.emptyCart}>
             <Text style={styles.emptyText}>
@@ -271,7 +275,7 @@ const CartScreen = () => {
                 <TouchableOpacity
                   style={styles.headerCell}
                   onPress={() => handleCheckbox(cart.cartNum)}
-                >
+                  >
                   <Text style={styles.checkboxText}>
                     {selectedItems.includes(cart.cartNum) ? "☑" : "☐"}
                   </Text>
@@ -300,11 +304,11 @@ const CartScreen = () => {
                       value={String(cart.cartCnt)}
                       onChangeText={(value) => handleCntChange(i, value)}
                       keyboardType="number-pad"
-                    />
+                      />
                     <TouchableOpacity
                       style={styles.updateButton}
                       onPress={() => updateCartCnt(cart)}
-                    >
+                      >
                       <Text style={styles.updateButtonText}>변경</Text>
                     </TouchableOpacity>
                   </View>
@@ -320,13 +324,13 @@ const CartScreen = () => {
                   <TouchableOpacity
                     style={[styles.actionButton, styles.buyButton]}
                     onPress={() => buyItem(cart)}
-                  >
+                    >
                     <Text style={styles.buyButtonText}>구매</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[styles.actionButton, styles.deleteButton]}
                     onPress={() => deleteCartItem(cart.cartNum)}
-                  >
+                    >
                     <Text style={styles.deleteButtonText}>삭제</Text>
                   </TouchableOpacity>
                 </View>
@@ -347,13 +351,13 @@ const CartScreen = () => {
               <TouchableOpacity
                 style={[styles.bottomButton, styles.deleteSelectedButton]}
                 onPress={deleteSelectedItems}
-              >
+                >
                 <Text style={styles.bottomButtonText}>선택 삭제</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.bottomButton, styles.buySelectedButton]}
                 onPress={buySelectedItems}
-              >
+                >
                 <Text style={[styles.bottomButtonText, styles.buySelectedText]}>
                   선택 상품 구매
                 </Text>
@@ -361,8 +365,10 @@ const CartScreen = () => {
             </View>
           </View>
         )}
+        </ScrollView>
       </View>
     </SafeAreaView>
+  </TouchableWithoutFeedback>
   );
 };
 
