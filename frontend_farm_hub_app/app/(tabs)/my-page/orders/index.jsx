@@ -39,7 +39,7 @@ const BuyList = () => {
     getLoginInfo();
   }, []);
 
-  // 구매 목록 조회
+  // 주문 목록 조회
   useEffect(() => {
     if (!userInfo?.memId) return;
     

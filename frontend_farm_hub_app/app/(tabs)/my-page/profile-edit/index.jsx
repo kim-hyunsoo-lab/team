@@ -215,11 +215,11 @@ const ProfileEditPage = () => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{ flex: 1 }}
         >
-            <PageTitle title="나의 정보" />
           <View style={styles.scrollView}>
 
             {/* 안내 문구 */}
             <View style={styles.header}>
+            <PageTitle title="나의 정보" />
               <Text style={styles.headerText}>
                 안전한 배송 안내를 위하여 연락처와 이메일 주소를 필히 확인 부탁드립니다.
               </Text>
