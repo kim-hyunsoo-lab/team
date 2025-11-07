@@ -14,6 +14,7 @@ const BuyList = () => {
   const router = useRouter();
   const [buyList, setBuyList] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
+  const [reloading, setReloading] = useState(0);
 
   // 로그인 정보 가져오기
   useEffect(() => {
@@ -38,7 +39,7 @@ const BuyList = () => {
     getLoginInfo();
   }, []);
 
-  // 구매 목록 조회
+  // 주문 목록 조회
   useEffect(() => {
     if (!userInfo?.memId) return;
     
@@ -51,18 +52,39 @@ const BuyList = () => {
       }
     };
     fetchBuyList();
-  }, [userInfo]);
+  }, [userInfo, reloading]);
 
   // 총 금액 계산
   const getTotalAmount = () => {
     return buyList.reduce((sum, item) => sum + item.totalPrice, 0);
   };
 
+  // 주문 취소
+  const deleteBuyItem = (buyNum) => {
+    Alert.alert("확인", "해당 주문을 취소하시겠습니까?", [
+      { text: "아니오", style: "cancel" },
+      {
+        text: "예",
+        style: "destructive",
+        onPress: () => {
+          axios
+            .delete(`${SERVER_URL}/buy/${buyNum}`)
+            .then(() => {
+              Alert.alert("성공", "주문이 취소되었습니다.");
+              setReloading(reloading+500)
+            })
+            .catch(() => {
+              Alert.alert("오류", "삭제 중 오류가 발생했습니다.");
+            });
+        },
+      },
+    ]);
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView style={styles.container} >
-        <PageTitle title='주문목록' />
-        <ScrollView>
+      <SafeAreaView style={styles.container}>
+        <PageTitle title='주문목록' />        
           {/* 테이블 헤더 */}
           <View style={styles.tableHeader}>
             <Text style={[styles.headerCell, styles.nameCell]}>상품명</Text>
@@ -74,6 +96,7 @@ const BuyList = () => {
           </View>
 
           {/* 테이블 바디 */}
+        <ScrollView style={styles.scrollView}>
           {buyList.length === 0 ? (
             <View style={styles.emptyContainer}>
               <Text style={styles.emptyText}>주문 내역이 없습니다.</Text>
@@ -95,9 +118,7 @@ const BuyList = () => {
                 <View style={[styles.cancelCell]}>
                   <TouchableOpacity 
                     style={styles.cancelButton}
-                    onPress={() => {
-                      console.log('주문 취소');
-                    }}
+                    onPress={() => deleteBuyItem(e.buyNum)}
                   >
                     <Text style={styles.cancelButtonText}>주문취소</Text>
                   </TouchableOpacity>
@@ -105,19 +126,19 @@ const BuyList = () => {
               </View>
             ))
           )}
-
-          {/* 총 금액 */}
-          {buyList.length > 0 && (
-            <View style={styles.totalSummary}>
-              <View style={styles.totalBox}>
-                <Text style={styles.totalLabel}>총 주문 금액</Text>
-                <Text style={styles.totalAmount}>
-                  {getTotalAmount().toLocaleString()}원
-                </Text>
-              </View>
-            </View>
-          )}
         </ScrollView>
+
+        {/* 총 금액 - 고정 */}
+        {buyList.length > 0 && (
+          <View style={styles.totalSummary}>
+            <View style={styles.totalBox}>
+              <Text style={styles.totalLabel}>총 주문 금액</Text>
+              <Text style={styles.totalAmount}>
+                {getTotalAmount().toLocaleString()}원
+              </Text>
+            </View>
+          </View>
+        )}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -204,7 +225,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   totalSummary: {
-    marginTop: 30,
+    marginTop: 10,
     padding: 20,
     backgroundColor: '#f8f9fa',
     borderRadius: 8,
@@ -237,5 +258,8 @@ const styles = StyleSheet.create({
     fontSize: 10, 
     color: '#fff',
     fontWeight: '600',
+  },
+  scrollView: {
+    flex: 1,
   },
 });
