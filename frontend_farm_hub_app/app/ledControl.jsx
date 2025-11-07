@@ -64,7 +64,7 @@ const ledControl = () => {
 
       // 자동 모드로 변경 시 수동 제어 스위치 끄기
       if (newMode === "auto") {
-        setIsEnabled(false);
+        setIsEnabled(False);
       }
 
       setLedStatus((prev) => ({

@@ -209,6 +209,7 @@ CREATE TABLE PAYMENT (
  #################################################
  ### 이 워크시트에 CREATE 문을 다 작성해주세요 ###
 
-SELECT * FROM FAN_FUNCTION;
+SELECT * FROM fan_function;
+SELECT * FROM illuminance_function;
 SELECT * FROM SHOP_MEMBER;
 SELECT * FROM PAYMENT;
