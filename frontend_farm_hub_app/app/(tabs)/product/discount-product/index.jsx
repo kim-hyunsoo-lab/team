@@ -133,34 +133,30 @@ const DiscountProductList = () => {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <Menu activeMenu="discount-product" />
-
+      <View style={styles.container}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.BROWN} />
         </View>
-      </SafeAreaView>
+      </View>
     )
   }
 
   // 할인 상품이 없을 때
   if (productList.length === 0) {
     return (
-      <SafeAreaView style={styles.container}>
-        <Menu activeMenu="discount-product" />
+      <View style={styles.container}>
         <View style={styles.titleWrapper}>
           <PageTitle title='할인 상품' />
         </View>
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>현재 할인 중인 상품이 없습니다.</Text>
         </View>
-      </SafeAreaView>
+      </View>
     )
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Menu activeMenu="discount-product" />
+    <View style={styles.container}>
       <View style={styles.titleWrapper}>
         <PageTitle title='할인 상품' />
       </View>
@@ -222,7 +218,7 @@ const DiscountProductList = () => {
           ) : null
         }
       />
-    </SafeAreaView>
+    </View>
   )
 }
 

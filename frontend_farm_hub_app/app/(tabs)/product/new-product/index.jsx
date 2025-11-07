@@ -136,19 +136,16 @@ const NewProductList = () => {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <Menu activeMenu="new-product" />
-
+      <View style={styles.container}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.BROWN} />
         </View>
-      </SafeAreaView>
+      </View>
     )
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Menu activeMenu="new-product" />
+    <View style={styles.container}>
       <View style={styles.titleWrapper}>
         <PageTitle title='신상품' />
       </View>
@@ -210,7 +207,7 @@ const NewProductList = () => {
           ) : null
         }
       />
-    </SafeAreaView>
+    </View>
   )
 }
 
