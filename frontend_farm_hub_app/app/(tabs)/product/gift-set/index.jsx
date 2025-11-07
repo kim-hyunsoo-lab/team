@@ -142,34 +142,30 @@ const GiftSetList = () => {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <Menu activeMenu="gift-set" />
-
+      <View style={styles.container}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.BROWN} />
         </View>
-      </SafeAreaView>
+      </View>
     )
   }
 
   // 선물세트가 없을 때
   if (productList.length === 0) {
     return (
-      <SafeAreaView style={styles.container}>
-        <Menu activeMenu="gift-set" />
+      <View style={styles.container}>
         <View style={styles.titleWrapper}>
           <PageTitle title='선물세트' />
         </View>
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>현재 등록된 선물세트가 없습니다.</Text>
         </View>
-      </SafeAreaView>
+      </View>
     )
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Menu activeMenu="gift-set" />
+    <View style={styles.container}>
       <View style={styles.titleWrapper}>
         <PageTitle title='선물세트' />
       </View>
@@ -231,7 +227,7 @@ const GiftSetList = () => {
           ) : null
         }
       />
-    </SafeAreaView>
+    </View>
   )
 }
 

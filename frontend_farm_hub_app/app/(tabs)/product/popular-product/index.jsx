@@ -154,18 +154,16 @@ const PopularProductList = () => {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <Menu activeMenu="popular-product" />
+      <View style={styles.container}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.BROWN} />
         </View>
-      </SafeAreaView>
+      </View>
     )
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Menu activeMenu="popular-product" />
+    <View style={styles.container}>
       <View style={styles.titleWrapper}>
         <PageTitle title='인기상품' />
       </View>
@@ -227,7 +225,7 @@ const PopularProductList = () => {
           ) : null
         }
       />
-    </SafeAreaView>
+    </View>
   )
 }
 
