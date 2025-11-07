@@ -195,8 +195,13 @@ CREATE TABLE PAYMENT (
  	DELETE_DATE DATETIME DEFAULT SYSDATE()         -- 탈퇴일
  );  
  
- 
- 
+ #찜한 상품 테이블
+ CREATE TABLE DIBS (
+ 	DIBS_NUM INT PRIMARY KEY AUTO_INCREMENT
+ 	, MEM_ID VARCHAR(20) REFERENCES shop_member(MEM_ID)
+ 	, ITEM_NUM INT REFERENCES item(ITEM_NUM)
+ 	, DIBS_DATE DATETIME DEFAULT SYSDATE()
+ );
  
  #################################################
  ### 이 워크시트에 CREATE 문을 다 작성해주세요 ###
