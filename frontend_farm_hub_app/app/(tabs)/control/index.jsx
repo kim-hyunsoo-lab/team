@@ -81,12 +81,16 @@ const ControlScreen = () => {
           </View>
           <View style={styles.cardContent}>
             <View style={styles.infoRow}>
-              <Text style={styles.label}>현재 지정 온도</Text>
+
+              <Text style={styles.label}>지정 온도</Text>
+
               <Text style={styles.value}>{sensorData.temp}°C</Text>
             </View>
             <View style={styles.divider} />
             <View style={styles.infoRow}>
-              <Text style={styles.label}>현재 지정 공기질</Text>
+
+              <Text style={styles.label}>지정 공기질</Text>
+
               <Text style={styles.value}>{sensorData.air} ppm</Text>
             </View>
           </View>
@@ -102,7 +106,7 @@ const ControlScreen = () => {
           </View>
           <View style={styles.cardContentCentered}>
             <View style={styles.infoRowSpaced}>
-              <Text style={styles.label}>현재 지정 조도</Text>
+              <Text style={styles.label}>지정 조도</Text>
               <Text style={styles.value}>{sensorData.ill} lux</Text>
             </View>
           </View>
