@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Alert, Pressable, Image } from 'react-native';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as SecureStore from 'expo-secure-store';
 import { useFocusEffect, useRouter } from 'expo-router';
@@ -64,11 +64,9 @@ const MyPageScreen = () => {
     { id: 1, icon: <Ionicons name="receipt-outline" size={24} color="black" />, title: '주문목록', route: '/my-page/orders' },
     { id: 2, icon: <Ionicons name="cart-outline" size={24} color="black" />, title: '장바구니', route: '/product/product-detail/shop' },
     { id: 3, icon: <Ionicons name="heart-outline" size={24} color="black" />, title: '찜한상품', route: '/my-page/dibs' },
-    { id: 4, icon: <Ionicons name="person-outline" size={24} color="black" />, title: '회원정보 수정', route: '/my-page/profile-edit' },
-    { id: 5, icon: <Ionicons name="location-outline" size={24} color="black" />, title: '배송지관리', route: '/my-page/address' },
-    { id: 6, icon: <Ionicons name="notifications-outline" size={24} color="black" />, title: '알림설정', route: '/my-page/notifications' },
-    { id: 7, icon: <AntDesign name="question-circle" size={24} color="black" />, title: '문의목록', route: '/my-page/qna' },
-    { id: 8, icon: <Ionicons name="star-outline" size={24} color="black" />, title: '상품후기', route: '/my-page/reviews' },
+    { id: 4, icon: <AntDesign name="question-circle" size={24} color="black" />, title: '문의목록', route: '/my-page/qna' },
+    { id: 5, icon: <Ionicons name="star-outline" size={24} color="black" />, title: '상품후기', route: '/my-page/reviews' },
+    { id: 6, icon: <Ionicons name="person-outline" size={24} color="black" />, title: '회원정보 수정', route: '/my-page/profile-edit' },    
   ];
 
   // 메뉴 클릭 핸들러
@@ -95,9 +93,15 @@ const MyPageScreen = () => {
             ) : (
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>                
                 <Pressable onPress={() => router.push('/auth/login')}>
-                  <Text style={[styles.userName, { textDecorationLine: 'underline' }]}>
-                    로그인
-                  </Text>
+                  {({pressed}) => (
+                    <Text style={[
+                      styles.userName, 
+                      { textDecorationLine: 'underline' },
+                      pressed && { opacity: 0.7 }
+                    ]}>
+                      로그인
+                    </Text>
+                  )}
                 </Pressable>
                 <Text style={styles.userName}>이 필요합니다</Text>
               </View>
@@ -105,19 +109,33 @@ const MyPageScreen = () => {
           </View>
         </View>
 
-        {/* 메뉴 그리드 (4x2) */}
+        {/* 메뉴 그리드 (3x2) */}
         <View style={styles.menuGrid}>
           {menuItems.map((item) => (
-            <TouchableOpacity
+            <Pressable
               key={item.id}
-              style={styles.menuItem}
+              style={({pressed}) => [
+                styles.menuItem,
+                pressed && styles.menuItemPressed
+              ]}
               onPress={() => handleMenuPress(item.route)}
             >
-              <View style={styles.menuContent}>
-                <View style={styles.menuIcon}>{item.icon}</View>
-                <Text style={styles.menuTitle}>{item.title}</Text>
-              </View>
-            </TouchableOpacity>
+              {({pressed}) => (
+                <View style={styles.menuContent}>
+                  <View style={styles.menuIcon}>
+                    {React.cloneElement(item.icon, { 
+                      color: pressed ? colors.BROWN : 'black' 
+                    })}
+                  </View>
+                  <Text style={[
+                    styles.menuTitle,
+                    pressed && { color: colors.BROWN }
+                  ]}>
+                    {item.title}
+                  </Text>
+                </View>
+              )}
+            </Pressable>
           ))}
         </View>
 
@@ -187,23 +205,23 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   menuItem: {
-    width: '25%',
-    aspectRatio: 1,
+    width: '50%',    
     alignItems: 'center',
     borderWidth: 0.5,
     borderColor: '#e0e0e0',
     backgroundColor: '#fff',
-    paddingVertical: 30
+    paddingVertical: 20,    
   },
   menuContent: {
     justifyContent: 'center',
     alignItems: 'center',
+    flex: 1
   },
   menuIcon: {
-    marginBottom: 8,
+    marginBottom: 6,
   },
   menuTitle: {
-    fontSize: 13,
+    fontSize: 16,
     color: '#333',
     textAlign: 'center',
     fontWeight: '500',
@@ -230,5 +248,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 50, 
     resizeMode: 'cover',
+  },
+  menuItemPressed: {
+    backgroundColor: '#f0f0f0',
   },
 });
