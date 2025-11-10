@@ -31,7 +31,7 @@ ALTER TABLE SHOP_MEMBER ADD (
  	, ORIGIN VARCHAR(15) #원산지
  	, REG_DATE DATETIME DEFAULT SYSDATE() #상품 등록일
  );
-
+ 
 CREATE TABLE ORDERS (
     -- 예: ORDER20231015001, payment-1697356800000
     ORDER_ID VARCHAR(100) PRIMARY KEY,
@@ -203,15 +203,13 @@ CREATE TABLE PAYMENT (
  	, DIBS_DATE DATETIME DEFAULT SYSDATE()
  );
  
-
-
- 
- 
- 
  #################################################
  ### 이 워크시트에 CREATE 문을 다 작성해주세요 ###
 
+<<<<<<< HEAD
 SELECT * FROM fan_function;
+=======
+>>>>>>> dev
 SELECT * FROM illuminance_function;
 SELECT * FROM SHOP_MEMBER;
-SELECT * FROM PAYMENT;
+SELECT * FROM payment;
