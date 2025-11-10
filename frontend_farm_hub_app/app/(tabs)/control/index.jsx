@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { PYTHON_URL } from "../../../constants/appConst";
 
@@ -61,10 +61,13 @@ const ControlScreen = () => {
   //컴포넌트 마운트 시 데이터 조회
   useEffect(() => {
     fetchSensorData();
-  }, []); 
+  }, []);
 
   return (
-    <SafeAreaView style={styles.container} contentContainerStyle={{ flexGrow: 1 }}>
+    <SafeAreaView
+      style={styles.container}
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
       <Text style={styles.title}>축사 기기 제어</Text>
 
       <View style={styles.control}>
@@ -75,19 +78,16 @@ const ControlScreen = () => {
         >
           <View style={styles.cardHeader}>
             <Text style={styles.cardTitle}>환기 팬</Text>
-            <View style={styles.statusBadge}>
-              <Text style={styles.statusText}>ON</Text>
-            </View>
           </View>
           <View style={styles.cardContent}>
             <View style={styles.infoRow}>
               <Text style={styles.label}>현재 지정 온도</Text>
-              <Text style={styles.value}>{sensorData.temp}</Text>
+              <Text style={styles.value}>{sensorData.temp}°C</Text>
             </View>
             <View style={styles.divider} />
             <View style={styles.infoRow}>
               <Text style={styles.label}>현재 지정 공기질</Text>
-              <Text style={styles.value}>{sensorData.air}</Text>
+              <Text style={styles.value}>{sensorData.air} ppm</Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -99,21 +99,18 @@ const ControlScreen = () => {
         >
           <View style={styles.cardHeader}>
             <Text style={styles.cardTitle}>LED</Text>
-            <View style={[styles.statusBadge, styles.statusBadgeOff]}>
-              <Text style={styles.statusText}>OFF</Text>
-            </View>
           </View>
           <View style={styles.cardContentCentered}>
             <View style={styles.infoRowSpaced}>
               <Text style={styles.label}>현재 지정 조도</Text>
-              <Text style={styles.value}>{sensorData.ill}</Text>
+              <Text style={styles.value}>{sensorData.ill} lux</Text>
             </View>
           </View>
         </TouchableOpacity>
       </View>
-      <View style={styles.imageSection}>  
-        <Image 
-          source={require('@/assets/images/adminHeader.png')} 
+      <View style={styles.imageSection}>
+        <Image
+          source={require("@/assets/images/adminHeader.png")}
           style={styles.image}
         />
       </View>
@@ -170,20 +167,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#2c3e50",
   },
-  statusBadge: {
-    backgroundColor: "#4caf50",
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  statusBadgeOff: {
-    backgroundColor: "#9e9e9e",
-  },
-  statusText: {
-    color: "#ffffff",
-    fontSize: 12,
-    fontWeight: "600",
-  },
   cardContent: {
     padding: 20,
   },
@@ -221,11 +204,11 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   imageSection: {
-    marginTop: 'auto'
+    marginTop: "auto",
   },
   image: {
-    width: '100%',
-    height: 250, 
-    resizeMode: 'cover'
+    width: "100%",
+    height: 250,
+    resizeMode: "cover",
   },
 });
