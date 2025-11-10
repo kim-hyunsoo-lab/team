@@ -64,7 +64,7 @@ const ledControl = () => {
 
       // 자동 모드로 변경 시 수동 제어 스위치 끄기
       if (newMode === "auto") {
-        setIsEnabled(False);
+        setIsEnabled("OFF");
       }
 
       setLedStatus((prev) => ({
@@ -97,12 +97,12 @@ const ledControl = () => {
 
     try {
       // LED 제어 API 호출 (Python 서버에 해당 엔드포인트 추가 필요)
-      const action = newState ? "on" : "off";
+      const action = newState ? "ON" : "OFF";
       console.log(`LED ${action} 요청 중...`);
 
       // 임시로 상태만 변경 (실제 API 연동 시 주석 해제)
       const response = await axios.post(`${PYTHON_URL}/ledControl/${action}`);
-      console.log("LED 제어 성공:", response.data);
+      console.log("LED 제어 성공:", response.data)
 
       // 상태 업데이트
       setIsEnabled(newState);
