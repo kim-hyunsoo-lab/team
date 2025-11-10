@@ -24,7 +24,7 @@ const fanControl = () => {
   const [airQuality, setAirQuality] = useState("");
 
   //팬 모드를 관리하는 state 변수 ('off' | 'ventilator' | 'fan')
-  const [fanMode, setFanMode] = useState("off");
+  const [fanMode, setFanMode] = useState("OFF");
 
   //스위치 동작 중 로딩 상태
   const [switchLoading, setSwitchLoading] = useState(false);
@@ -32,7 +32,7 @@ const fanControl = () => {
   //현재 팬 상태 정보
   const [fanStatus, setFanStatus] = useState({
     isOn: false,
-    mode: "auto", // 'auto' | 'manual'
+    mode: "atuo", // 'auto' | 'manual'
     lastUpdate: null,
   });
 
@@ -71,7 +71,7 @@ const fanControl = () => {
 
       // 자동 모드로 변경 시 수동 제어 스위치 끄기
       if (newMode === "auto") {
-        setFanMode("off");
+        setFanMode("OFF");
       }
 
       setFanStatus((prev) => ({
@@ -95,7 +95,7 @@ const fanControl = () => {
     }
   };
 
-  //팬 모드 변경 함수 ('off' | 'ventilator' | 'fan')
+  //팬 모드 변경 함수 ('OFF' | 'AIR' | 'FAN')
   const changeFanMode = async (mode) => {
     if (switchLoading || fanStatus.mode === "auto") return; // 로딩 중이거나 자동 모드면 무시
 
@@ -112,12 +112,12 @@ const fanControl = () => {
       setFanMode(mode);
       setFanStatus((prev) => ({
         ...prev,
-        isOn: mode !== "off",
+        isOn: mode !== "OFF",
         mode: "manual",
         lastUpdate: new Date().toLocaleTimeString(),
       }));
 
-      const modeText = mode === "off" ? "정지" : mode === "ventilator" ? "환풍기 모드" : "선풍기 모드";
+      const modeText = mode === "OFF" ? "정지" : mode === "AIR" ? "환풍기 모드" : "선풍기 모드";
       Alert.alert(
         "팬 제어",
         `환기 팬이 ${modeText}로 변경되었습니다.`,
@@ -288,9 +288,9 @@ const fanControl = () => {
               ? "자동 모드에서는 수동 제어가 비활성화됩니다"
               : switchLoading
               ? "처리 중..."
-              : fanMode === "off"
+              : fanMode === "OFF"
               ? "팬이 정지되어 있습니다"
-              : fanMode === "ventilator"
+              : fanMode === "AIR"
               ? "환풍기 모드로 작동 중입니다"
               : "선풍기 모드로 작동 중입니다"}
           </Text>
@@ -309,16 +309,16 @@ const fanControl = () => {
               <TouchableOpacity
                 style={[
                   styles.fanModeButton,
-                  fanMode === "ventilator" && styles.fanModeButtonActive,
+                  fanMode === "AIR" && styles.fanModeButtonActive,
                   fanStatus.mode === "auto" && styles.fanModeButtonDisabled,
                 ]}
-                onPress={() => changeFanMode("ventilator")}
+                onPress={() => changeFanMode("AIR")}
                 disabled={fanStatus.mode === "auto"}
               >
                 <Text
                   style={[
                     styles.fanModeButtonText,
-                    fanMode === "ventilator" && styles.fanModeButtonTextActive,
+                    fanMode === "AIR" && styles.fanModeButtonTextActive,
                     fanStatus.mode === "auto" && styles.fanModeButtonTextDisabled,
                   ]}
                 >
@@ -329,16 +329,16 @@ const fanControl = () => {
               <TouchableOpacity
                 style={[
                   styles.fanModeButton,
-                  fanMode === "off" && styles.fanModeButtonActive,
+                  fanMode === "OFF" && styles.fanModeButtonActive,
                   fanStatus.mode === "auto" && styles.fanModeButtonDisabled,
                 ]}
-                onPress={() => changeFanMode("off")}
+                onPress={() => changeFanMode("OFF")}
                 disabled={fanStatus.mode === "auto"}
               >
                 <Text
                   style={[
                     styles.fanModeButtonText,
-                    fanMode === "off" && styles.fanModeButtonTextActive,
+                    fanMode === "OFF" && styles.fanModeButtonTextActive,
                     fanStatus.mode === "auto" && styles.fanModeButtonTextDisabled,
                   ]}
                 >
@@ -349,16 +349,16 @@ const fanControl = () => {
               <TouchableOpacity
                 style={[
                   styles.fanModeButton,
-                  fanMode === "fan" && styles.fanModeButtonActive,
+                  fanMode === "FAN" && styles.fanModeButtonActive,
                   fanStatus.mode === "auto" && styles.fanModeButtonDisabled,
                 ]}
-                onPress={() => changeFanMode("fan")}
+                onPress={() => changeFanMode("FAN")}
                 disabled={fanStatus.mode === "auto"}
               >
                 <Text
                   style={[
                     styles.fanModeButtonText,
-                    fanMode === "fan" && styles.fanModeButtonTextActive,
+                    fanMode === "FAN" && styles.fanModeButtonTextActive,
                     fanStatus.mode === "auto" && styles.fanModeButtonTextDisabled,
                   ]}
                 >
