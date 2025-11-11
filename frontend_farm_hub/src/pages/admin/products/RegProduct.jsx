@@ -89,14 +89,19 @@ const RegProduct = () => {
     const formData = new FormData();
 
     // 1. 선택한 메인 이미지를 formData에 추가
-    formData.append("mainImg", mainImg);
+    if (mainImg) {
+      formData.append("mainImg", mainImg);
+    }
+    
     // 2. 선택한 모든 서브 이미지들을 formData에 추가
-    for (const ee of subImgs) {
-      //subImgs = [File1, File2, File3...]
-      formData.append("subImgs", ee);
+    if (subImgs && subImgs.length > 0) {
+      for (const ee of subImgs) {
+        //subImgs = [File1, File2, File3...]
+        formData.append("subImgs", ee);
+      }
     }
 
-    // 3. imput 태그에 입력한 내용도 formData에 저장하기
+    // 3. input 태그에 입력한 내용도 formData에 저장하기
     formData.append("itemName", newProduct.itemName);
     formData.append("price", newProduct.price);
     formData.append("itemIntro", newProduct.itemIntro);
@@ -120,6 +125,9 @@ const RegProduct = () => {
           isOnSale: false,
           isGiftSet: null,
         });
+        // 이미지 state도 초기화
+        setMainImg(null);
+        setSubImgs(null);
       })
       .catch((e) => console.log(e));
   };
