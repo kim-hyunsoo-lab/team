@@ -181,7 +181,7 @@ const ledControl = () => {
               <View style={styles.modeSwitch}>
                 <Text style={styles.modeLabel}>자동</Text>
                 <Switch
-                  trackColor={{ false: "#4CAF50", true: "#050404ff" }}
+                  trackColor={{ false: "#4CAF50", true: "#FF9800" }}
                   thumbColor="#ffffff"
                   ios_backgroundColor="#4CAF50"
                   onValueChange={toggleModeSwitch}
