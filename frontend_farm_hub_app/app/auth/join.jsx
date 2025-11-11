@@ -96,8 +96,8 @@ const Join = () => {
     }
 
     try {
-      const res = await axios.get(`${SERVER_URL}/members/check-id/${newShopMember.memId}`);
-      if (res.data.available) {
+      const res = await axios.get(`${SERVER_URL}/members/${newShopMember.memId}`);
+      if (res.data) {
         Alert.alert('확인', '사용 가능한 아이디입니다');
       } else {
         Alert.alert('확인', '이미 사용 중인 아이디입니다');
