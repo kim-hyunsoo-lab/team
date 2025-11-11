@@ -89,15 +89,14 @@ const Join = () => {
     });
   };
 
-    const checkId = async () => {
+  const checkId = async () => {
     if (!newShopMember.memId) {
       Alert.alert('알림', '아이디를 입력하세요');
       return;
     }
-
     try {
       const res = await axios.get(`${SERVER_URL}/members/${newShopMember.memId}`);
-      if (res.data) {
+      if (res.data === true) {
         Alert.alert('확인', '사용 가능한 아이디입니다');
       } else {
         Alert.alert('확인', '이미 사용 중인 아이디입니다');
