@@ -137,14 +137,14 @@ const ProductDetail = () => {
       if (!loginData) return;
 
       const memId = JSON.parse(loginData).memId;
-      const response = await axios.get(`${SERVER_URL}/dibs/check`, {
-        params: { memId, itemNum },
-      });
-      setIsDibbed(response.data);
+      const response = await axios.get(`${SERVER_URL}/dibs/check`, {params: { memId, itemNum },});
+      console.log('찜 상태 응답:', response.data);
+      setIsDibbed(response.data.isDibbed);
     } catch (error) {
       console.log("찜 여부 확인 오류:", error);
+      setIsDibbed(false);
     }
-  };
+  };  
 
   // 구매 버튼 클릭
   const buyItem = async () => {
