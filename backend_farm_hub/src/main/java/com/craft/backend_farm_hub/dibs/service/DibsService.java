@@ -3,62 +3,54 @@ package com.craft.backend_farm_hub.dibs.service;
 import com.craft.backend_farm_hub.dibs.dto.DibsDTO;
 import com.craft.backend_farm_hub.dibs.mapper.DibsMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional  // 클래스 레벨에 선언하여 모든 메서드에 트랜잭션 적용
+@Transactional
 public class DibsService {
   private final DibsMapper dibsMapper;
 
-  public void addDibs (DibsDTO dibsDTO) {
+  public void addDibs(DibsDTO dibsDTO) {
     dibsMapper.addDibs(dibsDTO);
   }
 
-  @Transactional(readOnly = true)  // 조회 전용 트랜잭션으로 성능 최적화
-  public List<DibsDTO> getDibs (String memId) {
-    return dibsMapper.getDibs(memId);
+  @Transactional(readOnly = true)
+  public List<DibsDTO> getDibs(String memId) {
+    List<DibsDTO> dibsList = dibsMapper.getDibs(memId);
+
+    // 삭제된 상품 필터링
+    return dibsList.stream()
+            .filter(dibs -> dibs.getItemDTO() != null)
+            .filter(dibs -> dibs.getItemDTO().getImgList() != null)
+            .filter(dibs -> !dibs.getItemDTO().getImgList().isEmpty())
+            .collect(Collectors.toList());
   }
 
-  /**
-   * 개별 찜 상품 삭제
-   * @param dibsNum 삭제할 찜 번호
-   */
-  public void removeDibs (int dibsNum) {
+  public void removeDibs(int dibsNum) {
     dibsMapper.removeDibs(dibsNum);
   }
 
-  /**
-   * 선택한 찜 상품 삭제
-   * @param dibsNumList 삭제할 찜 번호 리스트
-   * - 여러 개의 찜 상품을 한 번에 삭제할 수 있습니다.
-   * - 트랜잭션을 통해 모두 삭제되거나, 오류 시 모두 롤백됩니다.
-   */
-  public void removeSelectedDibs (List<Integer> dibsNumList) {
+  public void removeSelectedDibs(List<Integer> dibsNumList) {
+    if (dibsNumList == null || dibsNumList.isEmpty()) {
+      throw new IllegalArgumentException("삭제할 항목이 없습니다.");
+    }
     dibsMapper.removeSelectedDibs(dibsNumList);
   }
 
-  /**
-   * 찜 여부 확인
-   * @param memId 회원 ID
-   * @param itemNum 상품 번호
-   * @return 찜 여부
-   */
   @Transactional(readOnly = true)
-  public boolean checkDibs (String memId, int itemNum) {
+  public boolean checkDibs(String memId, int itemNum) {
     Integer count = dibsMapper.checkDibs(memId, itemNum);
     return count != null && count > 0;
   }
 
-  /**
-   * 찜 삭제 (memId와 itemNum으로)
-   * @param memId 회원 ID
-   * @param itemNum 상품 번호
-   */
-  public void removeDibsByItem (String memId, int itemNum) {
+  public void removeDibsByItem(String memId, int itemNum) {
     dibsMapper.removeDibsByItem(memId, itemNum);
   }
 }
